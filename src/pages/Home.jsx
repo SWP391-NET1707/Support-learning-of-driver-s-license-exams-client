@@ -1,16 +1,16 @@
 import React from 'react';
 import '../style/home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Facts, Carousel, About, Course } from '../components';
+import { Facts, Carousel, About, Course, Spinner } from '../components';
 
 
 const Home = () => {
     return (
-        <div>
+    <div>
             <Carousel />
-            <Course />
             <Facts />
             <About />   
+            <Course />
     </div>
     )
 }

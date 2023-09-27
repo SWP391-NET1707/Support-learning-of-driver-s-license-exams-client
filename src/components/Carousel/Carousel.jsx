@@ -1,5 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import img1 from '../../assets/thi-bang-lai-xe-b1-can-chuan-bi-gi-1_0203110522.jpg'
+import img2 from '../../assets/ai-nen-thi-lay-bang-lai-xe-b2.jpeg'
 import './Carousel.css'
 
 const Carousel = () => {
@@ -8,7 +10,7 @@ const Carousel = () => {
         <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    {/* <img class="w-100" src="img/thi-bang-lai-xe-b1-can-chuan-bi-gi-1_0203110522.jpg" alt="Image"> */}
+                    <img class="w-100" src={img1} alt="Image" />
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content-center">
@@ -22,7 +24,7 @@ const Carousel = () => {
                     </div>
                 </div>
                 <div class="carousel-item">
-                    {/* <img class="w-100" src="img/ai-nen-thi-lay-bang-lai-xe-b2.jpeg" alt="Image"> */}
+                    <img class="w-100" src={img2} alt="Image" />
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content-center">
