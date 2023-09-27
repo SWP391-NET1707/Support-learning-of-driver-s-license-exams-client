@@ -1,0 +1,12 @@
+.section-1{
+    justify-content: center;
+    padding: 0 2rem;
+}
+
+.card-group{
+    padding: 0 5rem;
+    gap: 2rem; 
+}
+.container-height{
+    min-height: 150px;
+}
