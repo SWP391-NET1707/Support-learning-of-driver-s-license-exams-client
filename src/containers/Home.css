@@ -1,0 +1,135 @@
+/* YourComponent.css */
+
+/* Header Start */
+.header {
+    background-image: url('img/header-bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding: 150px 0;
+    text-align: center;
+    color: #fff;
+  }
+  
+  .header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  .header p {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .header .btn-primary {
+    background-color: #ff5500;
+    border-color: #ff5500;
+    color: #fff;
+    padding: 10px 30px;
+    font-size: 18px;
+    border-radius: 30px;
+    transition: background-color 0.3s;
+  }
+  
+  .header .btn-primary:hover {
+    background-color: #fff;
+    color: #ff5500;
+  }
+  
+  /* Header End */
+  
+  /* Courses Start */
+  .courses-item {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .courses-item .courses-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .courses-item:hover .courses-overlay {
+    opacity: 1;
+  }
+  
+  .courses-item .btn-outline-primary {
+    color: #fff;
+    border-color: #fff;
+  }
+  
+  .courses-item .btn-outline-primary:hover {
+    background-color: #ff5500;
+    border-color: #ff5500;
+    color: #fff;
+  }
+  
+  /* Courses End */
+  
+  /* Other CSS Styles */
+  /* You can add more CSS styles for other elements here */
+  
+  /* Footer Start */
+  .footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 6rem 0;
+  }
+  
+  .footer h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .footer p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .footer a {
+    color: #ff5500;
+  }
+  
+  .footer a:hover {
+    text-decoration: none;
+  }
+  
+  .footer iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+    margin-top: 20px;
+  }
+  
+  /* Back to Top Button */
+  .back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #ff5500;
+    color: #fff;
+    font-size: 24px;
+    border-radius: 50%;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 999;
+    display: none;
+  }
+  
+  .back-to-top:hover {
+    background-color: #fff;
+    color: #ff5500;
+  }
+  
