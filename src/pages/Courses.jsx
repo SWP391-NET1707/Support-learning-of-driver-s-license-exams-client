@@ -1,5 +1,5 @@
 import React from 'react'
-import './style/courses.css'
+import '../style/courses.css'
 
 const Courses = () => {
   return (
