@@ -81,7 +81,7 @@ function Login() {
                                                 </div>
 
                                                 <div className="mb-3 text-center">
-                                                    < Link to="/ForgetPassword" className="text-muted">Quên mật khẩu?</Link>
+                                                    < Link to="/ForgotPassword" className="text-muted">Quên mật khẩu?</Link>
                                                 </div>
 
                                                 <p className="text-center text-muted mt-4">

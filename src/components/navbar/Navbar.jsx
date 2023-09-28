@@ -27,23 +27,23 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarCollapse">
             <div className="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="/" className="nav-item nav-link active">Trang chủ</a>
-                <div className="nav-item dropdown">
+                <Link to="/" className="nav-item nav-link active">Trang chủ</Link>
+                <Link to="/" className="nav-item nav-link">Khóa học lái xe</Link>
+                {/* <div className="nav-item dropdown">
                     <a href="/" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Dịch vụ đào tạo + học lái xe</a>
                     <div className="dropdown-menu bg-light m-0">
                         <a href="/" className="dropdown-item">Khóa học lái xe hạng B1 17.5TR Cả DAT 710KM</a>
                         <a href="/" className="dropdown-item">Khóa học lái xe hạng B2</a>
                     </div>
-                </div>
-               
-                <div className="nav-item dropdown">
-                    <a href="/" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Thi lý thuyết bằng lái xe online</a>
+                </div> */}
+                <Link to="/Quiz" className="nav-item nav-link">Thi lý thuyết bằng lái xe online</Link>
+                {/* <div className="nav-item dropdown">
+                    <Link to="/" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Thi lý thuyết bằng lái xe online</Link>
                     <div className="dropdown-menu bg-light m-0">
-                        <a href="/" className="dropdown-item">Thi lý thuyết lái xe ô tô B1</a>
-                        <a href="/" className="dropdown-item">Thi lý thuyết lái xe ô tô B2</a>
-                        
+                        <Link to="/" className="dropdown-item">Thi lý thuyết lái xe ô tô B1</Link>
+                        <Link to="/" className="dropdown-item">Thi lý thuyết lái xe ô tô B2</Link>   
                     </div>
-                </div>
+                </div> */}
                 
             </div>
             <Link to="/Login" className="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Đăng nhập<i className="fa fa-arrow-right ms-3"></i></Link>
