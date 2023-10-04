@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/bootstrap.scss';
 import 'animate.css';
 
-import {  Course, Navbar } from './components';
+import {  Course, Navbar, Timetable } from './components';
 import { Footer } from './containers';
 import { Home , Register , Quiz , Login , Courses , ForgotPassword } from './pages';
 
@@ -22,6 +22,7 @@ function App() {
           <Route path="/Courses" element={<Courses/>} />
           <Route path="/Quiz" element={<Quiz/>} />
           <Route path="/Register" element={<Register/>} />
+          <Route path="/Timetable" element={<Timetable/>} />
           <Route path="/ForgotPassword" element={<ForgotPassword/>} />
         </Routes>
         <Footer />
