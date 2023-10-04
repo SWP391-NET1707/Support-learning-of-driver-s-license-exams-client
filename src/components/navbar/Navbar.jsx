@@ -28,7 +28,7 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarCollapse">
             <div className="navbar-nav ms-auto p-4 p-lg-0">
                 <Link to="/" className="nav-item nav-link active">Trang chủ</Link>
-                <Link to="/" className="nav-item nav-link">Khóa học lái xe</Link>
+                <Link to="/Quiz" className="nav-item nav-link">Khóa học lái xe</Link>
                 {/* <div className="nav-item dropdown">
                     <a href="/" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Dịch vụ đào tạo + học lái xe</a>
                     <div className="dropdown-menu bg-light m-0">

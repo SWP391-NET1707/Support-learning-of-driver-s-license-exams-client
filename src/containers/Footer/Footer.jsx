@@ -14,18 +14,18 @@ const Footer = () => {
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
                     <p class="mb-2"><i class="fa fa-envelope me-3"></i>tranthequanganime@gmail.com</p>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                {/* <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Quick Links</h4>
                     <a class="btn btn-link" href="/">About Us</a>
                     <a class="btn btn-link" href="/">Contact Us</a>
                     <a class="btn btn-link" href="/">Our Services</a>
                     <a class="btn btn-link" href="/">Terms & Condition</a>
                     <a class="btn btn-link" href="/">Support</a>
-                </div>
-                <div class="col-lg-6 col-md-6">      
+                </div> */}
+                {/* <div class="col-lg-6 col-md-6">      
                     <h4 class="text-light mb-4">Bản đồ nơi học lái xe</h4>             
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.609941530488!2d106.80730807465963!3d10.841132857997609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752731176b07b1%3A0xb752b24b379bae5e!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBGUFQgVFAuIEhDTQ!5e0!3m2!1svi!2s!4v1695719596032!5m2!1svi!2s" title="myFrame"></iframe>
-                </div>
+                </div> */}
               <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Newsletter</h4>
                     <form action="">
