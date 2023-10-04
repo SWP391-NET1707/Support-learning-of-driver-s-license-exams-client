@@ -4,7 +4,7 @@ import './footer.css'
 
 const Footer = () => {
   return (
-    <div class="container-fluid bg-dark text-light footer my-6 mb-0 py-6 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark text-light footer my-6 mb-0 py-6 wow fadeIn box-margin132" data-wow-delay="0.1s">
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 col-md-6">
