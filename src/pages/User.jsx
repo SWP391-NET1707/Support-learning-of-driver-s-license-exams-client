@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../style/User.css';
 
 const User = () => {
@@ -23,9 +24,11 @@ const User = () => {
                     <h1 className="user-name">John Doe</h1>
                     <p className="user-email">johndoe@example.com</p>
                     <p className="user-bio">
-                       ha Ha hA HA 
-                       Pumpkin
+                        HE HE HAHA
                     </p>
+                    <Link to="/timetable" className="btn btn-primary">
+                        Go to Timetable
+                    </Link>
                 </div>
             </div>
         </div>
