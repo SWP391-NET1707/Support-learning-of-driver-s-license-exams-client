@@ -1,58 +1,153 @@
-.content {
+/* Apply a global reset for margin and padding to ensure consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Styling for the main quiz container */
+  .quiz-container {
+    margin: 20px; /* Add margin around the entire quiz */
+    padding: 20px; /* Add padding inside the quiz container */
+    border: 1px solid #ccc; /* Add a border to the quiz container */
+    background-color: #f9f9f9; /* Set a background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    border-radius: 5px; /* Add rounded corners for a modern look */
+  }
+  
+  /* Improve readability by using a CSS class for the content */
+  .content {
     margin-top: 54px;
-    }
-    .header {
+  }
+  
+  /* Create a consistent header style */
+  .header {
     padding: 15px;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 9999;
-    }
-    .left-title {
-    width: 80px;
+    background-color: #333;
     color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a slightly stronger box shadow for header depth */
+  }
+  
+  /* Style the left and right title sections */
+  .left-title {
+    width: 80px;
     font-size: 18px;
-    float: left;
-    }
-    .right-title {
+  }
+  
+  .right-title {
     width: 150px;
     text-align: right;
-    float: right;
-    color: #fff;
-    }
-    .quiz-body {
-    margin-top: 15px;
+  }
+  
+  /* Style the quiz body */
+  .quiz-body {
+    margin-top: 90px;
     padding-bottom: 50px;
-    }
-    .option-block-container {
+  }
+  
+  /* Improve the option block container */
+  .option-block-container {
     margin-top: 20px;
     max-width: 420px;
-    }
-    .option-block {
+  }
+  
+  /* Style option blocks */
+  .option-block {
     padding: 10px;
-    background: aliceblue;
-    border: 1px solid #84c5fe;
+    background: #f0f0f0; /* Use a lighter background color for options */
+    border: 1px solid #ccc; /* Add a border for separation */
     margin-bottom: 10px;
     cursor: pointer;
-    }
-    .result-question {
+    transition: background-color 0.3s ease; /* Add a smooth transition effect */
+  }
+  
+  /* Highlight correct and wrong answers */
+  .result-question {
     font-weight: bold;
-    }
-    .c-wrong {
+  }
+  
+  .c-wrong {
     margin-left: 20px;
     color: #ff0000;
-    }
-    .c-correct {
+  }
+  
+  .c-correct {
     margin-left: 20px;
     color: green;
-    }
-    .last-row {
+  }
+  
+  /* Add a bottom border to the last row for separation */
+  .last-row {
     border-bottom: 1px solid #ccc;
     padding-bottom: 25px;
     margin-bottom: 25px;
-    }
-    .res-header {
+  }
+  
+  /* Style the result header */
+  .res-header {
     border-bottom: 1px solid #ccc;
     margin-bottom: 15px;
     padding-bottom: 15px;
-    }
+    font-weight: bold;
+  }
+  
+  /* Add hover effect to option blocks for better interaction */
+  .option-block:hover {
+    background: #e0e0e0; /* Darken the background color on hover */
+  }
+  
+  /* Add a subtle box shadow to header for depth */
+  .header {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slightly stronger box shadow for header depth */
+  }
+  
+  /* Style the "Previous" and "Next" buttons */
+.quiz-container button {
+    background-color: #007BFF; /* Set button background color */
+    color: #fff; /* Set button text color */
+    border: none; /* Remove button border */
+    padding: 10px 20px; /* Add padding to the buttons */
+    margin-right: 10px; /* Add margin between buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add a smooth transition effect */
+  }
+  
+  /* Style the buttons on hover */
+  .quiz-container button:hover {
+    background-color: #0056b3; /* Darken the background color on hover */
+  }
+
+/* Style the "Previous" and "Next" buttons */
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between; /* Position buttons at each end of the container */
+  }
+  
+  .prev-button,
+  .next-button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px; /* Add rounded corners */
+  }
+  
+  .next-button {
+    margin-left: auto; /* This margin pushes the "Next" button to the right */
+  }
+  
+  /* Add a subtle hover effect */
+  .prev-button:hover,
+  .next-button:hover {
+    background-color: #0056b3; /* Darken the background color on hover */
+  }
+  

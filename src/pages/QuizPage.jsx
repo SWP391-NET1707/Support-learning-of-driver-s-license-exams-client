@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import "../style/quizpage.css"
 
+// Import statements and CSS as before...
+
+// Import statements and CSS as before...
+
 function QuizPage() {
   const [score, setScore] = useState(0);
   const [qno, setQno] = useState(1);
@@ -10,20 +14,66 @@ function QuizPage() {
     "JS": [
       {
         "id": 1,
-        "question": "Inside which HTML element do we put the JavaScript?",
+        "question": "What is the result of 2 + 2?",
         "options": [
           {
-            "a": "&lt;script&gt;",
-            "b": "&lt;javascript&gt;",
-            "c": "&lt;scripting&gt;",
-            "d": "&lt;js&gt;"
+            "a": "3",
+            "b": "4",
+            "c": "5",
+            "d": "6"
           }
         ],
-        "answer": "&lt;script&gt;",
+        "answer": "4",
         "score": 0,
         "status": ""
       },
-      // Add more quiz questions here...
+      {
+        "id": 2,
+        "question": "What does DOM stand for?",
+        "options": [
+          {
+            "a": "Document Object Model",
+            "b": "Data Object Model",
+            "c": "Digital Object Model",
+            "d": "Document Oriented Model"
+          }
+        ],
+        "answer": "Document Object Model",
+        "score": 0,
+        "status": ""
+      },
+      {
+        "id": 3,
+        "question": "Which keyword is used to declare a variable in JavaScript?",
+        "options": [
+          {
+            "a": "var",
+            "b": "int",
+            "c": "string",
+            "d": "let"
+          }
+        ],
+        "answer": "var",
+        "score": 0,
+        "status": ""
+      },
+      {
+        "id": 4,
+        "question": "What is the purpose of the 'return' statement in a function?",
+        "options": [
+          {
+            "a": "To declare a variable",
+            "b": "To exit the function and specify a return value",
+            "c": "To print something to the console",
+            "d": "To create an array"
+          }
+        ],
+        "answer": "To exit the function and specify a return value",
+        "score": 0,
+        "status": ""
+      }
+      
+      // Add your questions here...
     ]
   });
 
@@ -45,25 +95,20 @@ function QuizPage() {
     }
 
     if (cque >= totalque) {
-      let totalScore = 0;
+      let totalCorrectAnswers = 0;
       for (let i = 0; i < totalque; i++) {
-        totalScore += quiz.JS[i].score;
+        totalCorrectAnswers += quiz.JS[i].score;
       }
-      setScore(totalScore);
+      setScore(totalCorrectAnswers);
     }
   };
 
   const checkAnswer = (option) => {
     const answer = quiz.JS[currentque].answer;
-    option = option.replace(/</g, "&lt;");
-    option = option.replace(/>/g, "&gt;");
-    option = option.replace(/"/g, "&quot;");
 
     if (option === answer) {
-      if (quiz.JS[currentque].score === "") {
-        quiz.JS[currentque].score = 1;
-        quiz.JS[currentque].status = "correct";
-      }
+      quiz.JS[currentque].score = 1;
+      quiz.JS[currentque].status = "correct";
     } else {
       quiz.JS[currentque].status = "wrong";
     }
@@ -77,46 +122,49 @@ function QuizPage() {
   const currentQuestion = quiz.JS[currentque];
 
   return (
+    <div className="quiz-container">
+  {currentque < quiz.JS.length && (
     <div>
-      {currentque < quiz.JS.length && (
-        <div>
-          <h4>{qno}. {currentQuestion.question}</h4>
-          <div id="question-options">
-            {Object.keys(currentQuestion.options[0]).map((key, index) => (
-              <div className="form-check option-block" key={index}>
-                <label className="form-check-label">
-                  <input
-                    type="radio"
-                    className="form-check-input"
-                    name="option"
-                    id={`q${key}`}
-                    value={currentQuestion.options[0][key]}
-                    onChange={(e) => setSelectedOpt(e.target.value)}
-                    checked={selectedopt === currentQuestion.options[0][key]}
-                  />
-                  <span id="optionval">{currentQuestion.options[0][key]}</span>
-                </label>
-              </div>
-            ))}
-          </div>
-          <button onClick={() => changeQuestion(-1)}>Previous</button>
-          <button onClick={() => changeQuestion(1)}>Next</button>
-        </div>
-      )}
-
-      {currentque >= quiz.JS.length && (
-        <div>
-          <h1>Total Score: {score}/{quiz.JS.length}</h1>
-          {quiz.JS.map((question, index) => (
-            <div key={index}>
-              <div>Q {question.id}. {question.question}</div>
-              <div><b>Correct answer:</b> {question.answer}</div>
-              <div><b>Score:</b> {question.score} {question.status === 'correct' ? '✅' : '❌'}</div>
-            </div>
-          ))}
-        </div>
-      )}
+      <h4>{qno}. {currentQuestion.question}</h4>
+      <div id="question-options">
+  {Object.keys(currentQuestion.options[0]).map((key, index) => (
+    <div className="form-check option-block" key={index}>
+      <input
+        type="radio"
+        className="form-check-input"
+        name="option"
+        id={`option-${key}`} // Add an id attribute with a unique identifier
+        value={currentQuestion.options[0][key]}
+        onChange={(e) => setSelectedOpt(e.target.value)}
+        checked={selectedopt === currentQuestion.options[0][key]}
+      />
+      <label className="form-check-label" htmlFor={`option-${key}`}> {/* Associate label with radio button */}
+        <span id="optionval">{currentQuestion.options[0][key]}</span>
+      </label>
     </div>
+  ))}
+</div>
+      <div className="quiz-navigation">
+        <button className='prev-button' onClick={() => changeQuestion(-1)}>Previous</button>
+        <button className='next-button' onClick={() => changeQuestion(1)}>Next</button>
+      </div>
+    </div>
+  )}
+
+  {currentque >= quiz.JS.length && (
+    <div>
+      <h1>Total Score: {score}/{quiz.JS.length}</h1>
+      {quiz.JS.map((question, index) => (
+        <div key={index}>
+          <div>Q {question.id}. {question.question}</div>
+          <div><b>Correct answer:</b> {question.answer}</div>
+          <div><b>Score:</b> {question.score} {question.status === 'correct' ? '✅' : '❌'}</div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
   );
 }
 
