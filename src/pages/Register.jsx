@@ -21,6 +21,17 @@ const Register = () => {
                     </div>
                     <div className="card-body">
                       <form id="registrationForm">
+
+                      <div className="form-outline mb-4">
+                          <input
+                            type="name"
+                            id="name"
+                            className="form-control form-control-lg"
+                            placeholder="Nhập tên của bạn"
+                            required
+                          />
+                        </div>
+
                         <div className="form-outline mb-4">
                           <input
                             type="email"
