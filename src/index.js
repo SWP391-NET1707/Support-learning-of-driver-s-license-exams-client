@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import AppM from './App';
 
 
 ReactDOM.render(
   <React.StrictMode>
     
-      <App />
+      <AppM />
     
   </React.StrictMode>,
   document.getElementById('root')
