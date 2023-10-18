@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/bootstrap.scss';
 import 'animate.css';
 
-import { Navbar, Timetable } from './components';
+import { Navbar, TakeAttend, Timetable } from './components';
 import { Footer } from './containers';
 import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User } from './pages';
 import app from './pages/admin/App';
@@ -27,6 +27,7 @@ function AppM() {
                   <Route path="/QuizPage" element={<QuizPage />} />
                   <Route path="/User" element={<User />} />
                   <Route path="/admin" element={<Dashboard />} />
+                  <Route path="/takeattend" element={<TakeAttend />} />
               </Routes>
               <Footer />
           </div>
