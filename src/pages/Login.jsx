@@ -6,7 +6,7 @@ import axiosClient from '../api/axios';
 import '../style/login.css';
 import axios from 'axios';
 
-const Authens_URL = 'https://quangttse151013.monoinfinity.net/api/Authens';
+const Authens_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Authen/login';
 
 const Login = () => {
     // const userRef = useRef()
@@ -35,7 +35,7 @@ const Login = () => {
                                              })
         console.log(JSON.stringify(response?.data))
         const accessToken = response?.data?.accessToken;
-        setAuth({email, password, accessToken})
+        setAuth({email, password, accessToken})                 //email : tranthequanganime@gmail.com  password: Anhquang123
         setEmail('')
         setPassword('')
         setSuccess(true)

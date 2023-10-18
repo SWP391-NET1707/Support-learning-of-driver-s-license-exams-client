@@ -54,7 +54,7 @@ function App() {
             {isLoggedIn ? (
               <Link to="/User" className="nav-item nav-link">Profile</Link>
             ) : (
-              <button className="nav-item nav-link" onClick={showLoginModal}>Đăng nhập</button>
+              <Link to="/Login" className="nav-item nav-link">Đăng Nhập</Link>
             )}
           </div>
           {isLoggedIn ? (
