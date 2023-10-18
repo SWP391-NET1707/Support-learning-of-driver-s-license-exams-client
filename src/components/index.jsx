@@ -5,3 +5,4 @@ export {default as Facts} from './Facts/Facts';
 export {default as Carousel} from './Carousel/Carousel';
 export {default as Spinner} from './Spinner/Spinner';
 export {default as Timetable} from './Timetable/Timetable';
+export {default as TakeAttend} from './TakeAttend/TakeAttend';

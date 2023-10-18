@@ -35,7 +35,7 @@ const Login = () => {
                                              })
         console.log(JSON.stringify(response?.data))
         const accessToken = response?.data?.accessToken;
-        setAuth({email, password, accessToken})                 //email : tranthequanganime@gmail.com  password: Anhquang123
+        setAuth({email, password, accessToken})
         setEmail('')
         setPassword('')
         setSuccess(true)
@@ -51,6 +51,7 @@ const Login = () => {
                 }
                 // errRef.current.focus()
     };
+        console.log(errMsg);
     }
 
     return (
