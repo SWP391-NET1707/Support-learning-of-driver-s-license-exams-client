@@ -1,28 +1,57 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import AuthContext, { AuthProvider } from '../api/Context/AuthProvider';
+import axiosClient from '../api/axios';
 
 import '../style/login.css';
+import axios from 'axios';
 
-function Login() {
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const navigate = useNavigate();
+const Authens_URL = 'https://quangttse151013.monoinfinity.net/api/Authens';
 
-    const handleLogin = (e) => {
+const Login = () => {
+    // const userRef = useRef()
+    // const errRef = useRef()
+
+    const {setAuth} = useContext(AuthContext);
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [errMsg, setErrMsg] = useState('');
+    const [success, setSuccess] = useState(false);
+
+    useEffect(() => {
+        // userRef.current.focus()
+    }, [])
+    
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Check if email and password match the desired values
-        if (email === "123@gmail.com" && password === "123") {
-            // Simulate successful login by setting a session storage item
-            sessionStorage.setItem('isLoggedIn', 'true');
-
-            // Redirect to the home page
-            navigate("/");
-        } else {
-            // Handle incorrect login credentials (e.g., display an error message)
-            // You can add your error handling logic here.
-        }
+        try{
+            const response = await axios.post(Authens_URL,
+                                             JSON.stringify({email,password}),
+                                             {
+                                                headers: {'Content-type': 'application/json'},
+                                                // withCredentials : true
+                                             })
+        console.log(JSON.stringify(response?.data))
+        const accessToken = response?.data?.accessToken;
+        setAuth({email, password, accessToken})
+        setEmail('')
+        setPassword('')
+        setSuccess(true)
+        }catch(err){
+                if(!err?.response){
+                    setErrMsg('Error')
+                } else if(err.response?.status ===400 ){
+                    setErrMsg('Missing')
+                }else if(err.response?.status ===401 ){
+                    setErrMsg('Unauthorize')
+                }else {
+                    setErrMsg('Login failed')
+                }
+                // errRef.current.focus()
     };
+    }
 
     return (
         <div className="login-page">
@@ -37,16 +66,16 @@ function Login() {
                                             <h4 className="text-center">Đăng Nhập</h4>
                                         </div>
                                         <div className="card-body">
-                                            <form id="loginForm" onSubmit={handleLogin}>
+                                            <form id="loginForm" onSubmit={handleSubmit}>
                                                 <div className="mb-4">
                                                     <input
-                                                        type="email"
+                                                        // type="email"
                                                         id="email"
                                                         className="form-control form-control-lg"
                                                         placeholder="Nhập email của bạn"
                                                         required
-                                                        value={email}
                                                         onChange={(e) => setEmail(e.target.value)}
+                                                        value={email}
                                                     />
                                                 </div>
 
@@ -57,12 +86,12 @@ function Login() {
                                                         className="form-control form-control-lg"
                                                         placeholder="Nhập mật khẩu của bạn"
                                                         required
-                                                        value={password}
                                                         onChange={(e) => setPassword(e.target.value)}
+                                                        value={password}
                                                     />
                                                 </div>
 
-                                                <div className="form-check d-flex justify-content-center mb-5">
+                                                {/* <div className="form-check d-flex justify-content-center mb-5">
                                                     <input
                                                         className="form-check-input me-2"
                                                         type="checkbox"
@@ -76,7 +105,7 @@ function Login() {
                                                         ><u>Thỏa thuận sử dụng</u></Link
                                                         >
                                                     </label>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="d-flex justify-content-center mt-3">
                                                     <button
