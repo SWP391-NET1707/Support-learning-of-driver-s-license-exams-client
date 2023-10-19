@@ -6,10 +6,24 @@ function QuizPage() {
   const [currentque, setCurrentQue] = useState(0);
   const [selectedOpts, setSelectedOpts] = useState(Array(quiz.JS.length).fill(''));
   const [isQuizFinished, setIsQuizFinished] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(1200); // 20 minutes in seconds
+
 
   useEffect(() => {
     displayQuiz(currentque);
   }, [currentque]);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (timeLeft > 0) {
+        setTimeLeft(timeLeft - 1);
+      } else {
+        finishQuiz();
+        clearInterval(timer);
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
   const displayQuiz = (cque) => {
     setCurrentQue(cque);
@@ -47,6 +61,10 @@ function QuizPage() {
 
   return (
     <div className="quiz-container">
+        {/* Timer display */}
+        <div className="timer">
+        <span>Time Left: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
+      </div>
       <div className="question-buttons-container">
         <h3>Question IDs</h3>
         <div className="question-buttons">
