@@ -10,29 +10,41 @@ import { Footer } from './containers';
 import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User } from './pages';
 import app from './pages/admin/App';
 import Dashboard from './pages/admin/scenes/dashboard';
+import { Layout } from 'antd';
+import RequiredAuth from './components/RequiredAuth';
+import useAuth from './Hooks/useAuth';
+import authHeader from './api/auth-header';
 
 function AppM() {
-  return (
-      <Router>
-          <div className="App">
-              <Navbar />
-              <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/Login" element={<Login />} />
-                  {/* <Route path="/Courses" element={<Courses />} /> */}
-                  <Route path="/Quiz" element={<Quiz />} />
-                  <Route path="/Register" element={<Register />} />
-                  <Route path="/Timetable" element={<Timetable />} />
-                  <Route path="/ForgotPassword" element={<ForgotPassword />} />
-                  <Route path="/QuizPage" element={<QuizPage />} />
-                  <Route path="/User" element={<User />} />
-                  <Route path="/admin" element={<Dashboard />} />
-                  <Route path="/takeattend" element={<TakeAttend />} />
-              </Routes>
-              <Footer />
-          </div>
-      </Router>
-  );
+    // const { auth } = useAuth();
+
+    // console.log(authHeader());
+
+    return (
+        <main className="App">
+            <Navbar />
+            <Routes>
+            
+                <Route path="/Home" element={<Home />} />
+                <Route path="/Login" element={<Login />} />
+                <Route path="/Quiz" element={<Quiz />} />
+                <Route path="/Register" element={<Register />} />
+                <Route path="/ForgotPassword" element={<ForgotPassword />} />
+                {/* User */}
+                <Route element={<RequiredAuth allowedRoles={"Mentor"}/>}>
+                    <Route path="/Timetable" element={<Timetable />} />
+                    <Route path="/QuizPage" element={<QuizPage />} />
+                    <Route path="/User" element={<User />} />
+                    {/* Mentor */}
+                    <Route path="/takeattend" element={<TakeAttend />} />
+
+
+                    <Route path="/admin" element={<Dashboard />} />
+                </Route>
+            </Routes>
+            <Footer />
+        </main>
+    );
 }
 
 export default AppM;

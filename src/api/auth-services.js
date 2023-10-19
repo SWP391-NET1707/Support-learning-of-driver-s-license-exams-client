@@ -3,23 +3,26 @@
 import axios from 'axios'
 import React from 'react'
 import { json } from 'react-router-dom'
+import useAuth from '../Hooks/useAuth';
 
-// const signup = (email,password) => {
-//   return axios.post('',{
-//     email,
-//     password,
-//   })
-//   .then((response)=>{
-//     if (response.data.accessToken){
-//         localStorage.setItem("user", JSON.stringify(response.data))
-//     }
-//     return response.data
-//   })
-// }
+const API_URL = "https://drivingschoolapi20231005104822.azurewebsites.net/api"
+
+const signup = (email,password) => {
+  return axios.post('',{
+    email,
+    password,
+  })
+  .then((response)=>{
+    if (response.data.accessToken){
+        localStorage.setItem("user", JSON.stringify(response.data))
+    }
+    return response.data
+  })
+}
 
 const login = (email, password) => {
     return axios
-      .post(API_URL + "https://quangttse151013.monoinfinity.net/api/Authens", {
+      .post(API_URL + "/Authen/login", {
         email,
         password,
       })
