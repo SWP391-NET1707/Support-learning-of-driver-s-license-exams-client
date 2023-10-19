@@ -7,7 +7,7 @@ import 'animate.css';
 
 import { Navbar, TakeAttend, Timetable } from './components';
 import { Footer } from './containers';
-import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User } from './pages';
+import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess } from './pages';
 import app from './pages/admin/App';
 import Dashboard from './pages/admin/scenes/dashboard';
 import { Layout } from 'antd';
@@ -26,8 +26,7 @@ function AppM() {
             <Routes>
             
                 <Route path="/Home" element={<Home />} />
-                <Route path="/Login" element={<Login />} />
-                <Route path="/Quiz" element={<Quiz />} />
+                <Route path="/Login" element={<Login />} />                            <Route path="/Quiz" element={<Quiz />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path="/ForgotPassword" element={<ForgotPassword />} />
                 {/* User */}
@@ -39,7 +38,10 @@ function AppM() {
                     <Route path="/takeattend" element={<TakeAttend />} />
 
 
-                    <Route path="/admin" element={<Dashboard />} />
+                    {/* <Route path="/PaySuccess" element={<PaySuccess />} /> */}
+
+                  {/*Admin page start*/}
+                  <Route path="/admin" element={<Dashboard />} />
                 </Route>
             </Routes>
             <Footer />

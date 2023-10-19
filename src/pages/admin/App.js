@@ -26,14 +26,14 @@ function App() {
   const [isSidebar, setIsSidebar] = useState(true);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="app">
-          <Topbar setIsSidebar={setIsSidebar} />
-          <main className="content" style={{ display: "flex" }}>
-            {isSidebar && <Sidebar isSidebar={isSidebar} />}
-            <Box flexGrow={1}>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <div className="app">
+            <Topbar setIsSidebar={setIsSidebar} />
+            <main className="content" style={{ display: "flex" }}>
+              {isSidebar && <Sidebar isSidebar={isSidebar} />}
+              <Box flexGrow={1}>
               <Routes>
                 <Route path="/admin" element={<Dashboard />} />
                 <Route path="/team" element={<Team />} />
