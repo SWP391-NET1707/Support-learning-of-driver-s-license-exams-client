@@ -11,7 +11,6 @@ import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, P
 import app from './pages/admin/App';
 import Dashboard from './pages/admin/scenes/dashboard';
 import { Layout } from 'antd';
-import RequiredAuth from './components/RequiredAuth';
 import authHeader from './api/auth-header';
 import jwtDecode from 'jwt-decode';
 import { useEffect } from 'react';
