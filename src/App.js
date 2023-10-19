@@ -12,37 +12,51 @@ import app from './pages/admin/App';
 import Dashboard from './pages/admin/scenes/dashboard';
 import { Layout } from 'antd';
 import RequiredAuth from './components/RequiredAuth';
-import useAuth from './Hooks/useAuth';
 import authHeader from './api/auth-header';
+import jwtDecode from 'jwt-decode';
+import { useEffect } from 'react';
+import authService from './api/auth-services';
 
 function AppM() {
     // const { auth } = useAuth();
 
-    // console.log(authHeader());
+
+
+    const userToken = sessionStorage.getItem("user");
+    let role = null
+
+    if (userToken) {
+         role = jwtDecode(userToken).role;
+    }
+
+    console.log(role);
 
     return (
         <main className="App">
             <Navbar />
             <Routes>
-            
+                {/* public */}
                 <Route path="/Home" element={<Home />} />
-                <Route path="/Login" element={<Login />} />                            <Route path="/Quiz" element={<Quiz />} />
+                <Route path="/Login" element={<Login />} />
+                <Route path="/Quiz" element={<Quiz />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path="/ForgotPassword" element={<ForgotPassword />} />
-                {/* User */}
-                <Route element={<RequiredAuth allowedRoles={"Mentor"}/>}>
-                    <Route path="/Timetable" element={<Timetable />} />
-                    <Route path="/QuizPage" element={<QuizPage />} />
-                    <Route path="/User" element={<User />} />
-                    {/* Mentor */}
-                    <Route path="/takeattend" element={<TakeAttend />} />
 
+                
+                {(role === 'User')&& (
+                <Route path="/PaySuccess" element={<PaySuccess />} />
+                )}
 
-                    {/* <Route path="/PaySuccess" element={<PaySuccess />} /> */}
-
-                  {/*Admin page start*/}
-                  <Route path="/admin" element={<Dashboard />} />
-                </Route>
+                {(role === 'Mentor') && (
+                    <>
+                        <Route path="/Timetable" element={<Timetable />} />
+                        <Route path="/QuizPage" element={<QuizPage />} />
+                        <Route path="/User" element={<User />} />
+                        <Route path="/takeattend" element={<TakeAttend />} />
+                    </>
+                )}
+                {/*Admin page start*/}
+                <Route path="/admin" element={<Dashboard />} />
             </Routes>
             <Footer />
         </main>

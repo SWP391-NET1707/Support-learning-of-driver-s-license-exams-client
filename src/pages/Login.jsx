@@ -1,27 +1,22 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import axiosClient from '../api/axios';
-import jwtDecode from 'jwt-decode';
+
 
 import '../style/login.css';
 import axios from 'axios';
 import authService from '../api/auth-services';
-import useAuth from '../Hooks/useAuth';
+
 
 const Authens_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Authen/login';
 
 const Login = () => {
-    // const userRef = useRef()
-    // const errRef = useRef()
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/home";
 
-    const {setAuth} = useAuth();
+    const navigate = useNavigate();
+
+
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
+
 
     
     const handleSubmit = async (e) => {
@@ -42,49 +37,6 @@ const Login = () => {
         }
       };
     
-    
-    useEffect(() => {
-        // userRef.current.focus()
-    }, [])
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     try{
-    //         const response = await axios.post(Authens_URL,
-    //                                          JSON.stringify({email,password}),
-    //                                          {
-    //                                             headers: {'Content-type': 'application/json'},
-    //                                             // withCredentials : true
-    //                                          })
-    //     console.log(JSON.stringify(response?.data))
-    //     const accessToken = response?.data?.accessToken;
-    //     const jwt_decoded = jwtDecode(accessToken);
-    //     console.log(jwt_decoded)
-    //     const role = jwt_decoded.role;
-    //     setAuth({role, accessToken})
-    //     // setEmail('')
-    //     // setPassword('')
-    //     // setSuccess(true)
-    //     // console.log("role: ",role)
-    //     if (role === 'Student') {
-    //         navigate(from, {replace: true});
-    //     } else {
-    //         navigate("/login");
-    //     }
-    //     }catch(err){
-    //             if(!err?.response){
-    //                 setErrMsg('Error')
-    //             } else if(err.response?.status ===400 ){
-    //                 setErrMsg('Missing')
-    //             }else if(err.response?.status ===401 ){
-    //                 setErrMsg('Unauthorize')
-    //             }else {
-    //                 setErrMsg('Login failed')
-    //             }
-    //             // errRef.current.focus()
-    // };
-    //     console.log(errMsg);
-    // }
 
     return (
         <div className="login-page">

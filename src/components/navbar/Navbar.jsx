@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom';
 import { Button, Modal, Form, Input, Checkbox } from 'antd';
 
 import './Navbar.css';
-import useAuth from '../../Hooks/useAuth';
+import jwtDecode from 'jwt-decode';
+import authService from '../../api/auth-services';
+import { useEffect } from 'react';
+
 
 function App() {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = useAuth();
+
   
   // const showLoginModal = () => {
   //   setLoginModalVisible(true);
@@ -33,9 +37,17 @@ function App() {
   //   setLoginModalVisible(false);
   // };
 
+  useEffect(() => {
+    // Check if there is a current user
+    const currentUser = authService.getCurrentUser();
+    if (currentUser) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const handleLogout = () => {
     // Clear the session storage and log the user out
-    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('user');
     setIsLoggedIn(false);
   };
 
