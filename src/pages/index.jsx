@@ -6,3 +6,4 @@ export { default as Register } from './Register';
 export {default as QuizPage} from './QuizPage';
 export {default as User} from './User';
 export {default as PaySuccess} from './PaySuccess';
+export {default as Mentor} from './Mentor';

@@ -7,7 +7,7 @@ import 'animate.css';
 
 import { Navbar, TakeAttend, Timetable } from './components';
 import { Footer } from './containers';
-import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess } from './pages';
+import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor } from './pages';
 import app from './pages/admin/App';
 import Dashboard from './pages/admin/scenes/dashboard';
 import { Layout } from 'antd';
@@ -15,6 +15,7 @@ import authHeader from './api/auth-header';
 import jwtDecode from 'jwt-decode';
 import { useEffect } from 'react';
 import authService from './api/auth-services';
+import TakeSlot from './components/TakeSlot/TakeSlot';
 
 function AppM() {
     // const { auth } = useAuth();
@@ -25,7 +26,7 @@ function AppM() {
     let role = null
 
     if (userToken) {
-         role = jwtDecode(userToken).role;
+        role = jwtDecode(userToken).role;
     }
 
     console.log(role);
@@ -40,14 +41,15 @@ function AppM() {
                 <Route path="/Quiz" element={<Quiz />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path="/ForgotPassword" element={<ForgotPassword />} />
+                <Route path="/TakeSlot" element={<TakeSlot/>} />
 
-                
-                {(role === 'User')&& (
-                <Route path="/PaySuccess" element={<PaySuccess />} />
+                {(role === 'User') && (
+                    <Route path="/PaySuccess" element={<PaySuccess />} />
                 )}
 
                 {(role === 'Mentor') && (
                     <>
+                        <Route path="/Mentor" element={<Mentor />} />
                         <Route path="/Timetable" element={<Timetable />} />
                         <Route path="/QuizPage" element={<QuizPage />} />
                         <Route path="/User" element={<User />} />
@@ -57,7 +59,7 @@ function AppM() {
                 {/*Admin page start*/}
                 <Route path="/admin" element={<Dashboard />} />
             </Routes>
-            <Footer />
+            {(role === 'User' || role === null) && <Footer />}
         </main>
     );
 }

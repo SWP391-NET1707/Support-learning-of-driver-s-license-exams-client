@@ -5,6 +5,7 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import '../style/login.css';
 import axios from 'axios';
 import authService from '../api/auth-services';
+import jwtDecode from 'jwt-decode';
 
 
 const Authens_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Authen/login';
@@ -24,8 +25,12 @@ const Login = () => {
         try {
           await authService.login(email, password).then(
             () => {
-
-              navigate("/home");
+                const userRole = jwtDecode(sessionStorage.getItem("user")).role
+                if (userRole === "Student") {
+                    navigate("/home");
+                  } else if (userRole === "Mentor") {
+                    navigate("/Mentor");
+                  }
               window.location.reload();
             },
             (error) => {
