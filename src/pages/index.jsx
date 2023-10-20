@@ -7,3 +7,4 @@ export {default as QuizPage} from './QuizPage';
 export {default as User} from './User';
 export {default as PaySuccess} from './PaySuccess';
 export {default as PaymentFail} from './PaymentFail';
+export {default as Mentor} from './Mentor';

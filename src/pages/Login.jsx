@@ -1,58 +1,47 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import AuthContext, { AuthProvider } from '../api/Context/AuthProvider';
-import axiosClient from '../api/axios';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+
 
 import '../style/login.css';
 import axios from 'axios';
+import authService from '../api/auth-services';
+import jwtDecode from 'jwt-decode';
+
 
 const Authens_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Authen/login';
 
 const Login = () => {
-    // const userRef = useRef()
-    // const errRef = useRef()
 
-    const {setAuth} = useContext(AuthContext);
+    const navigate = useNavigate();
+
+
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
 
-    useEffect(() => {
-        // userRef.current.focus()
-    }, [])
+
     
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            const response = await axios.post(Authens_URL,
-                                             JSON.stringify({email,password}),
-                                             {
-                                                headers: {'Content-type': 'application/json'},
-                                                // withCredentials : true
-                                             })
-        console.log(JSON.stringify(response?.data))
-        const accessToken = response?.data?.accessToken;
-        setAuth({email, password, accessToken})
-        setEmail('')
-        setPassword('')
-        setSuccess(true)
-        }catch(err){
-                if(!err?.response){
-                    setErrMsg('Error')
-                } else if(err.response?.status ===400 ){
-                    setErrMsg('Missing')
-                }else if(err.response?.status ===401 ){
-                    setErrMsg('Unauthorize')
-                }else {
-                    setErrMsg('Login failed')
-                }
-                // errRef.current.focus()
-    };
-        console.log(errMsg);
-    }
+        try {
+          await authService.login(email, password).then(
+            () => {
+                const userRole = jwtDecode(sessionStorage.getItem("user")).role
+                if (userRole === "Student") {
+                    navigate("/home");
+                  } else if (userRole === "Mentor") {
+                    navigate("/Mentor");
+                  }
+              window.location.reload();
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        } catch (err) {
+          console.log(err);
+        }
+      };
+    
 
     return (
         <div className="login-page">
