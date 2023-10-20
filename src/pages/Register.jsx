@@ -1,9 +1,36 @@
-import React from 'react'
 import { Link } from 'react-router-dom';
-import '../style/home.css'
-import '../style/register.css'
+import '../style/home.css';
+import '../style/register.css';
+
+import { handleRegistrationRequest, handleConfirmationCodeRequest } from '../api/auth-services';
+
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Register = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailToken, setEmailToken] = useState(''); 
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmationCodeError, setConfirmationCodeError] = useState('');
+  const [registrationError, setRegistrationError] = useState('');
+
+  const handleConfirmationCode = () => {
+    console.log('Email:', email);
+    handleConfirmationCodeRequest(email, setConfirmationCodeError);
+  };
+
+  const handleRegistration = (e) => {
+    e.preventDefault();
+    console.log('Name:', name);
+    console.log('Email:', email);
+    console.log('Confirmation Code:', emailToken);
+    console.log('Password:', password);
+    console.log('Confirm Password:', confirmPassword);
+    handleRegistrationRequest(name, email, emailToken, password, confirmPassword, setRegistrationError);
+  };
+
   return (
     <div>
       <section className="vh-100 bg-image bg-colo">
@@ -17,18 +44,18 @@ const Register = () => {
                   <div className="card">
                     <div className="card-header bg-warning">
                       <h4 className="text-center">Đăng Ký Email</h4>
-                      {/* <!-- <h2 className="text-uppercase text-center mb-5">Tạo tài khoản</h2> --> */}
                     </div>
                     <div className="card-body">
-                      <form id="registrationForm">
-
-                      <div className="form-outline mb-4">
+                      <form id="registrationForm" onSubmit={handleRegistration}>
+                        <div className="form-outline mb-4">
                           <input
-                            type="name"
+                            type="text"
                             id="name"
                             className="form-control form-control-lg"
                             placeholder="Nhập tên của bạn"
                             required
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                           />
                         </div>
 
@@ -39,6 +66,8 @@ const Register = () => {
                             className="form-control form-control-lg"
                             placeholder="Nhập email của bạn"
                             required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                           />
                         </div>
 
@@ -49,15 +78,19 @@ const Register = () => {
                             className="form-control form-control-lg"
                             placeholder="Nhập mã xác nhận"
                             required
+                            value={emailToken}
+                            onChange={(e) => setEmailToken(e.target.value)}
                           />
-                          {/* <!-- Thêm phần tử HTML để hiển thị thông báo lỗi --> */}
                           <div
                             id="confirmation-code-error"
                             className="text-danger small"
-                          ></div>
+                          >
+                            {confirmationCodeError}
+                          </div>
                           <button
                             type="button"
                             className="btn btn-primary btn-lg gradient-custom-4 text-body position-absolute top-0 end-0"
+                            onClick={handleConfirmationCode}
                           >
                             Lấy Mã
                           </button>
@@ -70,8 +103,10 @@ const Register = () => {
                             className="form-control form-control-lg"
                             placeholder="Nhập mật khẩu của bạn (8-30 ký tự)"
                             required
-                            minlength="8"
-                            maxlength="30"
+                            minLength="8"
+                            maxLength="30"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                           />
                         </div>
 
@@ -82,14 +117,14 @@ const Register = () => {
                             className="form-control form-control-lg"
                             placeholder="Nhập lại mật khẩu của bạn"
                             required
-                            minlength="8"
-                            maxlength="30"
+                            minLength="8"
+                            maxLength="30"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                           />
                         </div>
 
-                        <div
-                          className="form-check d-flex justify-content-center mb-5"
-                        >
+                        <div className="form-check d-flex justify-content-center mb-5">
                           <input
                             className="form-check-input me-2"
                             type="checkbox"
@@ -97,11 +132,11 @@ const Register = () => {
                             id="agree-terms"
                             required
                           />
-                          <label className="form-check-label" for="agree-terms">
+                          <label className="form-check-label" htmlFor="agree-terms">
                             Tôi đồng ý với tất cả điều khoản trong
-                            <a href="#!" className="text-body"
-                            ><u>Thỏa thuận sử dụng</u></a
-                            >
+                            <Link to="#" className="text-body">
+                              <u>Thỏa thuận sử dụng</u>
+                            </Link>
                           </label>
                         </div>
 
@@ -116,9 +151,9 @@ const Register = () => {
 
                         <p className="text-center text-muted mt-5 mb-0">
                           Đã có tài khoản?
-                          <Link to="/Login" className="fw-bold text-body"
-                          ><u>Đăng Nhập tại đây</u></Link
-                          >
+                          <Link to="/Login" className="fw-bold text-body">
+                            <u>Đăng Nhập tại đây</u>
+                          </Link>
                         </p>
                       </form>
                     </div>
@@ -130,7 +165,7 @@ const Register = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
 export default Register;

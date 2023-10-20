@@ -1,32 +1,48 @@
-/* YourComponent.module.css */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
 .card {
-    background: white;
-    padding: 60px;
-    border-radius: 4px;
-    box-shadow: 0 2px 3px #C8D0D8;
-    display: inline-block;
-    margin: 0 auto;
-  }
-  
-  .checkmark {
-    color: #9ABC66;
-    font-size: 100px;
-    line-height: 200px;
-    margin-left: -15px;
-  }
-  
-  .title {
-    color: #88B04B;
-    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-    font-weight: 900;
-    font-size: 40px;
-    margin-bottom: 10px;
-  }
-  
-  .text {
-    color: #404F5E;
-    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-    font-size: 20px;
-    margin: 0;
-  }
-  
+  background: white;
+  padding: 60px;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px #C8D0D8;
+  text-align: center;
+}
+
+.circle {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+  background: #F8FAF5;
+  margin: 0 auto;
+}
+
+.checkmark {
+  color: #9ABC66;
+  font-size: 100px;
+  line-height: 200px;
+  margin-left: -15px;
+}
+
+.heading {
+  color: #88B04B;
+  font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.paragraph {
+  color: #404F5E;
+  font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+  font-size: 20px;
+  margin: 0;
+}
+
+
+/* http://localhost:3000/paysuccess?vnp_Amount=10000000000&vnp_BankCode=VNPAY&vnp_CardType=QRCODE&vnp_OrderInfo=Thanh+toán+đơn+hàng%3A+8&vnp_PayDate=20231019182452&vnp_ResponseCode=24&vnp_TmnCode=61OD3C91&vnp_TransactionNo=0&vnp_TransactionStatus=02&vnp_TxnRef=8&vnp_SecureHash=c9a70f4afb432d4824434ade1bfe89b1eb16ec1e325150a8ac42b85c80c0f3e7685ccbabe23eb8a75ae504fac58554ea2afe478ab7f150afc00fc22845d1449c */
+/* http://localhost:3000/paysuccess?vnp_Amount=10000000000&vnp_BankCode=NCB&vnp_BankTranNo=VNP14148686&vnp_CardType=ATM&vnp_OrderInfo=Thanh+toán+đơn+hàng%3A+7&vnp_PayDate=20231019182342&vnp_ResponseCode=00&vnp_TmnCode=61OD3C91&vnp_TransactionNo=14148686&vnp_TransactionStatus=00&vnp_TxnRef=7&vnp_SecureHash=4f885dece98ea9817cbb31daf2e8df8e826d803145d2dfc87322c4aea290521ffcdd9149d55da55517340a575666d51d98586aaf9c9bdbda01a7a98b0a6f8743 */

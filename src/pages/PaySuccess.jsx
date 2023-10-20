@@ -1,14 +1,20 @@
 import React from 'react';
-import '../style/paysuccess.module.css'; // Import your CSS file
+import styles from '../style/paysuccess.module.css';
+
+
 
 const PaySuccess = () => {
   return (
-    <div className="card">
-      <div style={{ borderRadius: '200px', height: '200px', width: '200px', background: '#F8FAF5', margin: '0 auto' }}>
-        <i className="checkmark">✓</i>
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.circle}>
+          <i className={styles.checkmark}>✓</i>
+        </div>
+        <h1 className={styles.heading}>Success</h1>
+        <p className={styles.paragraph}>
+          We received your purchase request;<br />we'll be in touch shortly!
+        </p>
       </div>
-      <h1>Thanh toán thành công</h1>
-  
     </div>
   );
 };
