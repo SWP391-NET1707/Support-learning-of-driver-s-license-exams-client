@@ -2,13 +2,12 @@
 
 import axios from 'axios';
 
+import React from 'react'
+import { json } from 'react-router-dom'
 const Authens_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Authen/login';
 const Registration_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/User/register/email';
 const ConfirmationCode_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/User/otp/email';
 
-import axios from 'axios'
-import React from 'react'
-import { json } from 'react-router-dom'
 
 const API_URL = "https://drivingschoolapi20231005104822.azurewebsites.net/api"
 

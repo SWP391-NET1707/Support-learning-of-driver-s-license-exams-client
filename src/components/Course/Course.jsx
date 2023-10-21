@@ -1,12 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Course.css'
 import course1 from '../../assets/courses-1.jpg'
 import course2 from '../../assets/courses-2.jpg'
 import course3 from '../../assets/pexels-ingo-joseph-543605.jpg'
+import axios from 'axios'
 
 
 const Course = () => {
+
+    const [name,setName] = useState('')
+    const [price,setPrice] = useState('')
+    const [duration,setDuration] = useState('')
+    const [description,setDescription] = useState('')
+    const [licenseid,setLicenseID] = useState('')
+
+    useEffect(() => {
+        const Course_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Course';
+
+      axios.get(Course_URL).then(response =>{
+        const courseData = response.data;
+        setName(courseData[0].name);
+        setPrice(Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(courseData[0].price));
+        setDuration(courseData[0].duration);
+        setDescription(courseData[0].description);
+        setLicenseID(courseData[0].licenseid);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+    
+
+
   return (
     <div className="container-xxl courses my-6 py-6 pb-0">
         <div className="container">
@@ -18,12 +44,12 @@ const Course = () => {
                 <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div className="courses-item d-flex flex-column bg-white overflow-hidden h-100">
                         <div className="text-center p-4 pt-0">
-                            <div className="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">17.480.000 VNĐ</div>
-                            <h5 className="mb-3">Học & Thi bằng lái xe B1</h5>
-                            <p>Hỗ trợ đào tạo và đăng ký thi bằng lái xe hạng B1</p>
+                            <div className="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">{price}</div>
+                            <h5 className="mb-3">{name}</h5>
+                            <p>{description}</p>
                             <ol className="breadcrumb justify-content-center mb-0">
                                 
-                                <li className="breadcrumb-item small"><i className="fa fa-calendar-alt text-primary me-2"></i>3 Tuần</li>
+                                <li className="breadcrumb-item small"><i className="fa fa-calendar-alt text-primary me-2"></i>{duration} Tuần</li>
                             </ol>
                         </div>
                         <div className="position-relative mt-auto">

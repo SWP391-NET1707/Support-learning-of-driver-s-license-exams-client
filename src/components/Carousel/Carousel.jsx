@@ -19,8 +19,8 @@ const Carousel = () => {
                             <div className="row justify-content-center">
                                 <div className="col-lg-7">
                                     <h1 className="display-2 text-light mb-5 animated slideInDown">Học lái xe với sự tự tin</h1>
-                                    <Link to="/" className="btn btn-primary py-sm-3 px-sm-5">Tìm hiểu thêm</Link>
-                                    <Link to="/" className="btn btn-light py-sm-3 px-sm-5 ms-3">Khóa học của chúng tôi</Link>
+                                    <Link to="/home" className="btn btn-primary py-sm-3 px-sm-5">Tìm hiểu thêm</Link>
+                                    <Link to="/home" className="btn btn-light py-sm-3 px-sm-5 ms-3">Khóa học của chúng tôi</Link>
                                 </div>
                             </div>
                         </div>
@@ -33,8 +33,8 @@ const Carousel = () => {
                             <div className="row justify-content-center">
                                 <div className="col-lg-7">
                                     <h1 className="display-2 text-light mb-5 animated slideInDown">Lái xe an toàn là ưu tiên hàng đầu của chúng tôi</h1>
-                                    <Link to="/" className="btn btn-primary py-sm-3 px-sm-5">Tìm hiểu thêm</Link>
-                                    <Link to="/" className="btn btn-light py-sm-3 px-sm-5 ms-3">Khóa học của chúng tôi</Link>
+                                    <Link to="/home" className="btn btn-primary py-sm-3 px-sm-5">Tìm hiểu thêm</Link>
+                                    <Link to="/home" className="btn btn-light py-sm-3 px-sm-5 ms-3">Khóa học của chúng tôi</Link>
                                 </div>
                             </div>
                         </div>

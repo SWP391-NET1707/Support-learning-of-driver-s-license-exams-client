@@ -6,3 +6,5 @@ export {default as Carousel} from './Carousel/Carousel';
 export {default as Spinner} from './Spinner/Spinner';
 export {default as Timetable} from './Timetable/Timetable';
 export {default as TakeAttend} from './TakeAttend/TakeAttend';
+export {default as CreateSlot} from './CreateSlot/CreateSlot';
+export {default as Schedule} from './Schedule/Schedule';

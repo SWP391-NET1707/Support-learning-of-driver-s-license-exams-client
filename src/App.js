@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/bootstrap.scss';
 import 'animate.css';
 
-import { Navbar, TakeAttend, Timetable } from './components';
+import { CreateSlot, Navbar, Schedule, TakeAttend, Timetable } from './components';
 import { Footer } from './containers';
 import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor } from './pages';
 import app from './pages/admin/App';
@@ -16,6 +16,7 @@ import jwtDecode from 'jwt-decode';
 import { useEffect } from 'react';
 import authService from './api/auth-services';
 import TakeSlot from './components/TakeSlot/TakeSlot';
+
 
 function AppM() {
     // const { auth } = useAuth();
@@ -41,7 +42,7 @@ function AppM() {
                 <Route path="/Quiz" element={<Quiz />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path="/ForgotPassword" element={<ForgotPassword />} />
-                <Route path="/TakeSlot" element={<TakeSlot/>} />
+                <Route path="/TakeSlot" element={<TakeSlot />} />
 
                 {(role === 'User') && (
                     <Route path="/PaySuccess" element={<PaySuccess />} />
@@ -49,11 +50,14 @@ function AppM() {
 
                 {(role === 'Mentor') && (
                     <>
-                        <Route path="/Mentor" element={<Mentor />} />
-                        <Route path="/Timetable" element={<Timetable />} />
+                        <Route path="/Mentor" element={<Mentor />}>
+                            <Route path="schedule" element={<Schedule />} />
+                            <Route path="takeattend" element={<TakeAttend />} />
+                            <Route path="createslot" element={<CreateSlot />} />
+                        </Route>
                         <Route path="/QuizPage" element={<QuizPage />} />
                         <Route path="/User" element={<User />} />
-                        <Route path="/takeattend" element={<TakeAttend />} />
+
                     </>
                 )}
                 {/*Admin page start*/}
