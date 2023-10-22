@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation,useNavigate } from 'react-router-dom';
+import { handlePaymentRequest } from '../api/auth-services';
 
 const Payment = () => {
   const [amount, setAmount] = useState(10000000);
@@ -31,32 +32,19 @@ const Payment = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
 
     try {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+
       const accessToken = user.accessToken;
-
-      const response = await axios.post(
-        'https://drivingschoolapi20231005104822.azurewebsites.net/api/Transaction/deposit/vnpay',
-        {
-          amount,
-          redirectUrl: 'http://localhost:3000/payment',
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-          }
-        }
-      );
-
+  
+      const paymentUrl = await handlePaymentRequest(accessToken, amount); // Use the function
+  
       console.log(amount, window.location.href);
-
-      if (response.status === 200) {
-        const { paymentUrl } = response.data;
+  
+      if (paymentUrl) {
         setPaymentUrl(paymentUrl);
-
-        if (paymentUrl) {
-          window.location.href = paymentUrl;
-        }
-      } else {
+        window.location.href = paymentUrl;
+      }
+     else {
         console.error('Payment failed');
       }
     } catch (error) {

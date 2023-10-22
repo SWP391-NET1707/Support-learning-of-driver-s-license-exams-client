@@ -9,6 +9,7 @@ import { json } from 'react-router-dom'
 const API_URL = "https://drivingschoolapi20231005104822.azurewebsites.net/api"
 const Registration_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/User/register/email';
 const ConfirmationCode_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/User/otp/email';
+const Course_URL = `${API_URL}/Course`;
 
 const signup = async (email,password) => {
   const response = await axios.post('', {
@@ -113,14 +114,200 @@ const isValidEmail = (email) => {
   return emailPattern.test(email);
 }
 
+export async function handlePaymentRequest(accessToken, amount) {
+  try {
+    const response = await axios.post(
+      'https://drivingschoolapi20231005104822.azurewebsites.net/api/Transaction/deposit/vnpay',
+      {
+        amount,
+        redirectUrl: 'http://localhost:3000/payment',
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      }
+    );
+
+    if (response.status === 200) {
+      const { paymentUrl } = response.data;
+      return paymentUrl;
+    } else {
+      console.error('Payment failed');
+      return null;
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+    return null;
+  }
+}
 
 
+export async function getLicense() {
+  try {
+    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/License');
 
   
-  // const authService = {
-  //   signup,
-  //   login,
-  //   logout,
-  //   getCurrentUser,
-  // };
+
+    
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function getLicenseById(id) {
+  try {
+    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/License/${id}`);
+
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
+
+export async function getSlot() {
+  try {
+    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot');
+
+ 
+    
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function getWallet(accessToken) {
+  try {
+    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Wallet/me', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+
+   
+
+   
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function getSlotTime() {
+  try {
+    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/SlotTime');
+
+ 
+
+   
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function getSlotTimeById(id) {
+  try {
+    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/SlotTime/${id}`);
+
+ 
+
+    
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function getCourse() {
+  try {
+    const response = await axios.get(Course_URL);
+
+ 
+
+    
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function getCourseById(id) {
+  try {
+    const response = await axios.get(Course_URL+ `/${id}`);
+
+ 
+
+    
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function PostCourse(name, price, duration, description, licenseId) {
+  try {
+    const response = await axios.post(Course_URL, {
+      name,
+      price,
+      duration,
+      description,
+      licenseId,
+    });
+
+    console.log('Response:', response);
+
+    if (response.status === 200) {
+      console.log('Course successfully posted');
+    } else {
+      console.log('Course posting failed');
+    }
+  } catch (err) {
+    console.error('Error during course posting:', err);
+  }
+}
   
+export async function putCourseById(name, price, duration, description, licenseId, id) {
+  try {
+    const response = await axios.put(Course_URL+ `/${id}`, {
+      name,
+      price,
+      duration,
+      description,
+      licenseId,
+    });
+
+    console.log('Response:', response);
+
+    if (response.status === 200) {
+      console.log('Course successfully updated');
+    } else {
+      console.log('Course updating failed');
+    }
+  } catch (err) {
+    console.error('Error during course update:', err);
+  }
+}
+
+
+export async function DeleteCourseById(id) {
+  try {
+    const response = await axios.put(Course_URL+ `/${id}`);
+
+    console.log('Response:', response);
+
+    if (response.status === 200) {
+      console.log('Course successfully deleted');
+    } else {
+      console.log('Course deletion failed');
+    }
+  } catch (err) {
+    console.error('Error during course update:', err);
+  }
+}
