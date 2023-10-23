@@ -46,19 +46,20 @@ function AppM() {
                 
                 {/*Test function page*/}
                 <Route path="/test" element={<Test/>} />
-                
+
                 {(role === 'Student') && (
                     <>
                     <Route path="/PaySuccess" element={<PaySuccess />} />
                     <Route path="/PayFail" element={<PaymentFail />} />
                     <Route path="/payment" element={<Payment/>}/>
+                    <Route path="/schedule" element={<Schedule />} />
                     </>
                 )}
 
                 {(role === 'Mentor') && (
                     <>
                         <Route path="/Mentor" element={<Mentor />}>
-                            <Route path="schedule" element={<Schedule />} />
+                           
                             <Route path="takeattend" element={<TakeAttend />} />
                             <Route path="createslot" element={<CreateSlot />} />
                         </Route>

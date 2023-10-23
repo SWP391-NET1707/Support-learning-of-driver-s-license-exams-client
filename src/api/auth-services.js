@@ -120,7 +120,7 @@ export async function handlePaymentRequest(accessToken, amount) {
       'https://drivingschoolapi20231005104822.azurewebsites.net/api/Transaction/deposit/vnpay',
       {
         amount,
-        redirectUrl: 'http://localhost:3000/payment',
+        redirectUrl: 'http://localhost:3000/Schedule',
       },
       {
         headers: {
@@ -152,6 +152,7 @@ export async function getLicense() {
 
     
     console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error('Error:', error);
   }
@@ -169,15 +170,36 @@ export async function getLicenseById(id) {
   }
 }
 
+export async function putLicenseById( name, id) {
+  try {
+    const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/License/${id}`, {
+      name
+    });
+
+    console.log('Response:', response);
+
+    if (response.status === 200) {
+      console.log('Course successfully updated');
+    } else {
+      console.log('Course updating failed');
+    }
+    return response.data;
+  } catch (err) {
+    console.error('Error during course update:', err);
+  }
+}
+
 export async function getSlot() {
   try {
     const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot');
+    const data = response.data; // Store the response data in a variable
 
- 
-    
-    console.log(response.data);
+    console.log('Slot Data:', data); // Log the data
+
+    return data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error fetching slot data:', error);
+    throw error; // Rethrow the error to handle it at a higher level
   }
 }
 
@@ -233,6 +255,7 @@ export async function getCourse() {
 
     
     console.log(response.data);
+    return response.data
   } catch (error) {
     console.error('Error:', error);
   }
@@ -309,5 +332,20 @@ export async function DeleteCourseById(id) {
     }
   } catch (err) {
     console.error('Error during course update:', err);
+  }
+}
+
+
+export async function getMentor() {
+  try {
+    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/User/get/mentor`);
+    const data = response.data; // Store the response data in a variable
+
+    console.log('Mentor Data:', data); // Log the data
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching mentor data:', error);
+    throw error; // Rethrow the error to handle it at a higher level
   }
 }
