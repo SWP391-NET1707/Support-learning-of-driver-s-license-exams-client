@@ -390,12 +390,18 @@ export async function getMentor() {
   }
 }
 
-export async function postSlot(slotTimeId, courseId, monthYear) {
+export async function postSlot(slotTimeId, courseId, monthYear, accessToken) {
   try {
+    
     const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/mentor`, {
       slotTimeId,
       courseId,
       monthYear
+    },{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
     });
 
     console.log('Response:', response);
@@ -408,5 +414,47 @@ export async function postSlot(slotTimeId, courseId, monthYear) {
   } catch (err) {
     console.error('Error during slot update:', err);
   }
+
+
+ 
 }
 
+export async function getStudentCourse() {
+  try {
+    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/StudentCourse');
+
+ 
+
+   
+    // console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
+export async function afterPaymentSuccess(id) {
+  try {
+    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/StudentCourse/${id}`);
+
+ 
+
+   
+    // console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function getStudentCourseById(id) {
+  try {
+    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/StudentCourse/get-student-course/${id}`);
+
+ 
+
+   
+    // console.log(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}

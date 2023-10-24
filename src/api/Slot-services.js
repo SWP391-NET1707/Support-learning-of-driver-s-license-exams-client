@@ -3,7 +3,8 @@ import axios from 'axios';
 
 const API_URL = "https://drivingschoolapi20231005104822.azurewebsites.net/api"
 const Course_URL = `${API_URL}/Course`;
-const accessToken = sessionStorage.getItem("user")
+const user = JSON.parse(sessionStorage.getItem("user"));
+
 export async function getLicense() {
     try {
       const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/License');
@@ -78,10 +79,11 @@ export async function getLicense() {
   
   export async function getWallet(accessToken) {
     try {
+     
       const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Wallet/me', {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
+          'Authorization': `Bearer :${accessToken}`
         }
       });
   
@@ -114,7 +116,7 @@ export async function getLicense() {
    
   
       
-       console.log(response.data);
+      console.log(response.data);
       return response.data
     } catch (error) {
       console.error('Error:', error);
@@ -251,22 +253,26 @@ export async function getLicense() {
     }
   }
   
-  export async function postSlot(slotTimeId, courseId, monthYear) {
+  export async function postSlot(slotTimeId, courseId, monthYear,accessToken) {
     try {
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer :${accessToken}`
           };
+          const requestData = {
+            slotTimeId,
+            courseId,
+            monthYear
+          }
 
-      const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/mentor`, {
-        slotTimeId,
-        courseId,
-        monthYear
-      }, {
+      const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/mentor`,
+      {
         headers,
-      });
+      }, {
+        requestData
+      } );
   
-      console.log('Response:', response);
+      console.log('Response:' , response);
   
       if (response.status === 200) {
         console.log('Slot successfully updated');

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
-import { getSlotTimeById, postSlot } from '../../api/Slot-services';
+import { getSlotTimeById, postSlot } from '../../api/auth-services';
 import { getSlot } from '../../api/auth-services';
 
 const CreateSlot = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState('Content of the modal');
-  const [slotTimeId, setSlotTimeId] = useState('');
-  const [courseId, setCourseId] = useState('');
+  const [slotTimeId, setSlotTimeId] = useState();
+  const [courseId, setCourseId] = useState();
   const [monthYear, setMonthYear] = useState('');
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
+  
 
   const showModal = () => {
     setOpen(true);
@@ -40,14 +41,18 @@ const CreateSlot = () => {
   }, []);
 
   const handleOk = async () => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
     try {
-      await postSlot(slotTimeId, courseId, monthYear);
+      const accessToken = user.accessToken;
+      await postSlot(slotTimeId, courseId, monthYear,accessToken);
+
       setModalText('The modal will be closed after two seconds');
       setConfirmLoading(true);
       setTimeout(() => {
         setOpen(false);
         setConfirmLoading(false);
       }, 2000);
+      window.location.reload();
     } catch (err) {
       console.error('Error during slot creation:', err);
     }
