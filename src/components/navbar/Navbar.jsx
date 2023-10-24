@@ -7,6 +7,8 @@ import jwtDecode from 'jwt-decode';
 import authService from '../../api/auth-services';
 import { useEffect } from 'react';
 
+  const user = sessionStorage.getItem("user");
+  const username= jwtDecode(user).email
 
 function App() {
 
@@ -46,7 +48,7 @@ function App() {
             <Link to="/Quiz" className="nav-item nav-link">Khóa học lái xe</Link>
             <Link to="/Quiz" className="nav-item nav-link">Thi lý thuyết bằng lái xe online</Link>
             {isLoggedIn ? (
-              <Link to="/User" className="nav-item nav-link">Profile</Link>
+              <Link to="/User" className="nav-item nav-link">{username}</Link>
             ) : (
               <Link to="/login" className="nav-item nav-link active">Đăng nhập</Link>
              

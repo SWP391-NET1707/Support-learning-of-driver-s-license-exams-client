@@ -34,7 +34,7 @@ function AppM() {
 
     return (
         <main className="App">
-            {(role === 'User' || role === null) && <Navbar />}
+            {(role === 'Student' || role === null) && <Navbar />}
             <Routes>
                 {/* public */}
                 <Route path="/Home" element={<Home />} />
@@ -75,7 +75,7 @@ function AppM() {
                     
                 
             </Routes>
-            {(role === 'User' || role === null) && <Footer />}
+            {(role === 'Student' || role === null) && <Footer />}
         </main>
     );
 }
