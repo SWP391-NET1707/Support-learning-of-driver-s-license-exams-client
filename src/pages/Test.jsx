@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { getLicense, getLicenseById, getSlot, getWallet,getSlotTime,getSlotTimeById, PostCourse, getCourse,getCourseById, putCourseById, DeleteCourseById, postSlot } from '../api/Slot-services';
+import { getLicense, getLicenseById, getSlot, getWallet,getSlotTime,getSlotTimeById, PostCourse, getCourse,getCourseById, putCourseById, DeleteCourseById, postSlot } from '../api/auth-services';
 
 const Test = () => {
     const [name, setName] = useState('b2');
@@ -10,7 +10,7 @@ const Test = () => {
     const [id, setId] =useState('2');
     const [slotTimeId,setSlotTimeId] =useState();
     const [courseId,setCourseId] =useState();
-    const [monthYear, setMonthYear] =useState();
+    const [monthYear, setMonthYear] =useState('');
 
     const handleGetLicense = () => {
       getLicense();
@@ -63,7 +63,11 @@ const Test = () => {
         putCourseById(name, price, duration, description, licenseId, id);
       };
       const handlePostSlot= ()=>{
-        postSlot(slotTimeId, courseId, monthYear);
+        const user = JSON.parse(sessionStorage.getItem("user"));
+
+        const accessToken = user.accessToken;
+        postSlot(slotTimeId, courseId, monthYear,accessToken);
+        console.log();
       }
   
     return (

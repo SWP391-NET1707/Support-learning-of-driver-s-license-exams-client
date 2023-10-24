@@ -433,14 +433,18 @@ export async function getStudentCourse() {
 }
 
 
-export async function afterPaymentSuccess(id) {
+export async function afterPaymentSuccess(id,accessToken) {
   try {
-    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/StudentCourse/${id}`);
-
- 
+    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/StudentCourse/${id}`,{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    }
+    );
 
    
-    // console.log(response.data);
+     console.log(response.data);
   } catch (error) {
     console.error('Error:', error);
   }

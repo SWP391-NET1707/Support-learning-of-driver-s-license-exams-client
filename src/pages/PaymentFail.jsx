@@ -2,6 +2,10 @@ import React from 'react';
 import styles from '../style/paymentfail.module.css';
 
 const PaymentFail = () => {
+  const currentPage = window.location.pathname;
+  if (currentPage === '/payfail') {
+    sessionStorage.removeItem("courseId");
+  }
   return (
     <div className={styles.container}>
       <div className={styles.card}>

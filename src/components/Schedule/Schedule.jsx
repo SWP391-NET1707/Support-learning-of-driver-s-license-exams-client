@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getSlot, getMentor, handlePaymentRequest } from '../../api/auth-services';
+import { getSlot, getMentor, handlePaymentRequest, getCourse } from '../../api/auth-services';
 import '../TakeSlot/TakeSlot.css';
 import { useLocation,useNavigate } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ const Schedule = () => {
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [paymentUrl, setPaymentUrl] = useState('');
+  const[courseData, setCourse]=useState([]);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -31,8 +32,10 @@ const Schedule = () => {
       try {
         const slotData = await getSlot();
         const mentorData = await getMentor();
+        const courseData = await getCourse();
         setSlots(slotData);
         setMentors(mentorData);
+      setCourse(courseData);
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -45,6 +48,16 @@ const Schedule = () => {
 
   const handleDeposit = async (selectedSlot) => {
     const user = JSON.parse(sessionStorage.getItem("user"));
+   
+    if (selectedSlot && selectedSlot.courses && selectedSlot.courses.id) {
+        
+        // Save the courseId to session storage before redirection
+        sessionStorage.setItem("courseId", selectedSlot.courses.id);
+      } else {
+        // Handle the case where the data is missing or invalid
+        console.error("Invalid selected slot data");
+        // You can provide feedback to the user or take other actions as needed.
+      }
   
     try {
       const accessToken = user.accessToken;
