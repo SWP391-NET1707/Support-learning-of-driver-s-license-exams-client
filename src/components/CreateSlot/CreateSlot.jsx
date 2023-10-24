@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
-import { getSlotTimeById, postSlot } from '../../api/auth-services';
+import { postSlot, getSlotTimeById } from '../../api/auth-services';
 import { getSlot } from '../../api/auth-services';
+
 
 const CreateSlot = () => {
   const [open, setOpen] = useState(false);
@@ -37,7 +38,7 @@ const CreateSlot = () => {
     }
 
     fetchData();
-    console.log(sessionStorage.getItem("user"))
+    // console.log(slots)
   }, []);
 
   const handleOk = async () => {
@@ -69,7 +70,7 @@ const CreateSlot = () => {
           <div className="row">
             <div className="col-lg-12">
               <Button type="primary" onClick={showModal} className="button-right">
-                Create
+                Tạo mới
               </Button>
               <Modal
                 title="Title"
@@ -130,6 +131,7 @@ const CreateSlot = () => {
                                   {slot.slotTimeData ? (
                                     <>
                                       <div>Start Time: {slot.slotTimeData.startTime}</div>
+                                      
                                       <div>End Time: {slot.slotTimeData.endTime}</div>
                                     </>
                                   ) : (
