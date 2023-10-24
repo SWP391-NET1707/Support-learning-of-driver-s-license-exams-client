@@ -170,6 +170,19 @@ export async function getLicenseById(id) {
   }
 }
 
+export async function DeleteLicenseById(id) {
+  try {
+    const response = await axios.delete(`https://drivingschoolapi20231005104822.azurewebsites.net/api/License/${id}`);
+
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
+
+
 export async function putLicenseById( name, id) {
   try {
     const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/License/${id}`, {
@@ -179,13 +192,13 @@ export async function putLicenseById( name, id) {
     console.log('Response:', response);
 
     if (response.status === 200) {
-      console.log('Course successfully updated');
+      console.log('License successfully updated');
     } else {
-      console.log('Course updating failed');
+      console.log('License updating failed');
     }
     return response.data;
   } catch (err) {
-    console.error('Error during course update:', err);
+    console.error('Error during license update:', err);
   }
 }
 
@@ -244,6 +257,33 @@ export async function getSlotTimeById(id) {
     console.log(response.data);
   } catch (error) {
     console.error('Error:', error);
+  }
+}
+
+export async function postSlotTime(startTime, endTime,id) {
+  try {
+    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/SlotTime/update/${id}`,{
+      startTime,
+      endTime
+    });
+
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
+
+export async function DeleteSlotTimeById(id) {
+  try {
+    const response = await axios.delete(`https://drivingschoolapi20231005104822.azurewebsites.net/api/SlotTime/${id}`);
+
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
   }
 }
 
@@ -349,3 +389,24 @@ export async function getMentor() {
     throw error; // Rethrow the error to handle it at a higher level
   }
 }
+
+export async function postSlot(slotTimeId, courseId, monthYear) {
+  try {
+    const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/mentor`, {
+      slotTimeId,
+      courseId,
+      monthYear
+    });
+
+    console.log('Response:', response);
+
+    if (response.status === 200) {
+      console.log('Slot successfully updated');
+    } else {
+      console.log('Slot updating failed');
+    }
+  } catch (err) {
+    console.error('Error during slot update:', err);
+  }
+}
+
