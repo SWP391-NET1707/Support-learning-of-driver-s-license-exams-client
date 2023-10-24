@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { getLicense, getLicenseById, getSlot, getWallet,getSlotTime,getSlotTimeById, PostCourse, getCourse,getCourseById, putCourseById, DeleteCourseById } from '../api/auth-services';
+import { getLicense, getLicenseById, getSlot, getWallet,getSlotTime,getSlotTimeById, PostCourse, getCourse,getCourseById, putCourseById, DeleteCourseById, postSlot } from '../api/Slot-services';
 
 const Test = () => {
     const [name, setName] = useState('b2');
@@ -8,6 +8,9 @@ const Test = () => {
     const [description, setDescription] = useState('B2');
     const [licenseId, setLicenseId] = useState(4);
     const [id, setId] =useState('2');
+    const [slotTimeId,setSlotTimeId] =useState();
+    const [courseId,setCourseId] =useState();
+    const [monthYear, setMonthYear] =useState();
 
     const handleGetLicense = () => {
       getLicense();
@@ -59,6 +62,9 @@ const Test = () => {
             
         putCourseById(name, price, duration, description, licenseId, id);
       };
+      const handlePostSlot= ()=>{
+        postSlot(slotTimeId, courseId, monthYear);
+      }
   
     return (
       <div>
@@ -162,7 +168,39 @@ const Test = () => {
         </div>
         </form>
         <button onClick={handleDeleteCourse}>Delete Course by ID</button>
+        <div style={{ margin: '20px 0' }}></div>
+
+
+
+        <form>
+        <div>
+          <label>slotTimeId: </label>
+          <input type="number" value={slotTimeId} onChange={(e) => setSlotTimeId(e.target.value)} />
+        </div>
+        <div>
+          <label>CourseID: </label>
+          <input type="number" value={courseId} onChange={(e) => setCourseId(e.target.value)} />
+        </div>
+        <div>
+        <label>TimeSet: </label>
+      <input
+         type="text"
+          value={monthYear}
+         onChange={(e) => setMonthYear(e.target.value)}
+         placeholder="dd-mm-yyyy" // Optional: Provide a placeholder for the expected format
+        />
+        </div>
+          
+        <button onClick={handlePostSlot}>Post Slot</button>
+      </form>
+      <div style={{ margin: '20px 0' }}></div>
       </div>
+
+    
+
+
+
+
     );
   }
 

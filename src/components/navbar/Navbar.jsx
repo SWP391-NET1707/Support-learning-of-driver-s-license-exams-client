@@ -11,31 +11,11 @@ import { useEffect } from 'react';
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoginModalVisible, setLoginModalVisible] = useState(false);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  
-  // const showLoginModal = () => {
-  //   setLoginModalVisible(true);
-  // };
-// 
-  // const handleLoginModalOk = () => {
-  //   // In a real application, you would perform authentication here
-  //   // For this example, we simulate successful login when email is "test@example.com" and password is "password"
-  //   if (email === "test@example.com" && password === "password") {
-  //     setIsLoggedIn(true);
-  //     setLoginModalVisible(false);
-  //   } else {
-  //     // Handle incorrect login credentials (e.g., display an error message)
-  //     // For this example, we simply alert the user
-  //     alert("Incorrect email or password. Please try again.");
-  //   }
-  // };
 
-  // const handleLoginModalCancel = () => {
-  //   setLoginModalVisible(false);
-  // };
 
   useEffect(() => {
     // Check if there is a current user
@@ -68,8 +48,8 @@ function App() {
             {isLoggedIn ? (
               <Link to="/User" className="nav-item nav-link">Profile</Link>
             ) : (
-              <button className="nav-item nav-link" ><Link to="/login" className="nav-item nav-link active">Đăng nhập</Link></button>
-              // <button className="nav-item nav-link" onClick={showLoginModal}>Đăng nhập</button>
+              <Link to="/login" className="nav-item nav-link active">Đăng nhập</Link>
+             
             )}
           </div>
           {isLoggedIn ? (
@@ -78,45 +58,7 @@ function App() {
         </div>
       </nav>
 
-      {/* <Modal
-        title="Đăng nhập"
-        visible={isLoginModalVisible}
-        onOk={handleLoginModalOk}
-        onCancel={handleLoginModalCancel}
-        footer={null}
-      >
-        <Form name="loginForm">
-          <Form.Item
-            name="email"
-            rules={[{ required: true, message: 'Please input your email!' }]}
-          >
-            <Input
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
-          >
-            <Input.Password
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-          >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-          <Button type="primary" htmlType="submit">
-            Đăng nhập
-          </Button>
-        </Form>
-      </Modal> */}
+     
     </div>
   );
 }

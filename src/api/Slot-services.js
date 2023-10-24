@@ -114,7 +114,7 @@ export async function getLicense() {
    
   
       
-    //   console.log(response.data);
+       console.log(response.data);
       return response.data
     } catch (error) {
       console.error('Error:', error);
