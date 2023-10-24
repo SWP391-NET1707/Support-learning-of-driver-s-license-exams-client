@@ -2,7 +2,16 @@ import React from 'react'
 import { Link, Outlet } from 'react-router-dom';
 import { Sidebar, TakeAttend } from '../components';
 import '../style/mentor.css'
+import jwtDecode from 'jwt-decode';
 const Mentor = () => {
+  const user = sessionStorage.getItem("user");
+  const mentor= jwtDecode(user).email
+
+  const handleLogout = () => {
+    // Clear the session storage and log the user out
+    sessionStorage.removeItem('user');
+
+  };
 
   return (
     <div>
@@ -13,17 +22,17 @@ const Mentor = () => {
           <ul class="sidebar-nav">
             <li class="sidebar-brand">
               <a href="#">
-                Start Bootstrap
+                {mentor}
               </a>
             </li>
             <li>
-              <Link to="takeattend">Take Attendant</Link>
+              <Link to="takeattend">Điểm danh</Link>
             </li>
             <li>
-              <Link to="createslot">Create slot</Link>
+              <Link to="createslot">Tạo slot</Link>
             </li>
             <li>
-              <Link to="schedule">Timetable</Link>
+            <button onClick={handleLogout} className="btn btn-danger">Đăng xuất</button>
             </li>
           </ul>
         </div>

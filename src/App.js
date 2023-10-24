@@ -34,7 +34,7 @@ function AppM() {
 
     return (
         <main className="App">
-            <Navbar />
+            {(role === 'User' || role === null) && <Navbar />}
             <Routes>
                 {/* public */}
                 <Route path="/Home" element={<Home />} />
