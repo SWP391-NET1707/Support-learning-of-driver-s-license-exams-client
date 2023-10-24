@@ -250,7 +250,8 @@ export async function getSlotTime() {
 export async function getSlotTimeById(id) {
   try {
     const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/SlotTime/${id}`);
-
+    const { startTime, endTime } = response.data;
+   return { startTime, endTime };
  
 
     
