@@ -419,9 +419,14 @@ export async function postSlot(slotTimeId, courseId, monthYear, accessToken) {
  
 }
 
-export async function getStudentCourse() {
+export async function getStudentCourse(accessToken) {
   try {
-    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/StudentCourse');
+    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/StudentCourse',{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
 
  
 
