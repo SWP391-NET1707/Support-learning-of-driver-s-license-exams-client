@@ -47,6 +47,7 @@ const Schedule = () => {
   }, [location.search, transactionStatus]);
 
   const handleDeposit = async (selectedSlot) => {
+    console.log(selectedSlot.courses.id);
     const user = JSON.parse(sessionStorage.getItem("user"));
    
     if (selectedSlot && selectedSlot.courses && selectedSlot.courses.id) {
