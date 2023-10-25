@@ -49,7 +49,7 @@ function App() {
           <div className="navbar-nav ms-auto p-4 p-lg-0">
             <Link to="/home" className="nav-item nav-link active">Trang chủ</Link>
             <Link to="/Quiz" className="nav-item nav-link">Khóa học lái xe</Link>
-            <Link to="/Quiz" className="nav-item nav-link">Thi lý thuyết bằng lái xe online</Link>
+            <Link to="/QuizPage" className="nav-item nav-link">Thi lý thuyết bằng lái xe online</Link>
             {isLoggedIn ? (
               <Link to="/User" className="nav-item nav-link">{username}</Link>
             ) : (
