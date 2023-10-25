@@ -3,8 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Course.css';
 import axios from 'axios';
 import course1 from '../../assets/courses-1.jpg';
-import course2 from '../../assets/courses-2.jpg';
-import course3 from '../../assets/pexels-ingo-joseph-543605.jpg';
 import { getOwnStudentCourse } from '../../api/auth-services';
 
 const Course = () => {
@@ -15,10 +13,10 @@ const Course = () => {
   const [licenseid, setLicenseID] = useState('');
   const [userRegisteredCourses, setUserRegisteredCourses] = useState([]);
   const [courseData, setCourseData] = useState([]);
-    const user = JSON.parse(sessionStorage.getItem("user")) 
-    const accessToken= user.accessToken
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  const accessToken = user ? user.accessToken : null;
+
   useEffect(() => {
-    console.log(accessToken)
     const Course_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Course';
 
     axios
@@ -38,26 +36,27 @@ const Course = () => {
         console.error('Error fetching data:', error);
       });
 
-    // Fetch user's registered courses using the API service function
-    getOwnStudentCourse(accessToken)
-      .then((response) => {
-        const registeredCourses = response.data.map((course) => course.courseId);
-        setUserRegisteredCourses(registeredCourses);
-        console.log(registeredCourses)
-      })
-      .catch((error) => {
-        console.error('Error fetching user registered courses:', error);
-      });
-  }, []);
+    // Fetch user's registered courses using the API service function if user and accessToken exist
+    if (user && accessToken) {
+      getOwnStudentCourse(accessToken)
+        .then((response) => {
+          const registeredCourses = response.data.map((course) => course.courseId);
+          setUserRegisteredCourses(registeredCourses);
+          console.log(registeredCourses);
+        })
+        .catch((error) => {
+          console.error('Error fetching user registered courses:', error);
+        });
+    }
+  }, [user, accessToken]);
 
   const handleRegistrationClick = (courseId) => {
     if (userRegisteredCourses.includes(courseId)) {
-      alert('You are already registered for this course.');
+      alert('Bạn có thể đăng ký khóa này');
     } else {
-      alert('You can register for this course.');
+      alert('Bạn không thể đăng ký khóa này');
     }
   };
-
   return (
     <div className="container-xxl courses my-6 py-6 pb-0">
       <div className="container">

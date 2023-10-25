@@ -12,9 +12,9 @@ const PaymentFail = () => {
         <div className={styles.circle}>
           <i className={styles.error}>✘</i>
         </div>
-        <h1 className={styles.heading}>Payment Failed</h1>
+        <h1 className={styles.heading}>Thanh Toán Thất Bại</h1>
         <p className={styles.paragraph}>
-          Sorry, your payment could not be processed.<br />Please try again later.
+          Đã có vấn đề trong quá trình thanh toán.<br />Vui lòng thử lại sau.
         </p>
       </div>
     </div>
