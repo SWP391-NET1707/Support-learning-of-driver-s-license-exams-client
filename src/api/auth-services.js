@@ -468,3 +468,21 @@ export async function getStudentCourseById(id) {
     console.error('Error:', error);
   }
 }
+
+export async function getOwnStudentCourse(accessToken) {
+  try {
+    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/StudentCourse/get-course-by-me',{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+console.log(response.data);
+ 
+    return response
+   
+    
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
