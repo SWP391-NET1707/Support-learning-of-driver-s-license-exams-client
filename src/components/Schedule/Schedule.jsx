@@ -98,10 +98,10 @@ const Schedule = () => {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th className="text-center" scope="col">Date</th>
-                      <th scope="col">Mentors</th>
-                      <th scope="col">Description</th>
-                      <th scope="col">Type</th>
+                      <th className="text-center" scope="col">Ngày học</th>
+                      <th scope="col">Giảng viên</th>
+                      <th scope="col">Mô tả</th>
+                      <th scope="col">Lớp học</th>
                       <th scope="col">Button</th>
                     </tr>
                   </thead>
@@ -120,11 +120,11 @@ const Schedule = () => {
                             </div>
                           </th>
                           <td>{getMentorNames(slot.mentorId)}</td>
-                          <td>{slot.courses?.description ? `${slot.courses.description} - Price: ${slot.courses.price}` : 'N/A'}</td>
+                          <td>{slot.courses?.description ? `${slot.courses.description}` : ''}</td>
                           <td>{slot.courses?.name || 'N/A'}</td>
                           <td>
                             <div className="primary-btn">
-                              <a className="btn btn-primary" onClick={() => handleDeposit(slot)}>Button</a>
+                              <a className="btn btn-primary">Đăng kí buổi học</a>
                             </div>
                           </td>
                         </tr>
