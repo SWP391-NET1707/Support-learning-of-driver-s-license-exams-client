@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../style/User.css';
+import jwtDecode from 'jwt-decode';
 
+const userToken = jwtDecode(sessionStorage.getItem("user"));
+console.log(userToken);
 const User = () => {
     return (
         <div className="user-container">
@@ -21,13 +24,13 @@ const User = () => {
                     />
                 </div>
                 <div className="user-details">
-                    <h1 className="user-name">John Doe</h1>
-                    <p className="user-email">johndoe@example.com</p>
+                    <h1 className="user-name">{userToken.name}</h1>
+                    <p className="user-email">{userToken.email}</p>
                     <p className="user-bio">
-                        HE HE HAHA
+                        {userToken.role}
                     </p>
-                    <Link to="/timetable" className="btn btn-primary">
-                        Go to Timetable
+                    <Link to="/Schedule" className="btn btn-primary">
+                        Go to Schedule
                     </Link>
                 </div>
             </div>
