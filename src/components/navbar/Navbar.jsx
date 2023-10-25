@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, json } from 'react-router-dom';
 import { Button, Modal, Form, Input, Checkbox } from 'antd';
 
 import './Navbar.css';
 import jwtDecode from 'jwt-decode';
 import authService from '../../api/auth-services';
 import { useEffect } from 'react';
-
-  const user = sessionStorage.getItem("user");
-  const username= jwtDecode(user).email
+const user = sessionStorage.getItem("user")
 
 function App() {
-
+  let username = null;
+  const user = sessionStorage.getItem("user")
+  if (user !== null) {
+  username = jwtDecode(user).email
+  }
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -20,6 +22,7 @@ function App() {
 
 
   useEffect(() => {
+    
     // Check if there is a current user
     const currentUser = authService.getCurrentUser();
     if (currentUser) {
