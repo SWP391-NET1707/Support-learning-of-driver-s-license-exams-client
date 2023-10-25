@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 
 
-const Course = () => {
+const Course_ = () => {
 
   const [courses, setCourses] = useState([]);
 
@@ -83,6 +83,7 @@ const Course = () => {
   const handleDeposit = async (selectedCourse) => {
 
     const user = JSON.parse(sessionStorage.getItem("user"));
+    sessionStorage.setItem("courseId", selectedCourse);
 
     try {
 
@@ -206,4 +207,4 @@ const Course = () => {
 
 
 
-export default Course;
+export default Course_;

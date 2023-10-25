@@ -476,7 +476,7 @@ export async function getOwnStudentCourse(accessToken) {
         'Authorization': `Bearer ${accessToken}`
       }
     });
-console.log(response.data);
+
 
     return response
 
