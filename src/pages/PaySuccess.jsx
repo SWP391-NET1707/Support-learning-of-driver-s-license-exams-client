@@ -11,7 +11,7 @@ const PaySuccess = () => {
     const currentPage = window.location.pathname;
     if (currentPage === '/paysuccess') {
       // Get the courseId from session storage
-      const courseId = sessionStorage.getItem("courseId");
+      const courseId = JSON.parse(sessionStorage.getItem("courseId"));
 
       // Call afterPaymentSuccess with the courseId
       if (courseId) {
