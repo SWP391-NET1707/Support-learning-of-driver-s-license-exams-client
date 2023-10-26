@@ -11,7 +11,7 @@ function Quiz() {
             <div>
               <h2>Chương 1. Khái niệm và quy tắc giao thông</h2>
             </div>
-            <p>Hạng A1 gồm 83/166 câu. Số câu điểm liệt 18.</p>
+            <p>Gồm 166 câu. Số câu <strong>điểm liệt: 45.</strong></p>
           </div>
         </div>
       </div>
@@ -21,7 +21,8 @@ function Quiz() {
             <div>
               <h2>Chương 2. Nghiệp vụ vận tải</h2>
             </div>
-            <p>Hạng A1 gồm 0/26 câu.</p>
+            <p>Gồm 26 câu.</p>
+            <p><strong>Học viên khoá B1 không học phần này</strong></p>
           </div>
         </div>
       </div>
@@ -31,7 +32,7 @@ function Quiz() {
             <div>
               <h2>Chương 3. Văn hóa, đạo đức</h2>
             </div>
-            <p>Hạng A1 gồm 5/21 câu. Số câu điểm liệt 0.</p>
+            <p>Gồm 21 câu. Số câu <strong>điểm liệt: 4.</strong></p>
           </div>
         </div>
       </div>
@@ -41,7 +42,7 @@ function Quiz() {
             <div>
               <h2>Chương 4. Kỹ thuật lái xe</h2>
             </div>
-            <p>Hạng A1 gồm 12/56 câu. Số câu điểm liệt 2.</p>
+            <p>Gồm 56 câu. Số câu <strong>điểm liệt: 11.</strong></p>
           </div>
         </div>
       </div>
@@ -51,7 +52,7 @@ function Quiz() {
             <div>
               <h2>Chương 5. Cấu tạo và sửa chữa xe</h2>
             </div>
-            <p>Hạng A1 gồm 0/35 câu.</p>
+            <p>Gồm 35 câu.</p>
           </div>
         </div>
       </div>
@@ -61,7 +62,7 @@ function Quiz() {
             <div>
               <h2>Chương 6. Hệ thống biển báo</h2>
             </div>
-            <p>Hạng A1 gồm 65/182 câu. Số câu điểm liệt 0.</p>
+            <p>Gồm 182 câu.</p>
           </div>
         </div>
       </div>
@@ -71,7 +72,7 @@ function Quiz() {
             <div>
               <h2>Chương 7. Giải các thế sa hình</h2>
             </div>
-            <p>Hạng A1 gồm 35/114 câu. Số câu điểm liệt 0.</p>
+            <p>Gồm 114 câu.</p>
           </div>
         </div>
       </div>

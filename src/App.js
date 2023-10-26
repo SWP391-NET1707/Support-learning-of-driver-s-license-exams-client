@@ -53,6 +53,7 @@ function AppM() {
                     <Route path="/PayFail" element={<PaymentFail />} />
                     <Route path="/payment" element={<Payment/>}/>
                     <Route path="/schedule" element={<Schedule />} />
+                    <Route path="/QuizPage" element={<QuizPage />} />
                     <Route path="/User" element={<User />} />
                     </>
                 )}
