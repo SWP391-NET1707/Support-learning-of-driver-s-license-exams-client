@@ -45,12 +45,12 @@ const Course = () => {
         .then((response) => {
           const courseData = response.data;
           setCourseData(courseData);
-          setId(courseData[0].id);
-          setName(courseData[0].name);
-          setPrice(courseData[0].price);
-          setDuration(courseData[0].duration);
-          setDescription(courseData[0].description);
-          setLicenseID(courseData[0].licenseid);
+          setId(courseData.id);
+          setName(courseData.name);
+          setPrice(courseData.price);
+          setDuration(courseData.duration);
+          setDescription(courseData.description);
+          setLicenseID(courseData.licenseid);
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
