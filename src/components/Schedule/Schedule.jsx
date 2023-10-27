@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { getSlot, getMentor, handlePaymentRequest, getCourse } from '../../api/auth-services';
 import '../TakeSlot/TakeSlot.css';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Schedule = () => {
   const [slots, setSlots] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [paymentUrl, setPaymentUrl] = useState('');
-  const[courseData, setCourse]=useState([]);
+  const [courseData, setCourse] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [slotsPerPage] = useState(10);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -24,10 +26,9 @@ const Schedule = () => {
     }
   };
   useEffect(() => {
-
     if (location.search) {
-        handleRedirect();
-      }
+      handleRedirect();
+    }
     async function fetchData() {
       try {
         const slotData = await getSlot();
@@ -35,7 +36,7 @@ const Schedule = () => {
         const courseData = await getCourse();
         setSlots(slotData);
         setMentors(mentorData);
-      setCourse(courseData);
+        setCourse(courseData);
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -49,21 +50,16 @@ const Schedule = () => {
   const handleDeposit = async (selectedSlot) => {
     console.log(selectedSlot.courses.id);
     const user = JSON.parse(sessionStorage.getItem("user"));
-   
+
     if (selectedSlot && selectedSlot.courses && selectedSlot.courses.id) {
-        
-        // Save the courseId to session storage before redirection
-        sessionStorage.setItem("courseId", selectedSlot.courses.id);
-      } else {
-        // Handle the case where the data is missing or invalid
-        console.error("Invalid selected slot data");
-        // You can provide feedback to the user or take other actions as needed.
-      }
-  
+      sessionStorage.setItem("courseId", selectedSlot.courses.id);
+    } else {
+      console.error("Invalid selected slot data");
+    }
+
     try {
       const accessToken = user.accessToken;
-      const paymentUrl = await handlePaymentRequest(accessToken, selectedSlot.courses.price); // Use the function
-  
+      const paymentUrl = await handlePaymentRequest(accessToken, selectedSlot.courses.price);
       if (paymentUrl) {
         setPaymentUrl(paymentUrl);
         window.location.href = paymentUrl;
@@ -74,19 +70,20 @@ const Schedule = () => {
       console.error('An error occurred:', error);
     }
   };
-  
 
-   
   function getMentorNames(mentorId) {
     if (!mentorId) {
       return 'Unknown Mentor';
     }
-  
     const mentor = mentors.find((mentor) => mentor.id === mentorId);
-  
     return mentor ? mentor.name : 'Unknown Mentor';
   }
-  
+
+  const indexOfLastSlot = currentPage * slotsPerPage;
+  const indexOfFirstSlot = indexOfLastSlot - slotsPerPage;
+  const currentSlots = slots.slice(indexOfFirstSlot, indexOfLastSlot);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -111,7 +108,7 @@ const Schedule = () => {
                         <td colSpan="5">Loading...</td>
                       </tr>
                     ) : (
-                      slots.map((slot) => (
+                      currentSlots.map((slot) => (
                         <tr key={slot.id} className="inner-box">
                           <th scope="row">
                             <div className="event-date">
@@ -133,6 +130,15 @@ const Schedule = () => {
                   </tbody>
                 </table>
               </div>
+              <ul className="pagination">
+                {Array.from({ length: Math.ceil(slots.length / slotsPerPage) }, (_, index) => (
+                  <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                    <a onClick={() => paginate(index + 1)} className="page-link">
+                      {index + 1}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
