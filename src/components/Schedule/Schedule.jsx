@@ -86,19 +86,18 @@ const Schedule = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
-  const handleOk = async (slot) => {
+ const handleOk = async (slot) => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     try {
+
       const accessToken = user.accessToken;
-      await postStudentSlot(slot.id ,accessToken);
-  
-      // window.location.reload();
-      console.log(slot.id)
-    } catch (error) {
-      // console.log(error.response)
-      console.error('Error during slot creation:', error);
+      await postStudentSlot(slot.id,accessToken)
+      console.log()
     }
-  };
+      catch{
+
+      }
+  }
 
   return (
     <div>
@@ -136,7 +135,7 @@ const Schedule = () => {
                           <td>{slot.courses?.name || 'N/A'}</td>
                           <td>
                             <div className="primary-btn">
-                              <button onClick={() => handleOk(slot)} className="btn btn-primary">Đăng kí buổi học</button>
+                              <button onClick={() =>handleOk(slot)} className="btn btn-primary">Đăng kí buổi học</button>
                             </div>
                           </td>
                         </tr>
