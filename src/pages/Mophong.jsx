@@ -40,9 +40,6 @@ function Mophong() {
         <p style={{ textAlign: "justify" }} className="content">
           <strong>120 Câu Hỏi Mô Phỏng Tình Huống Giao Thông</strong> GPLX Ô Tô Các Hạng Từ B1, B2, C, D, E, FC,...là nội dung mới được đưa vào phần thi sát hạch theo thông tư&nbsp;<strong>04/2022/TT-BGTVT</strong>&nbsp;được điều chỉnh và bổ sung kể từ ngày 15/06/2022 áp dụng trên phạm vi toàn quốc. Học viên bắt buộc phải trải qua 4 bài thi bao gồm: phần thi lý thuyết trắc nghiệm, phần thi mô phỏng, phần thi sa hình và cuối cùng là đường trường (so với trước đây là 3 bài thi)
         </p>
-        <p style={{ textAlign: "justify" }} className="content">
-          120 câu hỏi mô phỏng lái xe ô tô đã được <strong>Trường Học Lái Xe Mô Tô TPHCM</strong> xây dựng và phát triển dựa trên nền tảng website trực tuyến nhằm hỗ trợ quý học viên có thể ôn tập một cách trực quan và dễ dàng nhất. Các bạn sẽ không cần phải tải về hay cài đặt trên máy tính hoặc điện thoại bất tiện, chỉ cần truy cập vào là có thể bắt đầu thi thử trực tiếp 120 bài thi mô phỏng tình huống giao thông online.
-        </p>
         <p style={{ textAlign: "justify" }}className="content">
           <strong>Ở mỗi tình huống sẽ có cột mốc điểm là 0 - 5, trường hợp nếu học viên nhấn nút "SPACE" đúng khung thời gian thì sẽ được điểm cao nhất là 5, nếu chậm hơn 1s thì điểm sẽ bị trừ đi 1Đ còn 4 và tương tự cho các giây kế tiếp. Trường hợp các bạn nhấn sớm quá hoặc trễ quá khung thời gian quy định thì bị điểm 0</strong>
         </p>
