@@ -1,0 +1,19 @@
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-right: -20px;
+}
+
+.button-group>.btn {
+    margin-right: 20px;
+}
+.content-bottom{
+    margin-top: 100px;
+}
+.content-bottom>.title{
+    font-size: 40px;
+    text-transform: uppercase;
+}
+.content-bottom>.content{
+    font-size: 20px;
+}
