@@ -15,6 +15,11 @@ const Course = () => {
   const [licenseid, setLicenseID] = useState('');
   const [userRegisteredCourses, setUserRegisteredCourses] = useState([]);
   const [courseData, setCourseData] = useState([]);
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
+
   const user = JSON.parse(sessionStorage.getItem('user'));
   const accessToken = user ? user.accessToken : null;
 
@@ -36,9 +41,22 @@ const Course = () => {
     }
   };
 
+   // Calculate the total number of pages
+   const totalPages = Math.ceil(courseData.length / itemsPerPage);
+
+   // Handle clicking the right arrow
+   const nextPage = () => {
+     setCurrentPage((prevPage) => (prevPage === totalPages ? 1 : prevPage + 1));
+   };
+ 
+   // Handle clicking the left arrow
+   const prevPage = () => {
+     setCurrentPage((prevPage) => (prevPage === 1 ? totalPages : prevPage - 1));
+   };
+
   useEffect(() => {
     // Fetch course data only when it hasn't been fetched yet
-    if (user && accessToken && courseData.length === 0) {
+    if ( courseData.length === 0) {
       const Course_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Course';
       axios
         .get(Course_URL)
@@ -133,6 +151,17 @@ const Course = () => {
               </div>
             </div>
           ))}
+        </div>
+        {/* Pagination controls with left and right arrows */}
+        <div className="row g-4 justify-content-center mt-4">
+          <div className="col-12 text-center">
+            <button className="btn btn-primary mx-2" onClick={prevPage}>
+              &larr; Trang trước
+            </button>
+            <button className="btn btn-primary mx-2" onClick={nextPage}>
+              Trang sau &rarr;
+            </button>
+          </div>
         </div>
       </div>
     </div>
