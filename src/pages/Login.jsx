@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import React, {  useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 import '../style/login.css';
-import axios from 'axios';
+
 import authService from '../api/auth-services';
 import jwtDecode from 'jwt-decode';
 
 
-const Authens_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Authen/login';
 
 const Login = () => {
 
