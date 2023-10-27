@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, DatePicker, Form, Input, Modal, Select } from 'antd';
-import { postSlot, getSlotTimeById, getCourse } from '../../api/auth-services';
-import { getSlot } from '../../api/auth-services';
-import CreateslotForm from './CreateslotForm';
+import { postSlot, getSlotTimeById, getCourse, getSlotbyMentor } from '../../api/auth-services';
 import axios from 'axios';
 
 
@@ -17,18 +15,35 @@ const CreateSlot = () => {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [slotsPerPage] = useState(10);
+
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const accessToken = user.accessToken;
+  const currentDate = new Date();
 
   const showModal = () => {
     setOpen(true);
   };
-
+  
+  function filterSlotsByDate(slotsData) {
+    const currentDate = new Date();
+    const data=slotsData
+    const filteredSlots = data.filter((slot) => new Date(slot.monthYear) >= currentDate);
+    return filteredSlots;
+  }
+  
+  // Usage
+  // const filteredSlots = filterSlotsByDate(slotsData);
+  
   useEffect(() => {
     async function fetchData() {
       try {
         const course = await getCourse();
-        const slotsData = await getSlot();
+        const slotsData = await getSlotbyMentor(accessToken);
+        const filteredSlots = filterSlotsByDate(slotsData);
         const slotsWithTimeData = await Promise.all(
-          slotsData.map(async (slot) => {
+          filteredSlots.map(async (slot) => {
             const slotTimeData = await getSlotTimeById(slot.slotTimeId);
             return { ...slot, slotTimeData };
           })
@@ -36,14 +51,15 @@ const CreateSlot = () => {
         setCourses(course)
         setSlots(slotsWithTimeData);
         setLoading(false);
+        console.log(filteredSlots)
       } catch (error) {
         console.error('Error:', error);
         setLoading(false);
       }
     }
-    console.log(monthYear)
+
     fetchData();
-    console.log(courseId)
+ 
   }, []);
 
   const handleOk = async () => {
@@ -59,8 +75,10 @@ const CreateSlot = () => {
         setConfirmLoading(false);
       }, 2000);
       // window.location.reload();
-    } catch (err) {
-      console.error('Error during slot creation:', err);
+      
+    } catch (error) {
+      // console.log(error.response)
+      console.error('Error during slot creation:', error);
     }
   };
 
@@ -68,6 +86,11 @@ const CreateSlot = () => {
     setOpen(false);
   };
 
+
+  const indexOfLastSlot = currentPage * slotsPerPage;
+  const indexOfFirstSlot = indexOfLastSlot - slotsPerPage;
+  const currentSlots = slots.slice(indexOfFirstSlot, indexOfLastSlot);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -98,19 +121,13 @@ const CreateSlot = () => {
                       maxWidth: 600,
                     }}
                   >
-                    <Form.Item label="Input">
+                    <Form.Item label="Slot">
                       <Input
                         placeholder="Slot Time ID"
                         value={slotTimeId}
                         onChange={(e) => setSlotTimeId(e.target.value)} />
                     </Form.Item>
-                    <Form.Item label="Slot">
-                      {/* <Select
-                        placeholder="Select Course"
-                        value={courseId}
-                        onChange={(value) => setCourseId(value)}>
-                        <Select.Option key={courses.id} value={courses.}>{courses.name}</Select.Option>
-                      </Select> */}
+                    <Form.Item label="Khoa hoc">
                       <Select
                       placeholder="Select Course"
                       value={courseId}
@@ -129,7 +146,8 @@ const CreateSlot = () => {
                       <Input
                         placeholder="tối đa 30 kí tự"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)} />
+                        onChange={(e) => setDescription(e.target.value)}
+                        maxlength="30" />
                     </Form.Item>
                   </Form>
                 </>
@@ -145,7 +163,7 @@ const CreateSlot = () => {
                       <th scope="col">Mô tả</th>
                       <th scope="col">Học sinh</th>
                       <th scope="col">Khóa Học</th>
-                      <th className="text-center" scope="col"></th>
+                      {/* <th className="text-center" scope="col"></th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -154,7 +172,7 @@ const CreateSlot = () => {
                         <td colSpan="5">Loading...</td>
                       </tr>
                     ) : (
-                      slots.map((slot) => (
+                      currentSlots.map((slot) => (
                         <tr key={slot.id} className="inner-box">
                           <th scope="row">
                             <div className="event-date">
@@ -182,8 +200,11 @@ const CreateSlot = () => {
                             </div>
                           </td>
                           <td>
+                            sdsd
+                          </td>
+                          <td>
                             <div className="r-no">
-                              <span><h3>{slot.courses?.name ? slot.courses.name.toUpperCase() : 'N/A'}</h3></span>
+                              <span><h5>{slot.courses?.name ? slot.courses.name.toUpperCase() : 'N/A'}</h5></span>
                             </div>
                           </td>
                           <td>
@@ -198,6 +219,15 @@ const CreateSlot = () => {
                     )}
                   </tbody>
                 </table>
+                <ul className="pagination">
+                {Array.from({ length: Math.ceil(slots.length / slotsPerPage) }, (_, index) => (
+                  <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                    <a onClick={() => paginate(index + 1)} className="page-link">
+                      {index + 1}
+                    </a>
+                  </li>
+                ))}
+              </ul>
               </div>
             </div>
           </div>

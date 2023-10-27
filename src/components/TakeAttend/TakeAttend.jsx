@@ -1,6 +1,6 @@
 import { CheckBox } from '@mui/icons-material'
 import React from 'react'
-import { Checkbox } from 'antd';
+import { Button, Checkbox } from 'antd';
 
 const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
@@ -24,6 +24,7 @@ const TakeAttend = () => {
                                                 <th>Phone</th>
                                                 <th>Attended</th>
                                                 <th>Date</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -45,6 +46,9 @@ const TakeAttend = () => {
                                                             <i className="fa fa-bars" aria-hidden="true"></i>
                                                         </a>
                                                     </div> */}
+                                                </td>
+                                                <td>
+                                                    <Button>Take</Button>
                                                 </td>
                                             </tr>
                                         </tbody>

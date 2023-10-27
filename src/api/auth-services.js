@@ -216,6 +216,25 @@ export async function getSlot() {
   }
 }
 
+export async function getSlotbyMentor(accessToken) {
+  try {
+    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/get-slot-bymentor', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    const data = response.data; // Store the response data in a variable
+
+    // console.log('Slot Data:', data); // Log the data
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching slot data:', error);
+    throw error; // Rethrow the error to handle it at a higher level
+  }
+}
+
 export async function getWallet(accessToken) {
   try {
     const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Wallet/me', {
@@ -409,10 +428,12 @@ export async function postSlot(slotTimeId, courseId, description, monthYear, acc
     } else {
       console.log('Slot updating failed');
     }
-  } catch (err) {
-    console.error('Error during slot update:', err);
+  } catch (error) {
+    if (error.response) {
+  
+      alert(error.response.data);
   }
-
+  }
 
  
 }
@@ -481,4 +502,19 @@ export async function getOwnStudentCourse(accessToken) {
   } catch (error) {
     console.error('Error:', error);
   }
+}
+
+function handleAxiosError(error) {
+  if (error.response) {
+    // The request was made and the server responded with a status code that falls out of the range of 2xx
+    const errorMessage = error.response.data;
+    alert(errorMessage); // You can customize this to display the error message in your application
+  } else if (error.request) {
+    // The request was made but no response was received
+    console.log('Request:', error.request);
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    console.log('Error Message:', error.message);
+  }
+  console.log('Config:', error.config); // Axios request configuration
 }
