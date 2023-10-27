@@ -1,5 +1,6 @@
 import React from 'react';
 import '../style/quiz.css';
+import {Link} from 'react-router-dom';
 
 function Quiz() {
   return (
@@ -73,6 +74,18 @@ function Quiz() {
               <h2>Chương 7. Giải các thế sa hình</h2>
             </div>
             <p>Gồm 114 câu.</p>
+          </div>
+        </div>
+      </div>
+      <div className="ant-col ant-col-xs-24 ant-col-sm-12" style={{ padding: "12px" }}>
+        <div className="ant-card ant-card-bordered ant-card-hoverable" style={{ background: "white" }}>
+          <div className="ant-card-body">
+            <div>
+              <h2>Ứng dụng thi mô phỏng</h2>
+            </div>
+            <Link to="/Mophong">
+              <strong>Click vào đây để lấy link download</strong>
+            </Link>
           </div>
         </div>
       </div>

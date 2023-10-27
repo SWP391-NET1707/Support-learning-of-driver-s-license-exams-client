@@ -12,7 +12,7 @@ function App() {
   let username = null;
   const user = sessionStorage.getItem("user")
   if (user !== null) {
-  username = jwtDecode(user).email
+  username = jwtDecode(user).name
   }
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 

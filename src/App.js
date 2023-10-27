@@ -7,7 +7,7 @@ import 'animate.css';
 
 import { CreateSlot, Navbar, Schedule, TakeAttend, Timetable } from './components';
 import { Footer } from './containers';
-import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor, Payment, PaymentFail, Test } from './pages';
+import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor, Payment, PaymentFail, Test, Mophong } from './pages';
 import app from './pages/admin/App';
 import Dashboard from './pages/admin/scenes/dashboard';
 import { Layout } from 'antd';
@@ -42,6 +42,7 @@ function AppM() {
                 <Route path="/Quiz" element={<Quiz />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path="/ForgotPassword" element={<ForgotPassword />} />
+                <Route path="/Mophong" element={<Mophong />} />
                 <Route path="/TakeSlot" element={<TakeSlot/>} />
                 
                 {/*Test function page*/}
