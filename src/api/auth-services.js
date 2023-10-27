@@ -292,10 +292,6 @@ export async function getCourse() {
   try {
     const response = await axios.get(Course_URL);
 
- 
-
-    
-    console.log(response.data);
     return response.data
   } catch (error) {
     console.error('Error:', error);
@@ -309,7 +305,7 @@ export async function getCourseById(id) {
  
 
     
-    console.log(response.data);
+    return(response.data);
   } catch (error) {
     console.error('Error:', error);
   }
@@ -391,12 +387,13 @@ export async function getMentor() {
   }
 }
 
-export async function postSlot(slotTimeId, courseId, monthYear, accessToken) {
+export async function postSlot(slotTimeId, courseId, description, monthYear, accessToken) {
   try {
     
     const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/mentor`, {
       slotTimeId,
       courseId,
+      description,
       monthYear
     },{
       headers: {

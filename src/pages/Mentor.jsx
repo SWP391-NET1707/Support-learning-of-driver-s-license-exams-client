@@ -10,7 +10,7 @@ const Mentor = () => {
   const handleLogout = () => {
     // Clear the session storage and log the user out
     sessionStorage.removeItem('user');
-
+    window.location.href = '/home'
   };
 
   return (

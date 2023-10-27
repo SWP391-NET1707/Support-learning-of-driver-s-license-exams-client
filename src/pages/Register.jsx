@@ -23,11 +23,11 @@ const Register = () => {
 
   const handleRegistration = (e) => {
     e.preventDefault();
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Confirmation Code:', emailToken);
-    console.log('Password:', password);
-    console.log('Confirm Password:', confirmPassword);
+    // console.log('Name:', name);
+    // console.log('Email:', email);
+    // console.log('Confirmation Code:', emailToken);
+    // console.log('Password:', password);
+    // console.log('Confirm Password:', confirmPassword);
     handleRegistrationRequest(name, email, emailToken, password, confirmPassword, setRegistrationError);
   };
 

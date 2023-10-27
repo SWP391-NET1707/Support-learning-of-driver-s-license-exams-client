@@ -23,7 +23,7 @@ const TakeAttend = () => {
                                                 <th>Name</th>
                                                 <th>Phone</th>
                                                 <th>Attended</th>
-                                                <th>Created Date</th>
+                                                <th>Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
