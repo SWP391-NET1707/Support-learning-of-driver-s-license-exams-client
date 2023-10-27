@@ -505,17 +505,21 @@ export async function getOwnStudentCourse(accessToken) {
 }
 
 
-export async function postStudentSlot(id, accessToken) {
-  try {
-    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/register/slot/bystudent/{id}',{
-      id,
+export async function postStudentSlot( id, accessToken){
+
+try {
+    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/register/slot/bystudent/${id}`,
+    
+    {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`
       }
     });
+    console.log(response)
 
     return response.data
+
 
   } catch (error) {
     console.error('Error:', error);
