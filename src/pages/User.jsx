@@ -3,8 +3,14 @@ import { Link } from 'react-router-dom';
 import '../style/User.css';
 import jwtDecode from 'jwt-decode';
 
-const userToken = jwtDecode(sessionStorage.getItem("user"));
-console.log(userToken);
+// const userToken = jwtDecode(sessionStorage.getItem("user"));
+// console.log(userToken);
+    const user = sessionStorage.getItem("user");
+    let userToken = null;
+if (user) {
+    userToken = jwtDecode(user);
+    }
+
 const User = () => {
     return (
         <div className="user-container">
