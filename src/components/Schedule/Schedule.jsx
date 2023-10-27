@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getSlot, getMentor, handlePaymentRequest, getCourse } from '../../api/auth-services';
+import { getSlot, getMentor, handlePaymentRequest, getCourse, postStudentSlot } from '../../api/auth-services';
 import '../TakeSlot/TakeSlot.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -85,6 +85,21 @@ const Schedule = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+
+  const handleOk = async (slot) => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    try {
+      const accessToken = user.accessToken;
+      await postStudentSlot(slot.id ,accessToken);
+  
+      // window.location.reload();
+      console.log(slot.id)
+    } catch (error) {
+      // console.log(error.response)
+      console.error('Error during slot creation:', error);
+    }
+  };
+
   return (
     <div>
       <div className="event-schedule-area-two bg-color pad100">
@@ -121,7 +136,7 @@ const Schedule = () => {
                           <td>{slot.courses?.name || 'N/A'}</td>
                           <td>
                             <div className="primary-btn">
-                              <a className="btn btn-primary">Đăng kí buổi học</a>
+                              <button onClick={() => handleOk(slot)} className="btn btn-primary">Đăng kí buổi học</button>
                             </div>
                           </td>
                         </tr>

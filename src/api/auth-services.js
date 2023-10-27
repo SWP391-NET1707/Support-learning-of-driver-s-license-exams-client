@@ -504,17 +504,20 @@ export async function getOwnStudentCourse(accessToken) {
   }
 }
 
-function handleAxiosError(error) {
-  if (error.response) {
-    // The request was made and the server responded with a status code that falls out of the range of 2xx
-    const errorMessage = error.response.data;
-    alert(errorMessage); // You can customize this to display the error message in your application
-  } else if (error.request) {
-    // The request was made but no response was received
-    console.log('Request:', error.request);
-  } else {
-    // Something happened in setting up the request that triggered an Error
-    console.log('Error Message:', error.message);
+
+export async function postStudentSlot(id, accessToken) {
+  try {
+    const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/register/slot/bystudent/{id}',{
+      id,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+
+    return response.data
+
+  } catch (error) {
+    console.error('Error:', error);
   }
-  console.log('Config:', error.config); // Axios request configuration
 }

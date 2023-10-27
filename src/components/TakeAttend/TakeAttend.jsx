@@ -5,6 +5,7 @@ import { Button, Checkbox } from 'antd';
 const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
   };
+
 const TakeAttend = () => {
     return (
         <div>
