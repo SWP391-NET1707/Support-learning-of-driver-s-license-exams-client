@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, DatePicker, Form, Input, Modal, Select } from 'antd';
-import { postSlot, getSlotTimeById, getCourse, getSlotbyMentor } from '../../api/auth-services';
+import { Alert, Button, Checkbox, DatePicker, Form, Input, Modal, Select } from 'antd';
+import { postSlot, getSlotTimeById, getCourse, getSlotbyMentor, postTakeAttendant } from '../../api/auth-services';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 const CreateSlot = () => {
@@ -17,6 +18,7 @@ const CreateSlot = () => {
   const [courses, setCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [slotsPerPage] = useState(10);
+  const [isAttended, setIsAttended] = useState(false);
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const accessToken = user.accessToken;
@@ -25,17 +27,17 @@ const CreateSlot = () => {
   const showModal = () => {
     setOpen(true);
   };
-  
+
   function filterSlotsByDate(slotsData) {
     const currentDate = new Date();
-    const data=slotsData
+    const data = slotsData
     const filteredSlots = data.filter((slot) => new Date(slot.monthYear) >= currentDate);
     return filteredSlots;
   }
-  
+
   // Usage
   // const filteredSlots = filterSlotsByDate(slotsData);
-  
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -59,7 +61,7 @@ const CreateSlot = () => {
     }
 
     fetchData();
- 
+
   }, []);
 
   const handleOk = async () => {
@@ -75,7 +77,7 @@ const CreateSlot = () => {
         setConfirmLoading(false);
       }, 2000);
       // window.location.reload();
-      
+
     } catch (error) {
       // console.log(error.response)
       console.error('Error during slot creation:', error);
@@ -84,6 +86,20 @@ const CreateSlot = () => {
 
   const handleCancel = () => {
     setOpen(false);
+  };
+
+  const handleTakeAttend = async (slot) =>{
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    try {
+      const accessToken = user.accessToken;
+      setIsAttended(isAttended)
+      await postTakeAttendant(slot.id, isAttended, accessToken)
+      console.log(isAttended)
+      window.location.reload();
+    } catch (error) {
+      // console.log(error.response)
+      console.error('Error during slot creation:', error);
+    }
   };
 
 
@@ -129,9 +145,9 @@ const CreateSlot = () => {
                     </Form.Item>
                     <Form.Item label="Khoa hoc">
                       <Select
-                      placeholder="Select Course"
-                      value={courseId}
-                      onChange={(value) => setCourseId(value)}>
+                        placeholder="Select Course"
+                        value={courseId}
+                        onChange={(value) => setCourseId(value)}>
                         {courses.map(item => (
                           <Select.Option key={item.id} value={item.id}>
                             {item.name}
@@ -160,9 +176,10 @@ const CreateSlot = () => {
                       <th className="text-center" scope="col">
                         Ngày
                       </th>
-                      <th scope="col">Mô tả</th>
-                      <th scope="col">Học sinh</th>
+                      <th scope="col">Nội dung</th>
+                      {/* <th scope="col">Học sinh</th> */}
                       <th scope="col">Khóa Học</th>
+                      {/* <th scope="col">Attend</th> */}
                       {/* <th className="text-center" scope="col"></th> */}
                     </tr>
                   </thead>
@@ -200,34 +217,35 @@ const CreateSlot = () => {
                             </div>
                           </td>
                           <td>
-                            sdsd
-                          </td>
-                          <td>
                             <div className="r-no">
                               <span><h5>{slot.courses?.name ? slot.courses.name.toUpperCase() : 'N/A'}</h5></span>
                             </div>
                           </td>
+                          {/* <td> <span className="d-inline-block align-middle"><Checkbox
+                            value={isAttended}
+                            onChange={(e) => setIsAttended(e.target.value)}>
+                            Attended</Checkbox></span></td>
                           <td>
                             <div className="primary-btn">
-                              <a className="btn btn-primary" href="#">
+                              <Button className="btn btn-primary" onClick={() =>handleOk(slot)}>
                                 Take
-                              </a>
+                              </Button>
                             </div>
-                          </td>
+                          </td> */}
                         </tr>
                       ))
                     )}
                   </tbody>
                 </table>
                 <ul className="pagination">
-                {Array.from({ length: Math.ceil(slots.length / slotsPerPage) }, (_, index) => (
-                  <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                    <a onClick={() => paginate(index + 1)} className="page-link">
-                      {index + 1}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+                  {Array.from({ length: Math.ceil(slots.length / slotsPerPage) }, (_, index) => (
+                    <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                      <a onClick={() => paginate(index + 1)} className="page-link">
+                        {index + 1}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>

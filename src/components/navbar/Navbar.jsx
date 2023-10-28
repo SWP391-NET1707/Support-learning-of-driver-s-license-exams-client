@@ -34,6 +34,7 @@ function App() {
     // Clear the session storage and log the user out
     sessionStorage.removeItem('user');
     setIsLoggedIn(false);
+    window.location.href = '/home'
   };
 
   return (
@@ -48,8 +49,8 @@ function App() {
         <div className="collapse navbar-collapse" id="navbarCollapse">
           <div className="navbar-nav ms-auto p-4 p-lg-0">
             <Link to="/home" className="nav-item nav-link active">Trang chủ</Link>
-            <Link to="/Quiz" className="nav-item nav-link">Khóa học lái xe</Link>
-            <Link to="/QuizPage" className="nav-item nav-link">Thi lý thuyết bằng lái xe online</Link>
+            {/* <Link to="/Quiz" className="nav-item nav-link">Khóa học lái xe</Link> */}
+            <Link to="/Quiz" className="nav-item nav-link">Thi lý thuyết bằng lái xe online</Link>
             {isLoggedIn ? (
               <Link to="/User" className="nav-item nav-link">{username}</Link>
             ) : (

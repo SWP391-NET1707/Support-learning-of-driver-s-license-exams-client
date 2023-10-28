@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/bootstrap.scss';
 import 'animate.css';
 
-import { CreateSlot, Navbar, Schedule, TakeAttend, Timetable } from './components';
+import { CreateSlot, License, MentorList, Navbar, Schedule, StaffCourse, StaffQuiz, TakeAttend, Timetable } from './components';
 import { Footer } from './containers';
 import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor, Payment, PaymentFail, Test, Mophong } from './pages';
 import app from './pages/admin/App';
@@ -16,6 +16,8 @@ import jwtDecode from 'jwt-decode';
 import { useEffect } from 'react';
 import authService from './api/auth-services';
 import TakeSlot from './components/TakeSlot/TakeSlot';
+import Staff from './pages/Staff';
+
 
 
 function AppM() {
@@ -44,7 +46,12 @@ function AppM() {
                 <Route path="/ForgotPassword" element={<ForgotPassword />} />
                 <Route path="/Mophong" element={<Mophong />} />
                 <Route path="/TakeSlot" element={<TakeSlot/>} />
-                
+                <Route path="/Staff" element={<Staff/>} >
+                            <Route path="License" element={<License />} />
+                            <Route path="MentorList" element={<MentorList />} />
+                            <Route path="StaffCourse" element={<StaffCourse />} />
+                            <Route path="StaffQuiz" elewment={<StaffQuiz />} />
+                </Route>
                 {/*Test function page*/}
                 <Route path="/test" element={<Test/>} />
 

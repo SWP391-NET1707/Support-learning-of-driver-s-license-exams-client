@@ -27,10 +27,12 @@ const Login = () => {
                 const userRole = jwtDecode(sessionStorage.getItem("user")).role
                 if (userRole === "Student") {
                     navigate("/home");
+                    window.location.reload();
                   } else if (userRole === "Mentor") {
                     navigate("/Mentor");
+                    window.location.reload();
                   }
-              window.location.reload();
+              
             },
             (error) => {
               console.log(error);

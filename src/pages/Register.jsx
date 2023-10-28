@@ -19,6 +19,7 @@ const Register = () => {
   const handleConfirmationCode = () => {
     console.log('Email:', email);
     handleConfirmationCodeRequest(email, setConfirmationCodeError);
+    alert("da gui OTP thanh cong")
   };
 
   const handleRegistration = (e) => {

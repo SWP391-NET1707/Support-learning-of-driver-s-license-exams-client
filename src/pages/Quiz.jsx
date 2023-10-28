@@ -10,7 +10,7 @@ function Quiz() {
         <div className="ant-card ant-card-bordered ant-card-hoverable" style={{ background: "white" }}>
           <div className="ant-card-body">
             <div>
-              <h2>Chương 1. Khái niệm và quy tắc giao thông</h2>
+              <Link to="/QuizPage"><h2>Chương 1. Khái niệm và quy tắc giao thông</h2></Link>
             </div>
             <p>Gồm 166 câu. Số câu <strong>điểm liệt: 45.</strong></p>
           </div>

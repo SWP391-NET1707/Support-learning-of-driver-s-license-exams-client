@@ -23,6 +23,7 @@ const signup = async (email,password) => {
 }
 
 const login = async (email, password) => {
+  try{
     const response = await axios
     .post(API_URL + "/Authen/login", {
       email,
@@ -31,7 +32,10 @@ const login = async (email, password) => {
   if (response.data.accessToken) {
     sessionStorage.setItem("user", JSON.stringify(response.data));
   }
-  return response.data;
+  return response.data;}
+  catch (err) {
+    alert(err.response.data)
+  }
   };
 
   const logout = () => {
@@ -60,22 +64,18 @@ export async function handleRegistrationRequest(name, email, emailToken, passwor
       password,
       confirmPassword,
     });
-
-    if (response.status === 200) {
-      console.log('Registration successful');
-    } else {
-      console.log('Registration failed');
-    }
+    alert("dang ki thanh cong")
+    // window.location.href="/home"
+    // if (response.status === 200) {
+    //   console.log('Registration successful');
+    // } else {
+    //   console.log('Registration failed');
+    // }
 
     // Reset form fields and errors
-    setRegistrationError('');
+    // setRegistrationError('');
   } catch (err) {
-    console.error('Error during registration:', err);
-    if (!err.response) {
-      setRegistrationError('Error');
-    } else {
-      setRegistrationError('Registration successful');
-    }
+    alert(err.response.data)
   }
 }
 
@@ -207,12 +207,11 @@ export async function getSlot() {
     const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot');
     const data = response.data; // Store the response data in a variable
 
-    console.log('Slot Data:', data); // Log the data
+    // console.log('Slot Data:', data); 
 
     return data;
   } catch (error) {
-    console.error('Error fetching slot data:', error);
-    throw error; // Rethrow the error to handle it at a higher level
+    alert(error.response.data)
   }
 }
 
@@ -262,7 +261,7 @@ export async function getSlotTime() {
    
     // console.log(response.data);
   } catch (error) {
-    console.error('Error:', error);
+    alert(error.response.data)
   }
 }
 
@@ -272,11 +271,8 @@ export async function getSlotTimeById(id) {
     const { startTime, endTime } = response.data;
    return { startTime, endTime };
  
-
-    
-    console.log(response.data);
   } catch (error) {
-    console.error('Error:', error);
+    alert(error.response.data)
   }
 }
 
@@ -313,7 +309,7 @@ export async function getCourse() {
 
     return response.data
   } catch (error) {
-    console.error('Error:', error);
+    alert(error.response.data)
   }
 }
 
@@ -326,7 +322,7 @@ export async function getCourseById(id) {
     
     return(response.data);
   } catch (error) {
-    console.error('Error:', error);
+    alert(error.response.data)
   }
 }
 
@@ -421,13 +417,13 @@ export async function postSlot(slotTimeId, courseId, description, monthYear, acc
       }
     });
 
-    console.log('Response:', response);
+    // alert(response.data)
 
-    if (response.status === 200) {
-      console.log('Slot successfully updated');
-    } else {
-      console.log('Slot updating failed');
-    }
+    // if (response.status === 200) {
+    //   console.log('Slot successfully updated');
+    // } else {
+    //   console.log('Slot updating failed');
+    // }
   } catch (error) {
     if (error.response) {
   
@@ -452,7 +448,7 @@ export async function getStudentCourse(accessToken) {
    
     // console.log(response.data);
   } catch (error) {
-    console.error('Error:', error);
+    alert(error.response.data)
   }
 }
 
@@ -517,11 +513,31 @@ try {
       }
     });
     console.log(response)
-
+    alert("đăng kí thành công")
     return response.data
-
-
+    
   } catch (error) {
-    console.error('Error:', error);
+    alert(error.response.data)
   }
 }
+
+export async function postTakeAttendant( id, isAttended ,accessToken){
+
+  try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/attendance-report/{id}`,
+      
+      {
+        id,
+        isAttended,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      console.log(response)
+      alert("điểm danh thành công")
+      return response.data
+    } catch (error) {
+      // alert(error.response.data)
+    }
+  }

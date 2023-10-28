@@ -8,3 +8,7 @@ export {default as Timetable} from './Timetable/Timetable';
 export {default as TakeAttend} from './TakeAttend/TakeAttend';
 export {default as CreateSlot} from './CreateSlot/CreateSlot';
 export {default as Schedule} from './Schedule/Schedule';
+export {default as License} from './Staff/License';
+export {default as MentorList} from './Staff/MentorList';
+export {default as StaffCourse} from './Staff/StaffCourse';
+export {default as StaffQuiz} from './Staff/StaffQuiz';
