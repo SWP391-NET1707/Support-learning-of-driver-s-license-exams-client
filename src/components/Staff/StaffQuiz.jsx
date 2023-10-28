@@ -151,37 +151,6 @@ const StudentQuizzesList = () => {
   return (
     <div className="container">
       <h1>Danh sách bài quiz</h1>
-      <button className="btn btn-info" onClick={handleAddQuizClick} >Thêm bài quiz</button>
-      {showAddQuizForm && (
-        <div>
-          <h2>Thêm bài quiz</h2>
-          <form>
-            <div className="form-group">
-              <label>Tên bài quiz</label>
-              <input
-                type="text"
-                value={newQuiz.name}
-                onChange={(e) => setNewQuiz({ ...newQuiz, name: e.target.value })}
-              />
-            </div>
-            <div className="form-group">
-              <label>Bằng lái</label>
-              <select
-                value={newQuiz.licenseId}
-                onChange={(e) => setNewQuiz({ ...newQuiz, licenseId: e.target.value })}
-              >
-                {licenses.map((license) => (
-                  <option key={license.id} value={license.id}>
-                    {license.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button className="btn btn-primary" onClick={handleSaveAddQuiz}>Lưu</button>
-            <button className="btn btn-light" onClick={handleCancelAddQuiz}>Hủy</button>
-          </form>
-        </div>
-      )}
       <table className="table table-striped">
         <thead>
           <tr>
@@ -231,6 +200,37 @@ const StudentQuizzesList = () => {
           ))}
         </tbody>
       </table>
+      <button className="btn btn-info" onClick={handleAddQuizClick} >Thêm bài quiz</button>
+      {showAddQuizForm && (
+        <div>
+          <h2>Thêm bài quiz</h2>
+          <form>
+            <div className="form-group">
+              <label>Tên bài quiz</label>
+              <input
+                type="text"
+                value={newQuiz.name}
+                onChange={(e) => setNewQuiz({ ...newQuiz, name: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label>Bằng lái</label>
+              <select
+                value={newQuiz.licenseId}
+                onChange={(e) => setNewQuiz({ ...newQuiz, licenseId: e.target.value })}
+              >
+                {licenses.map((license) => (
+                  <option key={license.id} value={license.id}>
+                    {license.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button className="btn btn-primary" onClick={handleSaveAddQuiz}>Lưu</button>
+            <button className="btn btn-light" onClick={handleCancelAddQuiz}>Hủy</button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
