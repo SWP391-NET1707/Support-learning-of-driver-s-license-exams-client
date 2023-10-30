@@ -541,3 +541,203 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       // alert(error.response.data)
     }
   }
+
+  export async function getQuestionById(id) {
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/${id}`);
+  
+   
+  
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  export async function getQuestion() {
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question`);
+  
+   
+  
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  export async function getQuestionByLicenseId(id) {
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/license/${id}`);
+  
+   
+  
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  export async function getQuestionByQuizId(id) {
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/quiz/${id}`);
+  
+   
+  
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  export async function postQuestion(accessToken) {
+    try {
+      const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/create`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      }
+      );
+  
+   
+  
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  export async function putQuestion(accessToken, id){
+    try {
+      const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/update/${id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      }
+      );
+  
+   
+  
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  export async function deleteQuestion(accessToken, id){
+  
+    try {
+      const response = await axios.delete(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/delete/${id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      }
+      );
+  
+   
+  
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  export async function getQuizz(){
+  
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz`);
+  
+   
+  
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  export async function getQuizzById(id){
+  
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/${id}`);
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  export async function putQuizzById(accessToken, id){
+    try {
+      const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/${id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      }
+      );
+     
+      // console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+    export async function deleteQuizzById(accessToken, id){
+      try {
+        const response = await axios.delete(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          }
+        }
+        );
+       
+        // console.log(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    
+    export async function getQuizzByLicenseId(id){
+  
+      try {
+        const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/license/${id}`);
+       
+        // console.log(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    
+    export async function postQuiz(accessToken){
+      try {
+        const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/create`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          }
+        }
+        );
+       
+        // console.log(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  
