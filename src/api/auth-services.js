@@ -636,6 +636,63 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       console.error('Error:', error);
     }
   }
+  export async function getQuestionInQuizz(quizId, accessToken){
+    try{
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/quiz/${quizId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      alert("Lay du lieu cau hoi thanh cong");
+      return response.data;
+    }catch(error){
+      console.error('Error:', error);
+    }
+  }
+  export async function updateQuestion(questionId, accessToken, dataToUpdate) {
+    try {
+      const response = await axios.put(
+        `https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/update/${questionId}`,
+        dataToUpdate, 
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+            'accept': '*/*',
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        alert('Cập nhật câu hỏi thành công');
+        return response.data; 
+      } else {
+        console.error('Lỗi: Không thành công');
+        
+      }
+    } catch (error) {
+      console.error('Lỗi:', error);
+      
+    }
+  }
+  export async function deleteQuestion(questionId, accessToken){
+    try {
+      const response = await axios.delete(
+        `https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/delete/${questionId}`, 
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      alert('Cập nhật câu hỏi thành công');
+    } catch (error) {
+      console.error('Lỗi:', error);
+    }
+  }
 
   export async function getQuizz(accessToken) {
     try {
