@@ -1,0 +1,37 @@
+
+  .delete-button .anticon svg {
+    fill: red; /* Change the fill color to red */
+  }
+  
+  .delete-button:hover .anticon svg {
+    fill: darkred; /* Change the fill color on hover if desired */
+  }
+
+/* Add this CSS to your component's CSS file */
+
+/* Styling for the "Edit" button's icon */
+.edit-button .anticon svg {
+  fill: #007bff; /* Change the fill color to blue (#007bff) */
+}
+
+.edit-button:hover .anticon svg {
+  fill: #0056b3; /* Change the fill color on hover to a slightly darker blue (#0056b3) */
+}
+
+/* Styling for the "Save" button's icon */
+.save-button .anticon svg {
+  fill: #28a745; /* Change the fill color to green (#28a745) */
+}
+
+.save-button:hover .anticon svg {
+  fill: #1e7e34; /* Change the fill color on hover to a slightly darker green (#1e7e34) */
+}
+
+/* Styling for the "Close" button's icon */
+.close-button .anticon svg {
+  fill: #dc3545; /* Change the fill color to red (#dc3545) */
+}
+
+.close-button:hover .anticon svg {
+  fill: #ac2925; /* Change the fill color on hover to a slightly darker red (#ac2925) */
+}

@@ -31,6 +31,9 @@ const Login = () => {
                   } else if (userRole === "Mentor") {
                     navigate("/Mentor");
                     window.location.reload();
+                  } else if (userRole === "Staff"){
+                    navigate("/Staff")
+                    window.location.reload();
                   }
               
             },

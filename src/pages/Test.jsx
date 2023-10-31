@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { getLicense, getLicenseById, getSlot, getWallet,getSlotTime,getSlotTimeById, PostCourse, getCourse,getCourseById, putCourseById, DeleteCourseById, postSlot,getStudentCourse } from '../api/auth-services';
+import { getLicense, getLicenseById, getSlot, getWallet,getSlotTime,getSlotTimeById, postCourse, getCourse,getCourseById, putCourseById, DeleteCourseById, postSlot,getStudentCourse } from '../api/auth-services';
 
 const Test = () => {
     const [name, setName] = useState('b2');
@@ -55,7 +55,7 @@ const Test = () => {
     }
 
     const handlePostCourse = () => {
-        PostCourse(name, price, duration, description, licenseId);
+        postCourse(name, price, duration, description, licenseId);
       };
 
       const handlePutCourse = () => {

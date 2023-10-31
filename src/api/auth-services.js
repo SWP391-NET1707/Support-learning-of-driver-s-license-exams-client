@@ -143,15 +143,26 @@ export async function handlePaymentRequest(accessToken, amount) {
   }
 }
 
+export async function postLicense(license, accessToken) {
+  try {
+    const response = await axios.post('https://drivingschoolapi20231005104822.azurewebsites.net/api/License',
+    license,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    alert("Tao thanh cong")
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 export async function getLicense() {
   try {
     const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/License');
 
-  
-
-    
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error:', error);
@@ -170,9 +181,15 @@ export async function getLicenseById(id) {
   }
 }
 
-export async function DeleteLicenseById(id) {
+export async function DeleteLicenseById(id, accessToken) {
   try {
-    const response = await axios.delete(`https://drivingschoolapi20231005104822.azurewebsites.net/api/License/${id}`);
+    const response = await axios.delete(`https://drivingschoolapi20231005104822.azurewebsites.net/api/License/${id}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
 
     console.log(response.data);
     return response.data;
@@ -183,11 +200,17 @@ export async function DeleteLicenseById(id) {
 }
 
 
-export async function putLicenseById( name, id) {
+export async function putLicenseById( id, name, accessToken) {
   try {
-    const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/License/${id}`, {
-      name
-    });
+    const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/License/${id}`, 
+      name,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      }
+    );
 
     console.log('Response:', response);
 
@@ -326,17 +349,15 @@ export async function getCourseById(id) {
   }
 }
 
-export async function PostCourse(name, price, duration, description, licenseId) {
+export async function postCourse(name, price, duration, description, licenseId) {
   try {
     const response = await axios.post(Course_URL, {
-      name,
-      price,
-      duration,
-      description,
-      licenseId,
+      "name":name,
+      "price":price,
+      "duration":duration,
+      "description":description,
+      "licenseId":licenseId,
     });
-
-    console.log('Response:', response);
 
     if (response.status === 200) {
       console.log('Course successfully posted');
@@ -348,9 +369,9 @@ export async function PostCourse(name, price, duration, description, licenseId) 
   }
 }
   
-export async function putCourseById(name, price, duration, description, licenseId, id) {
+export async function putCourseById(id,name, price, duration, description, licenseId) {
   try {
-    const response = await axios.put(Course_URL+ `/${id}`, {
+    const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Course/update/${id}`, {
       name,
       price,
       duration,
@@ -371,9 +392,14 @@ export async function putCourseById(name, price, duration, description, licenseI
 }
 
 
-export async function DeleteCourseById(id) {
+export async function DeleteCourseById(id, accessToken) {
   try {
-    const response = await axios.put(Course_URL+ `/${id}`);
+    const response = await axios.delete(Course_URL+ `/delete/${id}`,{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
 
     console.log('Response:', response);
 
@@ -393,9 +419,16 @@ export async function getMentor() {
     const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/User/get/mentor`);
     const data = response.data; // Store the response data in a variable
 
-    console.log('Mentor Data:', data); // Log the data
+    const transformedData = data.map(mentor => ({
+      id: mentor.id,
+      name: mentor.name,
+      email: mentor.email,
+      password: mentor.password,
+      active: mentor.active,
+      mentorLicenses: mentor.mentorLicenses,
+    }));
 
-    return data;
+    return transformedData;
   } catch (error) {
     console.error('Error fetching mentor data:', error);
     throw error; // Rethrow the error to handle it at a higher level
@@ -524,7 +557,7 @@ try {
 export async function postTakeAttendant( id, isAttended ,accessToken){
 
   try {
-      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/attendance-report/{id}`,
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/attendance-report/${id}`,
       
       {
         id,
@@ -541,3 +574,143 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       // alert(error.response.data)
     }
   }
+  export async function postMentor(name,email,password,mentorLicenseId, accessToken) {
+    try {
+      const response = await axios.post('https://drivingschoolapi20231005104822.azurewebsites.net/api/User/register/mentor',
+      {
+      "name" : name,
+      "email": email,
+      "password":password,
+      "mentorLicenseId":mentorLicenseId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      alert("Tao thanh cong")
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  export async function putMentorById(id, name, password, active, mentorLicenseId, accessToken) {
+    try {
+      const response = await axios.put(
+        `https://drivingschoolapi20231005104822.azurewebsites.net/api/User/update/mentor/${id}`,
+        {
+          "name": name,
+          "password": password,
+          "active": active,
+          "mentorLicenseId": mentorLicenseId,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        }
+      );
+      alert("Success");
+    } catch (error) {
+      if (error.response) {
+        console.error('Error Response Data:', error.response.data);
+      } else {
+        console.error('Error:', error);
+      }
+    }
+  }
+
+  export async function DeleteMentorbyID(id, accessToken) {
+    try {
+      const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/User/delete/mentor/${id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      alert("xoa thanh cong")
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  export async function getQuizz(accessToken) {
+    try {
+      const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz',{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      return response.data
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  export async function postQuizz(name, licenseId, accessToken) {
+    try {
+      const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/create`,
+      {
+      "name" : name,
+      "licenseId": licenseId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      alert("Tao thanh cong")
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  export async function putQuizzById(id, name, licenseId, accessToken) {
+    try {
+      const response = await axios.put(
+        `https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/${id}`,
+      {
+      "name" : name,
+      "licenseId": licenseId,
+      },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        }
+      );
+      alert("Success");
+    } catch (error) {
+      if (error.response) {
+        console.error('Error Response Data:', error.response.data);
+      } else {
+        console.error('Error:', error);
+      }
+    }
+  }
+
+  export async function deleteQuizzById(id, accessToken) {
+    try {
+      const response = await axios.delete(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/${id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      alert("xoa thanh cong")
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+
+
+  
