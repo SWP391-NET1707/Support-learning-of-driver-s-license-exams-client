@@ -534,7 +534,7 @@ export async function getOwnStudentCourse(accessToken) {
 }
 
 
-export async function postStudentSlot( id, accessToken){
+export async function postStudentSlot( id, isAttended ,accessToken){
 
 try {
     const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/register/slot/bystudent/${id}`,
@@ -543,7 +543,8 @@ try {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`
-      }
+      },
+      params: {}
     });
     console.log(response)
     alert("đăng kí thành công")
@@ -571,7 +572,7 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       alert("điểm danh thành công")
       return response.data
     } catch (error) {
-      // alert(error.response.data)
+      alert(error.response.data)
     }
   }
   export async function postMentor(name,email,password,mentorLicenseId, accessToken) {
@@ -591,7 +592,10 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       });
       alert("Tao thanh cong")
     } catch (error) {
-      console.error('Error:', error);
+      if (error.response) {
+  
+        alert(error.response.data);
+    }
     }
   }
 
@@ -612,13 +616,12 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
           },
         }
       );
-      alert("Success");
+      alert("Chỉnh sửa thành công");
     } catch (error) {
       if (error.response) {
-        console.error('Error Response Data:', error.response.data);
-      } else {
-        console.error('Error:', error);
-      }
+  
+        alert(error.response.data);
+    }
     }
   }
 
@@ -633,7 +636,10 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       });
       alert("xoa thanh cong")
     } catch (error) {
-      console.error('Error:', error);
+      if (error.response) {
+  
+        alert(error.response.data);
+    }
     }
   }
 
@@ -648,7 +654,10 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
   
       return response.data
     } catch (error) {
-      console.error('Error:', error);
+      if (error.response) {
+  
+        alert(error.response.data);
+    }
     }
   }
 
@@ -667,7 +676,10 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       });
       alert("Tao thanh cong")
     } catch (error) {
-      console.error('Error:', error);
+      if (error.response) {
+  
+        alert(error.response.data);
+    }
     }
   }
 
@@ -689,12 +701,10 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       alert("Success");
     } catch (error) {
       if (error.response) {
-        console.error('Error Response Data:', error.response.data);
-      } else {
-        console.error('Error:', error);
-      }
+  
+        alert(error.response.data);
     }
-  }
+  }}
 
   export async function deleteQuizzById(id, accessToken) {
     try {
@@ -705,9 +715,11 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      alert("xoa thanh cong")
+      alert("xoa thanh cong!")
     } catch (error) {
-      console.error('Error:', error);
+      if (error.response) {
+        alert(error.response.data);
+    }
     }
   }
 
