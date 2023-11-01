@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DeleteLicenseById, getLicense, postLicense, putLicenseById } from '../../api/auth-services';
-import { Button, Input, Modal, Table } from 'antd';
+import { Button, Form, Input, Modal, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 const License = () => {
@@ -11,6 +11,8 @@ const License = () => {
   const [newLicense, setNewLicense] = useState({ id: 0, name: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [editLicense, setEditLicense] = useState({ id: 0, name: '' });
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [newLicenseName, setNewLicenseName] = useState('');
 
   const user = JSON.parse(sessionStorage.getItem('user'));
   const accessToken = user.accessToken;
@@ -30,21 +32,21 @@ const License = () => {
     fetchLicenseData();
   }, []);
 
-  const handleAddLicense = () => {
+  const handleAddLicense = async () => {
     // Validate the input
-    if (!newLicense.name) {
+    if (!newLicenseName) {
       alert('Please fill in the name field');
       return;
     }
 
     // Send a POST request to add the license
-    postLicense(newLicense.name, accessToken);
-
+    await postLicense(newLicenseName, accessToken);
+    fetchLicenseData();
     // Clear the form
     setNewLicense({ name: '' });
 
     // Fetch the updated license data
-    fetchLicenseData();
+    
   };
 
   const handleEdit = (license) => {
@@ -125,13 +127,36 @@ const License = () => {
       ),
     },
   ];
+  const handleShowModal = () => {
+    setIsModalVisible(true);
+  };
 
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   return (
     <div>
-      <Button type="primary" className="button-right">
+      <Button type="primary" className="button-right" onClick={handleShowModal}>
         Add License
       </Button>
       <Table columns={columns} dataSource={currentLicenses} />
+      <Modal
+        title="Add License"
+        visible={isModalVisible}
+        onOk={handleAddLicense}
+        onCancel={handleCancel}
+      >
+        <Form>
+          <Form.Item label="Name">
+            <Input
+              type="text"
+              value={newLicenseName}
+              onChange={(e) => setNewLicenseName(e.target.value)}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
+
     </div>
   );
 };
