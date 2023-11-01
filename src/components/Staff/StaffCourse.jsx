@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { getCourse, postCourse, putCourseById, deleteCourseById, DeleteCourseById, getLicense } from '../../api/auth-services'; // Import API functions
+import { getCourse, postCourse, putCourseById, deleteCourseById, DeleteCourseById,getLicense } from '../../api/auth-services'; // Import API functions
 import { Button, Form, Input, Modal, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 const StaffCourse = () => {
   const [courses, setCourses] = useState([]);
+  const [editedLicenseId, setEditedLicenseId] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [editCourse, setEditCourse] = useState({ id: 0, name: '', price: 0, duration: '', description: '', licenseId: 0 });
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -17,12 +18,6 @@ const StaffCourse = () => {
     description: '',
     licenseId: 0,
   });
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [coursesPerPage] = useState(10);
-
-  const user = JSON.parse(sessionStorage.getItem("user"));
-  const accessToken = user.accessToken;
   const fetchLicenseData = async () => {
     try {
       const licenseData = await getLicense(accessToken);
@@ -39,9 +34,15 @@ const StaffCourse = () => {
   }, []);
   const getLicenseNameById = (licenseId) => {
     const license = licenses.find((license) => license.id === licenseId);
-    return license ? license.name : 'Unknown'; 
+    return license ? license.name : 'Unknown';
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [coursesPerPage] = useState(10);
+
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const accessToken = user.accessToken;
+  
   const fetchCourseData = async () => {
     try {
       const courseData = await getCourse(accessToken);
@@ -72,6 +73,11 @@ const StaffCourse = () => {
 
     // Fetch the updated course data
     fetchCourseData();
+  };
+  const handleLicenseIdChange = (e) => {
+    const value = e.target.value;
+    setEditedLicenseId(value); // Update the edited License ID
+
   };
 
   const handleEdit = (course) => {
@@ -195,12 +201,20 @@ const StaffCourse = () => {
       ),
     },
     {
-      title: "License",
-      dataIndex: "licenseId",
-      key: "licenseId",
-      render: (licenseId, question) => (
+      title: 'License',
+      dataIndex: 'licenseId',
+      key: 'licenseId',
+      render: (licenseId, course) => (
         <span>
-          {getLicenseNameById(licenseId)}
+          {isEditing && editCourse.id === course.id ? (
+            <Input
+              type="text"
+              value={getLicenseNameById(editCourse.licenseId)}
+              onChange={handleLicenseIdChange}
+            />
+          ) : (
+            <span>{getLicenseNameById(licenseId)}</span>
+          )}
         </span>
       ),
     },

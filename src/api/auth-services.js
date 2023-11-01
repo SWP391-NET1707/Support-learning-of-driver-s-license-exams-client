@@ -654,6 +654,19 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       console.error('Error:', error);
     }
   }
+  export async function postQuestion(accessToken, dataToAdd){
+    try {
+      const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/create`,dataToAdd, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      alert("Them cau hoi thanh cong");
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   export async function updateQuestion(questionId, accessToken, dataToUpdate) {
     try {
       const response = await axios.put(

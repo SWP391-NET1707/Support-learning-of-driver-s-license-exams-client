@@ -13,6 +13,7 @@ const Mentor = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [licenses, setLicenses] = useState([]);
+  const [editedLicenseId, setEditedLicenseId] = useState(0);
   const fetchLicenseData = async () => {
     try {
       const licenseData = await getLicense(accessToken);
@@ -181,6 +182,11 @@ const Mentor = () => {
         [name]: type === 'checkbox' ? checked : value,
       });
     }
+  };
+  const handleLicenseIdChange = (e) => {
+    const value = e.target.value;
+    setEditedLicenseId(value); // Update the edited License ID
+
   };
 
 
