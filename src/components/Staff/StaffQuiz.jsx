@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getQuizz, postQuizz, putQuizzById, deleteQuizzById } from '../../api/auth-services'; // Import API functions
+import { getQuizz, postQuizz, putQuizzById, deleteQuizzById, getQuestionInQuizz, updateQuestion, deleteQuestion } from '../../api/auth-services'; // Import API functions
 import { Button, Form, Input, Modal, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import './tableStaf.css'
+import { ViewArrayOutlined } from '@mui/icons-material';
 
 
 const StaffQuiz = () => {
@@ -15,10 +16,25 @@ const StaffQuiz = () => {
     licenseId: 0,
   });
   const [editedLicenseId, setEditedLicenseId] = useState(0);
-
+  const [questions, setQuestions] = useState([]);
+  const [isViewingQuestions, setIsViewingQuestions] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [isEditingQuestion, setIsEditingQuestion] = useState(false);
+const [editedQuestion, setEditedQuestion] = useState({
+  id: null,
+  content: '',
+  answer1: '',
+  answer2: '',
+  answer3: '',
+  answer4: '',
+  correctAnswer: '',
+  licenseId: '',
+  quizId: ''
+});
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const accessToken = user.accessToken;
+
 
   const fetchQuizData = async () => {
     try {
@@ -28,10 +44,24 @@ const StaffQuiz = () => {
       console.error('Error:', error);
     }
   };
-
   useEffect(() => {
     fetchQuizData();
   }, []);
+  const handleEditQuestion = (question) => {
+    setCurrentQuestion(question);
+    setEditedQuestion({
+      id: question.id,
+      content: question.content,
+      answer1: question.answer1,
+      answer2: question.answer2,
+      answer3: question.answer3,
+      answer4: question.answer4,
+      correctAnswer: question.correctAnswer,
+      licenseId: question.licenseId,
+      quizId: question.quizId,
+    });
+    setIsEditingQuestion(true);
+  };
 
   const handleAddQuiz = async () => {
     // Validate the input
@@ -82,7 +112,59 @@ const StaffQuiz = () => {
       console.error('Error during quiz update:', error);
     }
   };
+  const handleSaveEditQuestion = async () => {
+    try {
+      // Kiểm tra xem thông tin câu hỏi đã thay đổi
+      if (editedQuestion.id) {
+        // Gọi API để cập nhật câu hỏi
+        await updateQuestion(editedQuestion.id, accessToken, {
+          content: editedQuestion.content,
+          answer1: editedQuestion.answer1,
+          answer2: editedQuestion.answer2,
+          answer3: editedQuestion.answer3,
+          answer4: editedQuestion.answer4,
+          correctAnswer: editedQuestion.correctAnswer,
+          licenseId: editedQuestion.licenseId,
+          quizId: editedQuestion.quizId,
+        });
+  
+        // Cập nhật thông tin câu hỏi trong danh sách hiện tại
+        setQuestions((prevQuestions) =>
+          prevQuestions.map((question) =>
+            question.id === editedQuestion.id ? { ...question, ...editedQuestion } : question
+          )
+        );
+  
+        setIsEditingQuestion(false); // Kết thúc chỉnh sửa
+        alert('Cập nhật câu hỏi thành công');
+      }
+    } catch (error) {
+      console.error('Lỗi khi cập nhật câu hỏi:', error);
+    }
+  };
+  const handleViewQuiz = async (id) => {
+    try {
+      const questionData = await getQuestionInQuizz(id, accessToken);
+      if (questionData && questionData.length > 0) {
+        setQuestions(questionData);
+        setCurrentQuestion(null); // Reset current question
+        setIsViewingQuestions(true);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  const handleDeleteQuestion = async (questionId) => {
+    try {
+      // Gọi hàm xóa câu hỏi từ API
+      await deleteQuestion(questionId, accessToken);
 
+      // Xóa câu hỏi khỏi danh sách hiện tại
+      setQuestions(questions.filter((question) => question.id !== questionId));
+    } catch (error) {
+      console.error('Error during question deletion:', error);
+    }
+  };
   const handleDelete = async (id) => {
     try {
       // Filter out the quiz with the specified ID
@@ -120,7 +202,7 @@ const StaffQuiz = () => {
   const handleLicenseIdChange = (e) => {
     const value = e.target.value;
     setEditedLicenseId(value); // Update the edited License ID
-    
+
   };
 
   const columns = [
@@ -160,7 +242,7 @@ const StaffQuiz = () => {
         </span>
       ),
     },
-    
+
     {
       title: 'Actions',
       dataIndex: 'actions',
@@ -176,6 +258,7 @@ const StaffQuiz = () => {
             <>
               <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(quiz)}>Edit</Button>
               <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(quiz.id)}>Delete</Button>
+              <Button icon={<ViewArrayOutlined />} className="view-button" onClick={() => handleViewQuiz(quiz.id)}>View questions</Button>
             </>
           )}
         </span>
@@ -196,6 +279,16 @@ const StaffQuiz = () => {
         onOk={handleAddQuiz}
         onCancel={handleCancel}
       >
+        <Modal
+          title="Questions in Quiz"
+          visible={isViewingQuestions}
+          onCancel={() => setIsViewingQuestions(false)}
+          footer={null}
+        >
+          {questions.map((question) => (
+            <div key={question.id}>{question.text}</div>
+          ))}
+        </Modal>
         <Form>
           <Form.Item label="Name">
             <Input
@@ -215,6 +308,164 @@ const StaffQuiz = () => {
           </Form.Item>
         </Form>
       </Modal>
+      <Modal
+  title={isEditingQuestion ? "Edit Question" : "Questions in Quiz"}
+  visible={isViewingQuestions}
+  onCancel={() => setIsViewingQuestions(false)}
+  footer={null}
+  width={1500} // Đặt độ rộng mới cho modal
+>
+  {isEditingQuestion ? ( // Nếu đang chỉnh sửa câu hỏi
+    <div>
+      <Form>
+        <Form.Item label="Content">
+          <Input
+            type="text"
+            name="content"
+            value={editedQuestion.content}
+            onChange={(e) =>
+              setEditedQuestion({ ...editedQuestion, content: e.target.value })
+            }
+          />
+        </Form.Item>
+        <Form.Item label="Answer 1">
+          <Input
+            type="text"
+            name="answer1"
+            value={editedQuestion.answer1}
+            onChange={(e) =>
+              setEditedQuestion({ ...editedQuestion, answer1: e.target.value })
+            }
+          />
+        </Form.Item>
+        <Form.Item label="Answer 2">
+          <Input
+            type="text"
+            name="answer2"
+            value={editedQuestion.answer2}
+            onChange={(e) =>
+              setEditedQuestion({ ...editedQuestion, answer2: e.target.value })
+            }
+          />
+        </Form.Item>
+        <Form.Item label="Answer 3">
+          <Input
+            type="text"
+            name="answer3"
+            value={editedQuestion.answer3}
+            onChange={(e) =>
+              setEditedQuestion({ ...editedQuestion, answer3: e.target.value })
+            }
+          />
+        </Form.Item>
+        <Form.Item label="Answer 4">
+          <Input
+            type="text"
+            name="answer4"
+            value={editedQuestion.answer4}
+            onChange={(e) =>
+              setEditedQuestion({ ...editedQuestion, answer4: e.target.value })
+            }
+          />
+        </Form.Item>
+        <Form.Item label="Correct Answer">
+    <Input
+      type="number"
+      name="correctAnswer"
+      value={editedQuestion.correctAnswer}
+      onChange={(e) =>
+        setEditedQuestion({ ...editedQuestion, correctAnswer: e.target.value })
+      }
+    />
+  </Form.Item>
+        <Form.Item>
+          <Button
+            icon={<SaveOutlined />}
+            className="save-button"
+            onClick={handleSaveEditQuestion}
+          >
+            Save
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
+  ) : (
+    <div>
+      {questions && questions.length > 0 ? (
+        <Table
+          dataSource={questions}
+          columns={[
+            {
+              title: "ID",
+              dataIndex: "id",
+              key: "id",
+            },
+            {
+              title: "Content",
+              dataIndex: "content",
+              key: "content",
+            },
+            {
+              title: "Answer 1",
+              dataIndex: "answer1",
+              key: "answer1",
+            },
+            {
+              title: "Answer 2",
+              dataIndex: "answer2",
+              key: "answer2",
+            },
+            {
+              title: "Answer 3",
+              dataIndex: "answer3",
+              key: "answer3",
+            },
+            {
+              title: "Answer 4",
+              dataIndex: "answer4",
+              key: "answer4",
+            },
+            {
+              title: "Correct answer",
+              dataIndex: "correctAnswer",
+              key: "correctAnswer",
+            },
+            {
+              title: "License ID",
+              dataIndex: "licenseId",
+              key: "licenseId",
+            },
+            {
+              title: "Actions",
+              dataIndex: "actions",
+              key: "actions",
+              render: (text, question) => (
+                <span>
+                  <Button
+                    icon={<EditOutlined />}
+                    className="edit-button"
+                    onClick={() => handleEditQuestion(question)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    icon={<DeleteOutlined />}
+                    className="delete-button"
+                    onClick={() => handleDeleteQuestion(question.id)}
+                  >
+                    Delete
+                  </Button>
+                </span>
+              ),
+            },
+          ]}
+        />
+      ) : (
+        <p>No questions available.</p>
+      )}
+    </div>
+  )}
+</Modal>
     </div>
   );
 };
