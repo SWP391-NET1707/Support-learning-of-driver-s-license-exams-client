@@ -4,6 +4,7 @@
 
 import axios from 'axios'
 import React from 'react'
+import { act } from 'react-dom/test-utils';
 import { json } from 'react-router-dom'
 
 const API_URL = "https://drivingschoolapi20231005104822.azurewebsites.net/api"
@@ -536,7 +537,7 @@ export async function getOwnStudentCourse(accessToken) {
 }
 
 
-export async function postStudentSlot( id ,accessToken){
+export async function postStudentSlot( id, accessToken){
 
 try {
     const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/register/slot/bystudent/${id}`,
@@ -545,8 +546,7 @@ try {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`
-      },
-      params: {}
+      }
     });
     console.log(response)
     alert("đăng kí thành công")
@@ -574,7 +574,7 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       alert("điểm danh thành công")
       return response.data
     } catch (error) {
-      alert(error.response.data)
+      // alert(error.response.data)
     }
   }
   export async function postMentor(name,email,password,mentorLicenseId, accessToken) {
@@ -594,10 +594,7 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       });
       alert("Tao thanh cong")
     } catch (error) {
-      if (error.response) {
-  
-        alert(error.response.data);
-    }
+      console.error('Error:', error);
     }
   }
 
@@ -618,12 +615,13 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
           },
         }
       );
-      alert("Chỉnh sửa thành công");
+      alert("Success");
     } catch (error) {
       if (error.response) {
-  
-        alert(error.response.data);
-    }
+        console.error('Error Response Data:', error.response.data);
+      } else {
+        console.error('Error:', error);
+      }
     }
   }
 
@@ -638,10 +636,64 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       });
       alert("xoa thanh cong")
     } catch (error) {
-      if (error.response) {
-  
-        alert(error.response.data);
+      console.error('Error:', error);
     }
+  }
+  export async function getQuestionInQuizz(quizId, accessToken){
+    try{
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/quiz/${quizId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      alert("Lay du lieu cau hoi thanh cong");
+      return response.data;
+    }catch(error){
+      console.error('Error:', error);
+    }
+  }
+  export async function updateQuestion(questionId, accessToken, dataToUpdate) {
+    try {
+      const response = await axios.put(
+        `https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/update/${questionId}`,
+        dataToUpdate, 
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+            'accept': '*/*',
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        alert('Cập nhật câu hỏi thành công');
+        return response.data; 
+      } else {
+        console.error('Lỗi: Không thành công');
+        
+      }
+    } catch (error) {
+      console.error('Lỗi:', error);
+      
+    }
+  }
+  export async function deleteQuestion(questionId, accessToken){
+    try {
+      const response = await axios.delete(
+        `https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/delete/${questionId}`, 
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      alert('Cập nhật câu hỏi thành công');
+    } catch (error) {
+      console.error('Lỗi:', error);
     }
   }
 
@@ -656,10 +708,7 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
   
       return response.data
     } catch (error) {
-      if (error.response) {
-  
-        alert(error.response.data);
-    }
+      console.error('Error:', error);
     }
   }
 
@@ -678,10 +727,7 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       });
       alert("Tao thanh cong")
     } catch (error) {
-      if (error.response) {
-  
-        alert(error.response.data);
-    }
+      console.error('Error:', error);
     }
   }
 
@@ -703,10 +749,12 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
       alert("Success");
     } catch (error) {
       if (error.response) {
-  
-        alert(error.response.data);
+        console.error('Error Response Data:', error.response.data);
+      } else {
+        console.error('Error:', error);
+      }
     }
-  }}
+  }
 
   export async function deleteQuizzById(id, accessToken) {
     try {
@@ -717,14 +765,80 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      alert("xoa thanh cong!")
+      alert("xoa thanh cong")
     } catch (error) {
-      if (error.response) {
-        alert(error.response.data);
-    }
+      console.error('Error:', error);
     }
   }
 
+  export async function getStaff(accessToken){
+    try {
+      const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/User/get/staff',{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      const data = response.data;
+      const transformedData = data.map(staff => ({
+        id: staff.id,
+        name: staff.name,
+        email: staff.email,
+        password: staff.password,
+        active: staff.active,
+        
+      }));
+      
+      return transformedData;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  export async function putStaff(id, accessToken, name, password, active){
+    try {
+      const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/User/get/staff/${id}`,
+      {
+       "name" : name,
+       "password" : password,
+       "active" : active  
+      },
+      {
+        
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      return response.data
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+   export async function postStaff(accessToken,name,email,password){
+    try {
+      const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/User/register/staff`,
+      {
+       "name" : name,
+       "email" : email,
+       "password" : password,
+       
+      },
+      {
+        
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      return response.data
+    } catch (error) {
+      console.error('Error:', error);
+    }
+   }
 
 
   

@@ -12,3 +12,4 @@ export {default as Mentor} from './Mentor';
 export {default as Payment} from './Payment';
 export {default as Test} from './Test';
 export {default as Staff} from './Staff';
+export {default as Admin} from './Admin';
