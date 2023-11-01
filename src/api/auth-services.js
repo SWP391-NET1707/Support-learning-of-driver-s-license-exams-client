@@ -4,6 +4,7 @@
 
 import axios from 'axios'
 import React from 'react'
+import { act } from 'react-dom/test-utils';
 import { json } from 'react-router-dom'
 
 const API_URL = "https://drivingschoolapi20231005104822.azurewebsites.net/api"
@@ -711,6 +712,74 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
     }
   }
 
+  export async function getStaff(accessToken){
+    try {
+      const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/User/get/staff',{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      const data = response.data;
+      const transformedData = data.map(staff => ({
+        id: staff.id,
+        name: staff.name,
+        email: staff.email,
+        password: staff.password,
+        active: staff.active,
+        
+      }));
+      
+      return transformedData;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  export async function putStaff(id, accessToken, name, password, active){
+    try {
+      const response = await axios.put(`https://drivingschoolapi20231005104822.azurewebsites.net/api/User/get/staff/${id}`,
+      {
+       "name" : name,
+       "password" : password,
+       "active" : active  
+      },
+      {
+        
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      return response.data
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+   export async function postStaff(accessToken,name,email,password){
+    try {
+      const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/User/register/staff`,
+      {
+       "name" : name,
+       "email" : email,
+       "password" : password,
+       
+      },
+      {
+        
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      return response.data
+    } catch (error) {
+      console.error('Error:', error);
+    }
+   }
 
 
   
