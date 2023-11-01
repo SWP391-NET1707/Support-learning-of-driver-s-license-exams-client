@@ -641,7 +641,7 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
   }
   export async function getQuestionInQuizz(quizId, accessToken){
     try{
-      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/quiz/${quizId}`,
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/quiz-staff/${quizId}`,
       {
         headers: {
           'Content-Type': 'application/json',

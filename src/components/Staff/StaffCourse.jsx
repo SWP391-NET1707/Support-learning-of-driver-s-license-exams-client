@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getCourse, postCourse, putCourseById, deleteCourseById, DeleteCourseById } from '../../api/auth-services'; // Import API functions
+import { getCourse, postCourse, putCourseById, deleteCourseById, DeleteCourseById, getLicense } from '../../api/auth-services'; // Import API functions
 import { Button, Form, Input, Modal, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
@@ -8,6 +8,8 @@ const StaffCourse = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editCourse, setEditCourse] = useState({ id: 0, name: '', price: 0, duration: '', description: '', licenseId: 0 });
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [licenses, setLicenses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [newCourseData, setNewCourseData] = useState({
     name: '',
     price: 0,
@@ -21,6 +23,24 @@ const StaffCourse = () => {
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const accessToken = user.accessToken;
+  const fetchLicenseData = async () => {
+    try {
+      const licenseData = await getLicense(accessToken);
+      setLicenses(licenseData);
+      console.log(licenseData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchLicenseData();
+  }, []);
+  const getLicenseNameById = (licenseId) => {
+    const license = licenses.find((license) => license.id === licenseId);
+    return license ? license.name : 'Unknown'; 
+  };
 
   const fetchCourseData = async () => {
     try {
@@ -175,20 +195,12 @@ const StaffCourse = () => {
       ),
     },
     {
-      title: 'License ID',
-      dataIndex: 'licenseId',
-      key: 'licenseId',
-      render: (licenseId, course) => (
+      title: "License",
+      dataIndex: "licenseId",
+      key: "licenseId",
+      render: (licenseId, question) => (
         <span>
-          {isEditing && editCourse.id === course.id ? (
-            <Input
-              type="number"
-              value={editCourse.licenseId}
-              onChange={(e) => setEditCourse({ ...editCourse, licenseId: e.target.value })}
-            />
-          ) : (
-            <span>{licenseId}</span>
-          )}
+          {getLicenseNameById(licenseId)}
         </span>
       ),
     },
@@ -260,7 +272,7 @@ const StaffCourse = () => {
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="License ID">
+          <Form.Item label="License">
             <Input
               type="number"
               name="licenseId"
