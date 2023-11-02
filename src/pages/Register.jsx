@@ -5,6 +5,7 @@ import '../style/register.css';
 import { handleRegistrationRequest, handleConfirmationCodeRequest } from '../api/auth-services';
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Register = () => {
@@ -30,6 +31,7 @@ const Register = () => {
     // console.log('Password:', password);
     // console.log('Confirm Password:', confirmPassword);
     handleRegistrationRequest(name, email, emailToken, password, confirmPassword, setRegistrationError);
+
   };
 
   return (

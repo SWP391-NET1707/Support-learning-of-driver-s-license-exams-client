@@ -4,6 +4,9 @@ import './Course.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import course1 from '../../assets/courses-1.jpg';
+import course2 from '../../assets/courses-2.jpg';
+import course3 from '../../assets/courses-3.jpg';
+
 import { getOwnStudentCourse, handlePaymentRequest, getCourse } from '../../api/auth-services';
 
 const Course = () => {
