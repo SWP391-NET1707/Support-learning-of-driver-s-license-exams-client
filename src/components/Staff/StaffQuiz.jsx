@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getQuizz, postQuizz, putQuizzById, deleteQuizzById, getQuestionInQuizz, updateQuestion, deleteQuestion } from '../../api/auth-services'; // Import API functions
-import { Button, Form, Input, Modal, Table } from 'antd';
+import { getQuizz, postQuizz, putQuizzById, deleteQuizzById, getQuestionInQuizz, updateQuestion, deleteQuestion, getLicense } from '../../api/auth-services'; // Import API functions
+import { Button, Form, Input, Modal, Table, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import './tableStaf.css'
 import { ViewArrayOutlined } from '@mui/icons-material';
@@ -20,6 +20,10 @@ const StaffQuiz = () => {
   const [isViewingQuestions, setIsViewingQuestions] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [isEditingQuestion, setIsEditingQuestion] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [licenses, setLicenses] = useState([]);
+  const {Option} = Select;
+  
 const [editedQuestion, setEditedQuestion] = useState({
   id: null,
   content: '',
@@ -31,6 +35,24 @@ const [editedQuestion, setEditedQuestion] = useState({
   licenseId: '',
   quizId: ''
 });
+const fetchLicenseData = async () => {
+  try {
+    const licenseData = await getLicense(accessToken);
+    setLicenses(licenseData);
+    console.log(licenseData);
+    setLoading(false);
+  } catch (error) {
+    console.error('Error:', error);
+    setLoading(false);
+  }
+};
+useEffect(() => {
+  fetchLicenseData();
+}, []);
+const getLicenseNameById = (licenseId) => {
+  const license = licenses.find((license) => license.id === licenseId);
+  return license ? license.name : 'Unknown'; 
+};
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const accessToken = user.accessToken;
@@ -208,19 +230,19 @@ const [editedQuestion, setEditedQuestion] = useState({
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
-      title: 'License ID',
+      title: 'License',
       dataIndex: 'licenseId',
       key: 'licenseId',
       render: (licenseId, quiz) => (
         <span>
           {isEditing && editQuiz.id === quiz.id ? (
             <Input
-              type="number"
-              value={editedLicenseId} // Use the editedLicenseId state
+              type="text" 
+              value={getLicenseNameById(editedLicenseId)} 
               onChange={handleLicenseIdChange}
             />
           ) : (
-            <span>{licenseId}</span>
+            <span>{getLicenseNameById(licenseId)}</span> 
           )}
         </span>
       ),
@@ -298,14 +320,18 @@ const [editedQuestion, setEditedQuestion] = useState({
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="License ID">
-            <Input
-              type="number"
-              name="licenseId"
-              value={newQuizData.licenseId}
-              onChange={handleInputChange}
-            />
-          </Form.Item>
+          <Form.Item label="License">
+  <Select
+    value={newQuizData.licenseId}
+    onChange={(value) => handleInputChange({ target: { name: 'licenseId', value } })}
+  >
+    {licenses.map((license) => (
+  <Option key={license.id} value={license.id}>
+    {license.name}
+  </Option>
+))}
+  </Select>
+</Form.Item>
         </Form>
       </Modal>
       <Modal
@@ -431,9 +457,14 @@ const [editedQuestion, setEditedQuestion] = useState({
               key: "correctAnswer",
             },
             {
-              title: "License ID",
+              title: "License",
               dataIndex: "licenseId",
               key: "licenseId",
+              render: (licenseId, question) => (
+                <span>
+                  {getLicenseNameById(licenseId)}
+                </span>
+              ),
             },
             {
               title: "Actions",

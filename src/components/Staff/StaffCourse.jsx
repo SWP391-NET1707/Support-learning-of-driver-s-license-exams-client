@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { getCourse, postCourse, putCourseById, deleteCourseById, DeleteCourseById } from '../../api/auth-services'; // Import API functions
+import { getCourse, postCourse, putCourseById, deleteCourseById, DeleteCourseById,getLicense } from '../../api/auth-services'; // Import API functions
 import { Button, Form, Input, Modal, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 const StaffCourse = () => {
   const [courses, setCourses] = useState([]);
+  const [editedLicenseId, setEditedLicenseId] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [editCourse, setEditCourse] = useState({ id: 0, name: '', price: 0, duration: '', description: '', licenseId: 0 });
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [licenses, setLicenses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [newCourseData, setNewCourseData] = useState({
     name: '',
     price: 0,
@@ -15,13 +18,31 @@ const StaffCourse = () => {
     description: '',
     licenseId: 0,
   });
+  const fetchLicenseData = async () => {
+    try {
+      const licenseData = await getLicense(accessToken);
+      setLicenses(licenseData);
+      console.log(licenseData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchLicenseData();
+  }, []);
+  const getLicenseNameById = (licenseId) => {
+    const license = licenses.find((license) => license.id === licenseId);
+    return license ? license.name : 'Unknown';
+  };
 
   const [currentPage, setCurrentPage] = useState(1);
   const [coursesPerPage] = useState(10);
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const accessToken = user.accessToken;
-
+  
   const fetchCourseData = async () => {
     try {
       const courseData = await getCourse(accessToken);
@@ -52,6 +73,11 @@ const StaffCourse = () => {
 
     // Fetch the updated course data
     fetchCourseData();
+  };
+  const handleLicenseIdChange = (e) => {
+    const value = e.target.value;
+    setEditedLicenseId(value); // Update the edited License ID
+
   };
 
   const handleEdit = (course) => {
@@ -175,19 +201,19 @@ const StaffCourse = () => {
       ),
     },
     {
-      title: 'License ID',
+      title: 'License',
       dataIndex: 'licenseId',
       key: 'licenseId',
       render: (licenseId, course) => (
         <span>
           {isEditing && editCourse.id === course.id ? (
             <Input
-              type="number"
-              value={editCourse.licenseId}
-              onChange={(e) => setEditCourse({ ...editCourse, licenseId: e.target.value })}
+              type="text"
+              value={getLicenseNameById(editCourse.licenseId)}
+              onChange={handleLicenseIdChange}
             />
           ) : (
-            <span>{licenseId}</span>
+            <span>{getLicenseNameById(licenseId)}</span>
           )}
         </span>
       ),
@@ -260,7 +286,7 @@ const StaffCourse = () => {
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="License ID">
+          <Form.Item label="License">
             <Input
               type="number"
               name="licenseId"
