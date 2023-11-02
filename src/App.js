@@ -51,6 +51,7 @@ function AppM() {
                 <Route path="/ForgotPassword" element={<ForgotPassword />} />
                 <Route path="/Mophong" element={<Mophong />} />
                 <Route path="/TakeSlot" element={<TakeSlot />} />
+                <Route path="/QuizPage" element={<QuizPage />} />
 
                 {/*Test function page*/}
                 <Route path="/test" element={<Test />} />
@@ -62,13 +63,13 @@ function AppM() {
                         <Route path="/PayFail" element={<PaymentFail />} />
                         <Route path="/payment" element={<Payment />} />
                         <Route path="/schedule" element={<Schedule />} />
-                        <Route path="/QuizPage" element={<QuizPage />} />
+                        <Route path="/QuizPage/:id" element={<QuizPage />} />
                         <Route path="/User" element={<User />} />
                         <Route path="/PaySuccess" element={<PaySuccess />} />
                         <Route path="/PayFail" element={<PaymentFail />} />
                         <Route path="/payment" element={<Payment />} />
                         <Route path="/schedule" element={<Schedule />} />
-                        <Route path="/QuizPage" element={<QuizPage />} />
+                       
                         <Route path="/User" element={<User />} />
                     </>
                 )}

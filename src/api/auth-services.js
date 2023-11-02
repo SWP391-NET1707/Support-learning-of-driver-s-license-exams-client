@@ -725,6 +725,21 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
     }
   }
 
+  export async function getQuizzbyId(accessToken, id) {
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/${id}`,{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      return response.data
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   export async function postQuizz(name, licenseId, accessToken) {
     try {
       const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Quizz/create`,
@@ -853,5 +868,19 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
     }
    }
 
-
+   export async function getQuestionById(id, accessToken) {
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/license/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+          // Add any other headers you need here
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error; // You can handle the error as needed in your application
+    }
+  }
   
