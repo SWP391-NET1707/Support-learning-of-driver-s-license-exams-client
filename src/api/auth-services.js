@@ -648,7 +648,6 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      alert("Lay du lieu cau hoi thanh cong");
       return response.data;
     }catch(error){
       console.error('Error:', error);
@@ -656,7 +655,8 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
   }
   export async function postQuestion(accessToken, dataToAdd){
     try {
-      const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/create`,dataToAdd, {
+      console.log(dataToAdd);
+      const response = await axios.post(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Question/create`, dataToAdd, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getQuizz, postQuizz, putQuizzById, deleteQuizzById, getQuestionInQuizz, updateQuestion, deleteQuestion, getLicense } from '../../api/auth-services'; // Import API functions
+import { getQuizz, postQuizz, putQuizzById, deleteQuizzById, getQuestionInQuizz, updateQuestion, deleteQuestion, getLicense, postQuestion } from '../../api/auth-services'; // Import API functions
 import { Button, Form, Input, Modal, Table, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import './tableStaf.css'
 import { ViewArrayOutlined } from '@mui/icons-material';
+import { margin } from '@mui/system';
 
 
 const StaffQuiz = () => {
@@ -22,37 +23,92 @@ const StaffQuiz = () => {
   const [isEditingQuestion, setIsEditingQuestion] = useState(false);
   const [loading, setLoading] = useState(true);
   const [licenses, setLicenses] = useState([]);
-  const {Option} = Select;
-  
-const [editedQuestion, setEditedQuestion] = useState({
-  id: null,
-  content: '',
-  answer1: '',
-  answer2: '',
-  answer3: '',
-  answer4: '',
-  correctAnswer: '',
-  licenseId: '',
-  quizId: ''
-});
-const fetchLicenseData = async () => {
-  try {
-    const licenseData = await getLicense(accessToken);
-    setLicenses(licenseData);
-    console.log(licenseData);
-    setLoading(false);
-  } catch (error) {
-    console.error('Error:', error);
-    setLoading(false);
-  }
-};
-useEffect(() => {
-  fetchLicenseData();
-}, []);
-const getLicenseNameById = (licenseId) => {
-  const license = licenses.find((license) => license.id === licenseId);
-  return license ? license.name : 'Unknown'; 
-};
+  const [isAddingQuestion, setIsAddingQuestion] = useState(false);
+  const [isQuizEmpty, setIsQuizEmpty] = useState(true);
+  const [newQuestion, setNewQuestion] = useState({
+    content: '',
+    answer1: '',
+    answer2: '',
+    answer3: '',
+    answer4: '',
+    correctAnswer: '',
+    licenseId: '',
+    quizId: '',
+  });
+  const handleOpenAddQuestionModal = () => {
+    setIsAddingQuestion(true);
+  };
+
+  const handleCloseAddQuestionModal = () => {
+    setIsAddingQuestion(false);
+  };
+  const { Option } = Select;
+  const handleAddQuestion = async () => {
+    try {
+      // Kiểm tra xem thông tin câu hỏi đã được điền đầy đủ
+      if (!newQuestion.content || !newQuestion.answer1 || !newQuestion.answer2 || !newQuestion.answer3 || !newQuestion.answer4 || !newQuestion.correctAnswer) {
+        alert('Vui lòng điền đầy đủ thông tin câu hỏi.');
+        return;
+      }
+
+      await postQuestion(accessToken, {
+        content: newQuestion.content,
+        answer1: newQuestion.answer1,
+        answer2: newQuestion.answer2,
+        answer3: newQuestion.answer3,
+        answer4: newQuestion.answer4,
+        correctAnswer: newQuestion.correctAnswer,
+        licenseId: newQuestion.licenseId,
+        quizId: newQuestion.quizId,
+      });
+
+
+      setNewQuestion({
+        content: '',
+        answer1: '',
+        answer2: '',
+        answer3: '',
+        answer4: '',
+        correctAnswer: '',
+        licenseId: '',
+        quizId: '',
+      });
+      setIsAddingQuestion(false);
+
+    } catch (error) {
+      console.error('Lỗi khi thêm câu hỏi:', error);
+    }
+  };
+
+  const [editedQuestion, setEditedQuestion] = useState({
+    id: null,
+    content: '',
+    answer1: '',
+    answer2: '',
+    answer3: '',
+    answer4: '',
+    correctAnswer: '',
+    licenseId: '',
+    quizId: ''
+  });
+  const fetchLicenseData = async () => {
+    try {
+      const licenseData = await getLicense(accessToken);
+      setLicenses(licenseData);
+      console.log(licenseData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchLicenseData();
+  }, []);
+  const getLicenseNameById = (licenseId) => {
+    const license = licenses.find((license) => license.id === licenseId);
+    return license ? license.name : 'Unknown';
+  };
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const accessToken = user.accessToken;
@@ -149,14 +205,14 @@ const getLicenseNameById = (licenseId) => {
           licenseId: editedQuestion.licenseId,
           quizId: editedQuestion.quizId,
         });
-  
+
         // Cập nhật thông tin câu hỏi trong danh sách hiện tại
         setQuestions((prevQuestions) =>
           prevQuestions.map((question) =>
             question.id === editedQuestion.id ? { ...question, ...editedQuestion } : question
           )
         );
-  
+
         setIsEditingQuestion(false); // Kết thúc chỉnh sửa
         alert('Cập nhật câu hỏi thành công');
       }
@@ -171,6 +227,9 @@ const getLicenseNameById = (licenseId) => {
         setQuestions(questionData);
         setCurrentQuestion(null); // Reset current question
         setIsViewingQuestions(true);
+        setIsQuizEmpty(false);
+      } else {
+        setIsQuizEmpty(true)
       }
     } catch (error) {
       console.error('Error:', error);
@@ -237,12 +296,12 @@ const getLicenseNameById = (licenseId) => {
         <span>
           {isEditing && editQuiz.id === quiz.id ? (
             <Input
-              type="text" 
-              value={getLicenseNameById(editedLicenseId)} 
+              type="text"
+              value={getLicenseNameById(editedLicenseId)}
               onChange={handleLicenseIdChange}
             />
           ) : (
-            <span>{getLicenseNameById(licenseId)}</span> 
+            <span>{getLicenseNameById(licenseId)}</span>
           )}
         </span>
       ),
@@ -290,9 +349,14 @@ const getLicenseNameById = (licenseId) => {
 
   return (
     <div>
-      <Button type="primary" onClick={showModal} className="button-right">
-        Add Quiz
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
+        <Button type="primary" onClick={handleOpenAddQuestionModal}>
+          Add Question
+        </Button>
+        <Button type="primary" onClick={showModal}>
+          Add Quiz
+        </Button>
+      </div>
       <Table columns={columns} dataSource={quizzes} />
 
       <Modal
@@ -301,16 +365,6 @@ const getLicenseNameById = (licenseId) => {
         onOk={handleAddQuiz}
         onCancel={handleCancel}
       >
-        <Modal
-          title="Questions in Quiz"
-          visible={isViewingQuestions}
-          onCancel={() => setIsViewingQuestions(false)}
-          footer={null}
-        >
-          {questions.map((question) => (
-            <div key={question.id}>{question.text}</div>
-          ))}
-        </Modal>
         <Form>
           <Form.Item label="Name">
             <Input
@@ -321,182 +375,300 @@ const getLicenseNameById = (licenseId) => {
             />
           </Form.Item>
           <Form.Item label="License">
-  <Select
-    value={newQuizData.licenseId}
-    onChange={(value) => handleInputChange({ target: { name: 'licenseId', value } })}
-  >
-    {licenses.map((license) => (
-  <Option key={license.id} value={license.id}>
-    {license.name}
-  </Option>
-))}
-  </Select>
-</Form.Item>
+            <Select
+              value={newQuizData.licenseId}
+              onChange={(value) => handleInputChange({ target: { name: 'licenseId', value } })}
+            >
+              {licenses.map((license) => (
+                <Option key={license.id} value={license.id}>
+                  {license.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
         </Form>
       </Modal>
+
       <Modal
-  title={isEditingQuestion ? "Edit Question" : "Questions in Quiz"}
-  visible={isViewingQuestions}
-  onCancel={() => setIsViewingQuestions(false)}
-  footer={null}
-  width={1500} // Đặt độ rộng mới cho modal
->
-  {isEditingQuestion ? ( // Nếu đang chỉnh sửa câu hỏi
-    <div>
-      <Form>
-        <Form.Item label="Content">
-          <Input
-            type="text"
-            name="content"
-            value={editedQuestion.content}
-            onChange={(e) =>
-              setEditedQuestion({ ...editedQuestion, content: e.target.value })
-            }
-          />
-        </Form.Item>
-        <Form.Item label="Answer 1">
-          <Input
-            type="text"
-            name="answer1"
-            value={editedQuestion.answer1}
-            onChange={(e) =>
-              setEditedQuestion({ ...editedQuestion, answer1: e.target.value })
-            }
-          />
-        </Form.Item>
-        <Form.Item label="Answer 2">
-          <Input
-            type="text"
-            name="answer2"
-            value={editedQuestion.answer2}
-            onChange={(e) =>
-              setEditedQuestion({ ...editedQuestion, answer2: e.target.value })
-            }
-          />
-        </Form.Item>
-        <Form.Item label="Answer 3">
-          <Input
-            type="text"
-            name="answer3"
-            value={editedQuestion.answer3}
-            onChange={(e) =>
-              setEditedQuestion({ ...editedQuestion, answer3: e.target.value })
-            }
-          />
-        </Form.Item>
-        <Form.Item label="Answer 4">
-          <Input
-            type="text"
-            name="answer4"
-            value={editedQuestion.answer4}
-            onChange={(e) =>
-              setEditedQuestion({ ...editedQuestion, answer4: e.target.value })
-            }
-          />
-        </Form.Item>
-        <Form.Item label="Correct Answer">
-    <Input
-      type="number"
-      name="correctAnswer"
-      value={editedQuestion.correctAnswer}
-      onChange={(e) =>
-        setEditedQuestion({ ...editedQuestion, correctAnswer: e.target.value })
-      }
-    />
-  </Form.Item>
-        <Form.Item>
+        title={isEditingQuestion ? "Edit Question" : "Questions in Quiz"}
+        visible={isViewingQuestions}
+        onCancel={() => setIsViewingQuestions(false)}
+        footer={
+          isEditingQuestion ? (
+            <Button
+              icon={<SaveOutlined />}
+              className="save-button"
+              onClick={handleSaveEditQuestion}
+            >
+              Save
+            </Button>
+          ) : isQuizEmpty ? (
+            <Button
+              icon={<SaveOutlined />}
+              onClick={handleOpenAddQuestionModal}
+            >
+              Add Question
+            </Button>
+          ) : (
+            <Button
+              icon={<SaveOutlined />}
+              className="save-button"
+              onClick={handleSaveEditQuestion}
+            >
+              Save
+            </Button>
+          )
+        }
+        width={1500}
+      >
+        {isEditingQuestion ? (
+          <div>
+            <Form>
+              <Form.Item label="Content">
+                <Input
+                  type="text"
+                  name="content"
+                  value={editedQuestion.content}
+                  onChange={(e) =>
+                    setEditedQuestion({ ...editedQuestion, content: e.target.value })
+                  }
+                />
+              </Form.Item>
+              <Form.Item label="Answer 1">
+                <Input
+                  type="text"
+                  name="answer1"
+                  value={editedQuestion.answer1}
+                  onChange={(e) =>
+                    setEditedQuestion({ ...editedQuestion, answer1: e.target.value })
+                  }
+                />
+              </Form.Item>
+              <Form.Item label="Answer 2">
+                <Input
+                  type="text"
+                  name="answer2"
+                  value={editedQuestion.answer2}
+                  onChange={(e) =>
+                    setEditedQuestion({ ...editedQuestion, answer2: e.target.value })
+                  }
+                />
+              </Form.Item>
+              <Form.Item label="Answer 3">
+                <Input
+                  type="text"
+                  name="answer3"
+                  value={editedQuestion.answer3}
+                  onChange={(e) =>
+                    setEditedQuestion({ ...editedQuestion, answer3: e.target.value })
+                  }
+                />
+              </Form.Item>
+              <Form.Item label="Answer 4">
+                <Input
+                  type="text"
+                  name="answer4"
+                  value={editedQuestion.answer4}
+                  onChange={(e) =>
+                    setEditedQuestion({ ...editedQuestion, answer4: e.target.value })
+                  }
+                />
+              </Form.Item>
+              <Form.Item label="Correct Answer">
+                <Input
+                  type="text"
+                  name="correctAnswer"
+                  value={editedQuestion.correctAnswer}
+                  onChange={(e) =>
+                    setEditedQuestion({ ...editedQuestion, correctAnswer: e.target.value })
+                  }
+                />
+              </Form.Item>
+              <Form.Item label="License">
+                <Select
+                  value={editedQuestion.licenseId}
+                  onChange={(value) => setEditedQuestion({ ...editedQuestion, licenseId: value })}
+                >
+                  {licenses.map((license) => (
+                    <Select.Option key={license.id} value={license.id}>
+                      {license.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Form>
+          </div>
+        ) : (
+          <div>
+            {isViewingQuestions ? (
+              <Table
+                dataSource={questions}
+                columns={[
+                  {
+                    title: "ID",
+                    dataIndex: "id",
+                    key: "id",
+                  },
+                  {
+                    title: "Content",
+                    dataIndex: "content",
+                    key: "content",
+                  },
+                  {
+                    title: "Answer 1",
+                    dataIndex: "answer1",
+                    key: "answer1",
+                  },
+                  {
+                    title: "Answer 2",
+                    dataIndex: "answer2",
+                    key: "answer2",
+                  },
+                  {
+                    title: "Answer 3",
+                    dataIndex: "answer3",
+                    key: "answer3",
+                  },
+                  {
+                    title: "Answer 4",
+                    dataIndex: "answer4",
+                    key: "answer4",
+                  },
+                  {
+                    title: "Correct Answer",
+                    dataIndex: "correctAnswer",
+                    key: "correctAnswer",
+                  },
+                  {
+                    title: "License",
+                    dataIndex: "licenseId",
+                    key: "licenseId",
+                    render: (licenseId, question) => (
+                      <span>{getLicenseNameById(licenseId)}</span>
+                    ),
+                  },
+                  {
+                    title: "Actions",
+                    dataIndex: "actions",
+                    key: "actions",
+                    render: (text, question) => (
+                      <span>
+                        <Button
+                          icon={<EditOutlined />}
+                          className="edit-button"
+                          onClick={() => handleEditQuestion(question)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          icon={<DeleteOutlined />}
+                          className="delete-button"
+                          onClick={() => handleDeleteQuestion(question.id)}
+                        >
+                          Delete
+                        </Button>
+                      </span>
+                    ),
+                  },
+                ]}
+              />
+            ) : (
+              <p>No questions available.</p>
+            )}
+          </div>
+        )}
+      </Modal>
+
+      <Modal
+        title="Add Question"
+        visible={isAddingQuestion}
+        onCancel={handleCloseAddQuestionModal}
+        footer={
           <Button
             icon={<SaveOutlined />}
             className="save-button"
-            onClick={handleSaveEditQuestion}
+            onClick={handleAddQuestion}
           >
             Save
           </Button>
-        </Form.Item>
-      </Form>
-    </div>
-  ) : (
-    <div>
-      {questions && questions.length > 0 ? (
-        <Table
-          dataSource={questions}
-          columns={[
-            {
-              title: "ID",
-              dataIndex: "id",
-              key: "id",
-            },
-            {
-              title: "Content",
-              dataIndex: "content",
-              key: "content",
-            },
-            {
-              title: "Answer 1",
-              dataIndex: "answer1",
-              key: "answer1",
-            },
-            {
-              title: "Answer 2",
-              dataIndex: "answer2",
-              key: "answer2",
-            },
-            {
-              title: "Answer 3",
-              dataIndex: "answer3",
-              key: "answer3",
-            },
-            {
-              title: "Answer 4",
-              dataIndex: "answer4",
-              key: "answer4",
-            },
-            {
-              title: "Correct answer",
-              dataIndex: "correctAnswer",
-              key: "correctAnswer",
-            },
-            {
-              title: "License",
-              dataIndex: "licenseId",
-              key: "licenseId",
-              render: (licenseId, question) => (
-                <span>
-                  {getLicenseNameById(licenseId)}
-                </span>
-              ),
-            },
-            {
-              title: "Actions",
-              dataIndex: "actions",
-              key: "actions",
-              render: (text, question) => (
-                <span>
-                  <Button
-                    icon={<EditOutlined />}
-                    className="edit-button"
-                    onClick={() => handleEditQuestion(question)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    icon={<DeleteOutlined />}
-                    className="delete-button"
-                    onClick={() => handleDeleteQuestion(question.id)}
-                  >
-                    Delete
-                  </Button>
-                </span>
-              ),
-            },
-          ]}
-        />
-      ) : (
-        <p>No questions available.</p>
-      )}
-    </div>
-  )}
-</Modal>
+        }
+        width={1500}
+      >
+        <Form>
+          <Form.Item label="Content">
+            <Input
+              type="text"
+              name="content"
+              value={newQuestion.content}
+              onChange={(e) => setNewQuestion({ ...newQuestion, content: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="Answer 1">
+            <Input
+              type="text"
+              name="answer1"
+              value={newQuestion.answer1}
+              onChange={(e) => setNewQuestion({ ...newQuestion, answer1: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="Answer 2">
+            <Input
+              type="text"
+              name="answer2"
+              value={newQuestion.answer2}
+              onChange={(e) => setNewQuestion({ ...newQuestion, answer2: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="Answer 3">
+            <Input
+              type="text"
+              name="answer3"
+              value={newQuestion.answer3}
+              onChange={(e) => setNewQuestion({ ...newQuestion, answer3: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="Answer 4">
+            <Input
+              type="text"
+              name="answer4"
+              value={newQuestion.answer4}
+              onChange={(e) => setNewQuestion({ ...newQuestion, answer4: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="Correct Answer">
+            <Input
+              type="text"
+              name="correctAnswer"
+              value={newQuestion.correctAnswer}
+              onChange={(e) => setNewQuestion({ ...newQuestion, correctAnswer: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="License">
+            <Select
+              value={newQuestion.licenseId}
+              onChange={(value) => setNewQuestion({ ...newQuestion, licenseId: value })}
+            >
+              {licenses.map((license) => (
+                <Select.Option key={license.id} value={license.id}>
+                  {license.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item label="ID Quiz">
+            <Select
+              value={newQuestion.quizId}
+              onChange={(value) => setNewQuestion({ ...newQuestion, quizId: value })}
+            >
+              {quizzes.map((quiz) => (
+                <Select.Option key={quiz.id} value={quiz.id}>
+                  {quiz.id}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
