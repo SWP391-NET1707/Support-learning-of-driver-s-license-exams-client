@@ -18,7 +18,7 @@ const Admin = () => {
           <ul className="sidebar-nav">
             <li className="sidebar-brand">
               <Link to="/Admin">
-                Staff
+                Admin
               </Link>
             </li>
             <li>
