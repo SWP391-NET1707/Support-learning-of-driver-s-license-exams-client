@@ -30,8 +30,10 @@ const CreateSlot = () => {
 
   function filterSlotsByDate(slotsData) {
     const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
     const data = slotsData
     const filteredSlots = data.filter((slot) => new Date(slot.monthYear) >= currentDate);
+    console.log(currentDate)
     return filteredSlots;
   }
 
@@ -117,86 +119,36 @@ const CreateSlot = () => {
               <Button type="primary" onClick={showModal} className="button-right">
                 Tạo mới
               </Button>
-              <Modal
-                title="Title"
-                open={open}
-                onOk={handleOk}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
-              >
-                <>
-                  <Form
-                    labelCol={{
-                      span: 4,
-                    }}
-                    wrapperCol={{
-                      span: 14,
-                    }}
-                    layout="horizontal"
-                    style={{
-                      maxWidth: 600,
-                    }}
-                  >
-                    <Form.Item label="Slot">
-                      <Input
-                        placeholder="Slot Time ID"
-                        value={slotTimeId}
-                        onChange={(e) => setSlotTimeId(e.target.value)} />
-                    </Form.Item>
-                    <Form.Item label="Khoa hoc">
-                      <Select
-                        placeholder="Select Course"
-                        value={courseId}
-                        onChange={(value) => setCourseId(value)}>
-                        {courses.map(item => (
-                          <Select.Option key={item.id} value={item.id}>
-                            {item.name}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                    <Form.Item label="Ngày">
-                      <DatePicker selected={monthYear} onChange={date => setMonthYear(date.format("YYYY-MM-DD"))} />
-                    </Form.Item>
-                    <Form.Item label="Nội dung">
-                      <Input
-                        placeholder="tối đa 30 kí tự"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        maxlength="30" />
-                    </Form.Item>
-                  </Form>
-                </>
-                {/* <p>{modalText}</p> */}
-              </Modal>
-              <div className="table-responsive ">
-                <table className="table">
+              {/* ... (your Modal and Form components) */}
+              <div className="table-responsive">
+                <table className="table text-center">
                   <thead>
                     <tr>
-                      <th className="text-center" scope="col">
-                        Ngày
-                      </th>
-                      <th scope="col">Nội dung</th>
-                      {/* <th scope="col">Học sinh</th> */}
-                      <th scope="col">Khóa Học</th>
-                      {/* <th scope="col">Attend</th> */}
-                      {/* <th className="text-center" scope="col"></th> */}
+                      <th scope="col"><h3>Ngày</h3></th>
+                      <th scope="col"><h3>Nội dung</h3></th>
+                      <th scope="col"><h3>Khóa Học</h3></th>
                     </tr>
                   </thead>
                   <tbody>
                     {loading ? (
                       <tr>
-                        <td colSpan="5">Loading...</td>
+                        <td colSpan="3">Loading...</td>
                       </tr>
                     ) : (
                       currentSlots.map((slot) => (
                         <tr key={slot.id} className="inner-box">
-                          <th scope="row">
+                          <td scope="row">
                             <div className="event-date">
-                              <span><h3>{new Date(slot.monthYear).getDate()}</h3></span>
-                              <p>{new Date(slot.monthYear).toLocaleDateString('vi-VN', { month: 'long' })}</p>
+                              <span>
+                                <h3>{new Date(slot.monthYear).getDate()}</h3>
+                              </span>
+                              <p>
+                                {new Date(slot.monthYear).toLocaleDateString('vi-VN', {
+                                  month: 'long',
+                                })}
+                              </p>
                             </div>
-                          </th>
+                          </td>
                           <td>
                             <div className="event-wrap">
                               <h3>{slot.description}</h3>
@@ -205,9 +157,10 @@ const CreateSlot = () => {
                                   <span>Slot: {slot.slotTimeId}</span>
                                   {slot.slotTimeData ? (
                                     <>
-                                      <div>{slot.slotTimeData.startTime} -  {slot.slotTimeData.endTime}</div>
-
-                                      {/* <div>End Time: {slot.slotTimeData.endTime}</div> */}
+                                      <div>
+                                        {slot.slotTimeData.startTime} -{' '}
+                                        {slot.slotTimeData.endTime}
+                                      </div>
                                     </>
                                   ) : (
                                     <span>Loading Start and End Time...</span>
@@ -218,26 +171,19 @@ const CreateSlot = () => {
                           </td>
                           <td>
                             <div className="r-no">
-                              <span><h5>{slot.courses?.name ? slot.courses.name.toUpperCase() : 'N/A'}</h5></span>
+                              <span>
+                                <h5>
+                                  {slot.courses?.name ? slot.courses.name.toUpperCase() : 'N/A'}
+                                </h5>
+                              </span>
                             </div>
                           </td>
-                          {/* <td> <span className="d-inline-block align-middle"><Checkbox
-                            value={isAttended}
-                            onChange={(e) => setIsAttended(e.target.value)}>
-                            Attended</Checkbox></span></td>
-                          <td>
-                            <div className="primary-btn">
-                              <Button className="btn btn-primary" onClick={() =>handleOk(slot)}>
-                                Take
-                              </Button>
-                            </div>
-                          </td> */}
                         </tr>
                       ))
                     )}
                   </tbody>
                 </table>
-                <ul className="pagination">
+                <ul className="pagination justify-content-center">
                   {Array.from({ length: Math.ceil(slots.length / slotsPerPage) }, (_, index) => (
                     <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
                       <a onClick={() => paginate(index + 1)} className="page-link">
