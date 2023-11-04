@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DeleteMentorbyID, getMentor, postMentor, putMentorById, getLicense } from '../../api/auth-services'; // Import API functions
-import { Button, Checkbox, Form, Input, Modal, Table } from 'antd';
+import { Button, Checkbox, Form, Input, Modal, Table, Select } from 'antd';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
@@ -30,7 +30,7 @@ const Mentor = () => {
   }, []);
   const getLicenseNameById = (licenseId) => {
     const license = licenses.find((license) => license.id === licenseId);
-    return license ? license.name : 'Unknown';
+    return license ? license.name : 'Không rõ';
   };
 
   const [newMentorData, setNewMentorData] = useState({
@@ -79,10 +79,16 @@ const Mentor = () => {
   const handleAddMentor = async () => {
     // Validate the input
     if (!newMentorData.name || !newMentorData.email || !newMentorData.password || !newMentorData.mentorLicenseId) {
-      alert('Please fill in all fields');
+      alert('Vui lòng điền đầy đủ thông tin');
       return;
     }
-    const mentorLicenseIDArray = newMentorData.mentorLicenseId.split(',').map(item => item.trim());
+    let mentorLicenseIDArray = [];
+  
+  if (typeof newMentorData.mentorLicenseId === 'number') {
+    mentorLicenseIDArray = [newMentorData.mentorLicenseId];
+  } else {
+    mentorLicenseIDArray = newMentorData.mentorLicenseId.split(',').map(item => item.trim());
+  }
     // Send a POST request to add the mentor (implement the postMentor function)
     await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, mentorLicenseIDArray, accessToken);
 
@@ -91,8 +97,8 @@ const Mentor = () => {
       name: '',
       email: '',
       password: '',
-      mentorLicenseID: 0,
-      active: false,
+      mentorLicenseID: '',
+      active: true,
     });
 
     setIsModalVisible(false);
@@ -115,7 +121,7 @@ const Mentor = () => {
     try {
       // Validate the input
       if (!editName || !editMentor.email || !editMentor.password || !editMentor.mentorLicenseID) {
-        alert('Please fill in all fields');
+        alert('Vui lòng điền đầy đủ thông tin');
         return;
       }
 
@@ -197,7 +203,7 @@ const Mentor = () => {
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
-      title: 'Name',
+      title: 'Tên giảng viên',
       dataIndex: 'name',
       key: 'name',
       render: (name, mentor) => (
@@ -215,7 +221,7 @@ const Mentor = () => {
     },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     {
-      title: 'Password',
+      title: 'Mật khẩu',
       dataIndex: 'password',
       key: 'password',
       render: (password, mentor) => (
@@ -243,7 +249,7 @@ const Mentor = () => {
       ),
     },
     {
-      title: 'Active',
+      title: 'Trạng thái hoạt động',
       dataIndex: 'active',
       key: 'active',
       render: (active, mentor) => (
@@ -254,13 +260,13 @@ const Mentor = () => {
               onChange={(e) => setEditActive(e.target.checked)}
             />
           ) : (
-            <span>{active ? 'Active' : 'Inactive'}</span>
+            <span>{active ? 'Còn hợp đồng' : 'Hết hợp đồng'}</span>
           )}
         </span>
       ),
     },
     {
-      title: 'Mentor License',
+      title: 'Bằng lái giảng viên',
       dataIndex: 'mentorLicenses',
       key: 'mentorLicenses',
       render: (licenses, mentor) => {
@@ -279,20 +285,20 @@ const Mentor = () => {
       },
     },
     {
-      title: 'Actions',
+      title: 'Tác vụ',
       dataIndex: 'actions',
       key: 'actions',
       render: (text, mentor) => (
         <span>
           {isEditing && editMentor.id === mentor.id ? (
             <>
-              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Save</Button>
-              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Lưu</Button>
+              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Huỷ</Button>
             </>
           ) : (
             <>
-              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(mentor)}>Edit</Button>
-              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(mentor.id)}>Delete</Button>
+              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(mentor)}>Chỉnh sửa</Button>
+              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(mentor.id)}>Xoá giảng viên</Button>
             </>
           )}
         </span>
@@ -303,23 +309,31 @@ const Mentor = () => {
   return (
     <div>
       <Button type="primary" onClick={showModal} className="button-right">
-        Add Mentor
+        Thêm giảng viên
       </Button>
       <Table columns={columns} dataSource={currentMentors} />
 
       <Modal
-        title="Add Mentor"
+        title="Thêm giảng viên"
         visible={isModalVisible}
-        onOk={handleAddMentor}
         onCancel={handleCancel}
+        footer={
+          <Button
+            icon={<SaveOutlined />}
+            className="save-button"
+            onClick={handleAddMentor}
+          >
+            Lưu
+          </Button>
+        }
       >
         <Form>
-          <Form.Item label="Name">
+          <Form.Item label="Tên giảng viên">
             <Input
               type="text"
               name="name"
               value={newMentorData.name}
-              onChange={handleInputChange}
+              onChange={e => setNewMentorData({...newMentorData, name: e.target.value})}
             />
           </Form.Item>
           <Form.Item label="Email">
@@ -327,24 +341,25 @@ const Mentor = () => {
               type="email"
               name="email"
               value={newMentorData.email}
-              onChange={handleInputChange}
+              onChange={e => setNewMentorData({...newMentorData, email: e.target.value})}
             />
           </Form.Item>
-          <Form.Item label="Password">
+          <Form.Item label="Mật khẩu">
             <Input
               type="password"
               name="password"
               value={newMentorData.password}
-              onChange={handleInputChange}
+              onChange={e => setNewMentorData({...newMentorData, password: e.target.value})}
             />
           </Form.Item>
-          <Form.Item label="Mentor License ID">
-            <Input
-              type="text"
-              name="mentorLicenseID"
-              value={newMentorData.mentorLicenseId}
-              onChange={handleInputChange}
-            />
+          <Form.Item label="Bằng lái giảng viên">
+            <Select value={newMentorData.mentorLicenseId} onChange={e => setNewMentorData({...newMentorData, mentorLicenseId: e})}>
+              {licenses.map((license) => (
+                <Select.Option key={license.id} value={license.id}>
+                    {license.name}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           {/* <Form.Item label="Active">
             <Checkbox
