@@ -58,9 +58,11 @@ function QuizPage() {
   };
 
   const checkAnswer = (index) => {
-    const answer = quiz.JS[index].answer;
+    const correctAnswer = quiz.JS[index].correctAnswer;
+    
     const selectedOpt = selectedOpts[index];
-    return answer === selectedOpt;
+    // console.log(correctAnswer === selectedOpt)
+    return correctAnswer === selectedOpt;
   };
 
   const changeQuestion = (cque) => {
@@ -118,14 +120,14 @@ function QuizPage() {
       className="form-check-input"
       name="option"
       id={`option-1`}
-      value={currentQuestion.answer1}
+      value={1} // Hard-coded option number
       onChange={() => {
         const newSelectedOpts = [...selectedOpts];
-        newSelectedOpts[currentque] = currentQuestion.answer1;
+        newSelectedOpts[currentque] = 1; // Set the selected option as 1
         setSelectedOpts(newSelectedOpts);
-        console.log(`Option 1 selected for Q${currentque + 1}`);
+        // console.log(selectedOpts)
       }}
-      checked={selectedOpts[currentque] === currentQuestion.answer1}
+      checked={selectedOpts[currentque] === 1}
     />
     <label className="form-check-label" htmlFor={`option-1`}>
       <span id="optionval">{currentQuestion.answer1}</span>
@@ -140,14 +142,14 @@ function QuizPage() {
       className="form-check-input"
       name="option"
       id={`option-2`}
-      value={currentQuestion.answer2}
+      value={2} // Hard-coded option number
       onChange={() => {
         const newSelectedOpts = [...selectedOpts];
-        newSelectedOpts[currentque] = currentQuestion.answer2;
+        newSelectedOpts[currentque] = 2; // Set the selected option as 2
         setSelectedOpts(newSelectedOpts);
-        console.log(`Option 2 selected for Q${currentque + 1}`);
+        // console.log(selectedOpts)
       }}
-      checked={selectedOpts[currentque] === currentQuestion.answer2}
+      checked={selectedOpts[currentque] === 2}
     />
     <label className="form-check-label" htmlFor={`option-2`}>
       <span id="optionval">{currentQuestion.answer2}</span>
@@ -155,21 +157,21 @@ function QuizPage() {
   </div>
 )}
 
-{currentQuestion.answer3 && (
+{currentQuestion.answer3 != 'null' && (
   <div className="form-check option-block">
     <input
       type="radio"
       className="form-check-input"
       name="option"
       id={`option-3`}
-      value={currentQuestion.answer3}
+      value={3} // Hard-coded option number
       onChange={() => {
         const newSelectedOpts = [...selectedOpts];
-        newSelectedOpts[currentque] = currentQuestion.answer3;
+        newSelectedOpts[currentque] = 3; // Set the selected option as 3
         setSelectedOpts(newSelectedOpts);
-        console.log(`Option 3 selected for Q${currentque + 1}`);
+        // console.log(selectedOpts)
       }}
-      checked={selectedOpts[currentque] === currentQuestion.answer3}
+      checked={selectedOpts[currentque] === 3}
     />
     <label className="form-check-label" htmlFor={`option-3`}>
       <span id="optionval">{currentQuestion.answer3}</span>
@@ -177,21 +179,22 @@ function QuizPage() {
   </div>
 )}
 
-{currentQuestion.answer4 && (
+{currentQuestion.answer4 != 'null' && (
   <div className="form-check option-block">
     <input
       type="radio"
       className="form-check-input"
       name="option"
       id={`option-4`}
-      value={currentQuestion.answer4}
+      value={4} // Hard-coded option number
       onChange={() => {
         const newSelectedOpts = [...selectedOpts];
-        newSelectedOpts[currentque] = currentQuestion.answer4;
+        newSelectedOpts[currentque] = 4; // Set the selected option as 4
+        
         setSelectedOpts(newSelectedOpts);
-        console.log(`Option 4 selected for Q${currentque + 1}`);
+        // console.log(selectedOpts)
       }}
-      checked={selectedOpts[currentque] === currentQuestion.answer4}
+      checked={selectedOpts[currentque] === 4}
     />
     <label className="form-check-label" htmlFor={`option-4`}>
       <span id="optionval">{currentQuestion.answer4}</span>
