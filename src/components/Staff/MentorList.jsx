@@ -84,10 +84,10 @@ const Mentor = () => {
     }
     let mentorLicenseIDArray = [];
   
-  if (typeof newMentorData.mentorLicenseId === 'number') {
-    mentorLicenseIDArray = [newMentorData.mentorLicenseId];
+  if (typeof newMentorData.mentorLicenseId === 'number' ) {
+    mentorLicenseIDArray.push(newMentorData.mentorLicenseId);
   } else {
-    mentorLicenseIDArray = newMentorData.mentorLicenseId.split(',').map(item => item.trim());
+    console.error("type of value error");
   }
     // Send a POST request to add the mentor (implement the postMentor function)
     await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, mentorLicenseIDArray, accessToken);
