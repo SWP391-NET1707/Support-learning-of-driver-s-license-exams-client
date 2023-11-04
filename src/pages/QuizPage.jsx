@@ -157,7 +157,7 @@ function QuizPage() {
   </div>
 )}
 
-{currentQuestion.answer3 && (
+{currentQuestion.answer3 != 'null' && (
   <div className="form-check option-block">
     <input
       type="radio"
@@ -179,7 +179,7 @@ function QuizPage() {
   </div>
 )}
 
-{currentQuestion.answer4 && (
+{currentQuestion.answer4 != 'null' && (
   <div className="form-check option-block">
     <input
       type="radio"
