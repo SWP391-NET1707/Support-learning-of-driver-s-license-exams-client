@@ -114,45 +114,48 @@ const Schedule = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <div className="table-responsive">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th className="text-center" scope="col">Ngày học</th>
-                      <th scope="col">Giảng viên</th>
-                      <th scope="col">Mô tả</th>
-                      <th scope="col">Lớp học</th>
-                      <th scope="col">Button</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan="5">Loading...</td>
-                      </tr>
-                    ) : (
-                      currentSlots.map((slot) => (
-                        <tr key={slot.id} className="inner-box">
-                          <th scope="row">
-                            <div className="event-date">
-                              {new Date(slot.monthYear).getDate()}
-                              <p>{new Date(slot.monthYear).toLocaleDateString('en-US', { month: 'long' })}</p>
-                            </div>
-                          </th>
-                          <td>{getMentorNames(slot.mentorId)}</td>
-                          <td>{slot.courses?.description ? `${slot.courses.description}` : ''}</td>
-                          <td>{slot.courses?.name || 'N/A'}</td>
-                          <td>
-                            <div className="primary-btn">
-                              <button onClick={() =>handleOk(slot)} className="btn btn-primary">Đăng kí buổi học</button>
-                            </div>
-                          </td>
+              {loading ? (
+                <p>Loading...</p>
+              ) : (
+                <div className="table-responsive">
+                  {slots.length > 0 ? (
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th className="text-center" scope="col">Ngày học</th>
+                          <th scope="col">Giảng viên</th>
+                          <th scope="col">Mô tả</th>
+                          <th scope="col">Lớp học</th>
+                          <th scope="col">Button</th>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
+                      </thead>
+                      <tbody>
+                        {currentSlots.map((slot) => (
+                          <tr key={slot.id} className="inner-box">
+                            <th scope="row">
+                              <div className="event-date">
+                                {new Date(slot.monthYear).getDate()}
+                                <p>{new Date(slot.monthYear).toLocaleDateString('en-US', { month: 'long' })}</p>
+                              </div>
+                            </th>
+                            <td>{getMentorNames(slot.mentorId)}</td>
+                            <td>{slot.courses?.description ? `${slot.courses.description}` : ''}</td>
+                            <td>{slot.courses?.name || 'N/A'}</td>
+                            <td>
+                              <div className="primary-btn">
+                                <button onClick={() => handleOk(slot)} className="btn btn-primary">Đăng kí buổi học</button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p>Hiện chưa có lớp, xin vui lòng quay lại sau.</p>
+                  )}
+                </div>
+              )}
+  
               <ul className="pagination">
                 {Array.from({ length: Math.ceil(slots.length / slotsPerPage) }, (_, index) => (
                   <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
@@ -168,6 +171,7 @@ const Schedule = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Schedule;
