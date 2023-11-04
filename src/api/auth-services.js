@@ -281,10 +281,6 @@ export async function getWallet(accessToken) {
 export async function getSlotTime() {
   try {
     const response = await axios.get('https://drivingschoolapi20231005104822.azurewebsites.net/api/SlotTime');
-
- 
-
-   
     // console.log(response.data);
   } catch (error) {
     alert(error.response.data)
@@ -557,26 +553,22 @@ try {
   }
 }
 
-export async function postTakeAttendant( id, isAttended ,accessToken){
-
+export async function postTakeAttendant(id, isAttended, accessToken) {
   try {
-      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/attendance-report/${id}`,
-      
-      {
-        id,
-        isAttended,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        }
-      });
-      console.log(response)
-      alert("điểm danh thành công")
-      return response.data
-    } catch (error) {
-      // alert(error.response.data)
-    }
+    const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/attendance-report/${id}?attendance=${isAttended}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    alert("Điểm danh thành công");
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
   }
+}
+
+
   export async function postMentor(name,email,password,mentorLicenseId, accessToken) {
     try {
       const response = await axios.post('https://drivingschoolapi20231005104822.azurewebsites.net/api/User/register/mentor',
@@ -884,3 +876,36 @@ export async function postTakeAttendant( id, isAttended ,accessToken){
     }
   }
   
+  export async function getRegisteredSlots(accessToken) {
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/Slot/get/slot/by-student-registered`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+          // Add any other headers you need here
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error; // You can handle the error as needed in your application
+    }
+  }
+
+  export async function getStudentById(id, accessToken) {
+    try {
+      const response = await axios.get(`https://drivingschoolapi20231005104822.azurewebsites.net/api/User/get/student/${id}`, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+          // Add any other headers you need here
+        },
+      }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error; // You can handle the error as needed in your application
+    }
+  }
