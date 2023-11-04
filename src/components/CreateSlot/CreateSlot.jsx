@@ -119,7 +119,59 @@ const CreateSlot = () => {
               <Button type="primary" onClick={showModal} className="button-right">
                 Tạo mới
               </Button>
-              {/* ... (your Modal and Form components) */}
+              <Modal
+                title=""
+                open={open}
+                onOk={handleOk}
+                confirmLoading={confirmLoading}
+                onCancel={handleCancel}
+              >
+                <>
+                  <Form
+                    labelCol={{
+                      span: 4,
+                    }}
+                    wrapperCol={{
+                      span: 14,
+                    }}
+                    layout="horizontal"
+                    style={{
+                      maxWidth: 600,
+                    }}
+                  >
+                    <Form.Item label="Slot">
+                      <Input
+                        placeholder="Slot Time ID"
+                        value={slotTimeId}
+                        onChange={(e) => setSlotTimeId(e.target.value)} />
+                    </Form.Item>
+                    <Form.Item label="Khoa hoc">
+                      <Select
+                        placeholder="Select Course"
+                        value={courseId}
+                        onChange={(value) => setCourseId(value)}>
+                        {courses.map(item => (
+                          <Select.Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                    <Form.Item label="Ngày">
+                      <DatePicker selected={monthYear} onChange={date => setMonthYear(date.format("YYYY-MM-DD"))} />
+                    </Form.Item>
+                    <Form.Item label="Nội dung">
+                      <Input
+                        placeholder="tối đa 30 kí tự"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        maxlength="30" />
+                    </Form.Item>
+                  </Form>
+                </>
+                {/* <p>{modalText}</p> */}
+              </Modal>
+             
               <div className="table-responsive">
                 <table className="table text-center">
                   <thead>
