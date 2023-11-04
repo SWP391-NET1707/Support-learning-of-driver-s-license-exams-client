@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DeleteMentorbyID, getMentor, postMentor, putMentorById } from '../../api/auth-services'; // Import API functions
+import { DeleteMentorbyID, getMentor, postMentor, putMentorById, getLicense } from '../../api/auth-services'; // Import API functions
 import { Button, Checkbox, Form, Input, Modal, Table } from 'antd';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
@@ -11,6 +11,27 @@ const Mentor = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [licenses, setLicenses] = useState([]);
+  const [editedLicenseId, setEditedLicenseId] = useState(0);
+  const fetchLicenseData = async () => {
+    try {
+      const licenseData = await getLicense(accessToken);
+      setLicenses(licenseData);
+      console.log(licenseData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchLicenseData();
+  }, []);
+  const getLicenseNameById = (licenseId) => {
+    const license = licenses.find((license) => license.id === licenseId);
+    return license ? license.name : 'Unknown';
+  };
 
   const [newMentorData, setNewMentorData] = useState({
     name: '',
@@ -162,6 +183,11 @@ const Mentor = () => {
       });
     }
   };
+  const handleLicenseIdChange = (e) => {
+    const value = e.target.value;
+    setEditedLicenseId(value); // Update the edited License ID
+
+  };
 
 
   const indexOfLastMentor = currentPage * mentorsPerPage;
@@ -234,7 +260,7 @@ const Mentor = () => {
       ),
     },
     {
-      title: 'Mentor License ID',
+      title: 'Mentor License',
       dataIndex: 'mentorLicenses',
       key: 'mentorLicenses',
       render: (licenses, mentor) => {
@@ -242,12 +268,13 @@ const Mentor = () => {
           return (
             <input
               type="text"
-              value={editMentor.mentorLicenseID}
+              value={getLicenseNameById(editMentor.mentorLicenseID)}
               onChange={(e) => setEditMentor({ ...editMentor, mentorLicenseID: parseInt(e.target.value, 10) })}
             />
           );
         } else {
-          return licenses.map((license) => license.licenseId).join(', ');
+          const licenseNames = licenses.map((license) => getLicenseNameById(license.licenseId)).join(', ');
+          return licenseNames;
         }
       },
     },
