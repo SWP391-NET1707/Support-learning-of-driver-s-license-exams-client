@@ -125,7 +125,7 @@ function QuizPage() {
         const newSelectedOpts = [...selectedOpts];
         newSelectedOpts[currentque] = 1; // Set the selected option as 1
         setSelectedOpts(newSelectedOpts);
-        console.log(selectedOpts)
+        // console.log(selectedOpts)
       }}
       checked={selectedOpts[currentque] === 1}
     />
@@ -147,7 +147,7 @@ function QuizPage() {
         const newSelectedOpts = [...selectedOpts];
         newSelectedOpts[currentque] = 2; // Set the selected option as 2
         setSelectedOpts(newSelectedOpts);
-        console.log(selectedOpts)
+        // console.log(selectedOpts)
       }}
       checked={selectedOpts[currentque] === 2}
     />
@@ -169,7 +169,7 @@ function QuizPage() {
         const newSelectedOpts = [...selectedOpts];
         newSelectedOpts[currentque] = 3; // Set the selected option as 3
         setSelectedOpts(newSelectedOpts);
-        console.log(selectedOpts)
+        // console.log(selectedOpts)
       }}
       checked={selectedOpts[currentque] === 3}
     />
@@ -192,7 +192,7 @@ function QuizPage() {
         newSelectedOpts[currentque] = 4; // Set the selected option as 4
         
         setSelectedOpts(newSelectedOpts);
-        console.log(selectedOpts)
+        // console.log(selectedOpts)
       }}
       checked={selectedOpts[currentque] === 4}
     />
