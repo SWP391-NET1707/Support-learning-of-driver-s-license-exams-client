@@ -34,7 +34,16 @@ const Schedule = () => {
         const slotData = await getSlot();
         const mentorData = await getMentor();
         const courseData = await getCourse();
-        setSlots(slotData);
+    
+        // Filter slots where studentId is null
+        const filteredSlots = slotData.filter(slot => slot.studentId === null);
+    
+        // Filter slots with a monthYear that is at least tomorrow
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + 1); // Add one day to the current date
+        const filteredSlotsTomorrow = filteredSlots.filter(slot => new Date(slot.monthYear) >= currentDate);
+    
+        setSlots(filteredSlotsTomorrow);
         setMentors(mentorData);
         setCourse(courseData);
       } catch (error) {
