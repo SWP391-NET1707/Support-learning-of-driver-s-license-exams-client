@@ -704,7 +704,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
 
   export async function getQuizz(accessToken) {
     try {
-      const response = await axios.get('${API_URL}/Quizz',{
+      const response = await axios.get(`${API_URL}/Quizz`,{
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
