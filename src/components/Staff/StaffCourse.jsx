@@ -132,7 +132,7 @@ const StaffCourse = () => {
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
-      title: 'Name',
+      title: 'Tên khoá học',
       dataIndex: 'name',
       key: 'name',
       render: (name, course) => (
@@ -149,7 +149,7 @@ const StaffCourse = () => {
       ),
     },
     {
-      title: 'Price',
+      title: 'Tổng giá',
       dataIndex: 'price',
       key: 'price',
       render: (price, course) => (
@@ -167,7 +167,7 @@ const StaffCourse = () => {
       ),
     },
     {
-      title: 'Duration',
+      title: 'Thời lượng',
       dataIndex: 'duration',
       key: 'duration',
       render: (duration, course) => (
@@ -184,7 +184,7 @@ const StaffCourse = () => {
       ),
     },
     {
-      title: 'Description',
+      title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
       render: (description, course) => (
@@ -201,7 +201,7 @@ const StaffCourse = () => {
       ),
     },
     {
-      title: 'License',
+      title: 'Loại bằng lái',
       dataIndex: 'licenseId',
       key: 'licenseId',
       render: (licenseId, course) => (
@@ -219,20 +219,20 @@ const StaffCourse = () => {
       ),
     },
     {
-      title: 'Actions',
+      title: 'Tác vụ',
       dataIndex: 'actions',
       key: 'actions',
       render: (text, course) => (
         <span>
           {isEditing && editCourse.id === course.id ? (
             <>
-              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Save</Button>
-              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Lưu</Button>
+              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Huỷ</Button>
             </>
           ) : (
             <>
-              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(course)}>Edit</Button>
-              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(course.id)}>Delete</Button>
+              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(course)}>Chỉnh sửa</Button>
+              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(course.id)}>Xoá khoá học</Button>
             </>
           )}
         </span>
@@ -243,18 +243,18 @@ const StaffCourse = () => {
   return (
     <div>
       <Button type="primary" onClick={showModal} className="button-right">
-        Add Course
+        Thêm khoá học
       </Button>
       <Table columns={columns} dataSource={currentCourses} />
 
       <Modal
-        title="Add Course"
+        title="Thêm khoá học"
         visible={isModalVisible}
         onOk={handleAddCourse}
         onCancel={handleCancel}
       >
         <Form>
-          <Form.Item label="Name">
+          <Form.Item label="Tên khoá học">
             <Input
               type="text"
               name="name"
@@ -262,7 +262,7 @@ const StaffCourse = () => {
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="Price">
+          <Form.Item label="Tổng giá">
             <Input
               type="number"
               name="price"
@@ -270,7 +270,7 @@ const StaffCourse = () => {
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="Duration">
+          <Form.Item label="Thời lượng">
             <Input
               type="text"
               name="duration"
@@ -278,7 +278,7 @@ const StaffCourse = () => {
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="Description">
+          <Form.Item label="Mô tả">
             <Input
               type="text"
               name="description"
@@ -286,7 +286,7 @@ const StaffCourse = () => {
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="License">
+          <Form.Item label="Loại băng lái">
             <Input
               type="number"
               name="licenseId"

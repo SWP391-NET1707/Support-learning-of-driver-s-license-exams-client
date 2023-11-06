@@ -144,7 +144,7 @@ const StaffQuiz = () => {
   const handleAddQuiz = async () => {
     // Validate the input
     if (!newQuizData.name || !newQuizData.licenseId) {
-      alert('Please fill in all fields');
+      alert('Vui lòng điền đầy đủ thông tin');
       return;
     }
 
@@ -173,7 +173,7 @@ const StaffQuiz = () => {
     try {
       // Validate the input
       if (!editQuiz.name || !editQuiz.licenseId) {
-        alert('Please fill in all fields');
+        alert('Vui lòng điền đầy đủ thông tin');
         return;
       }
       console.log(editQuiz.id, editQuiz.name, editQuiz.licenseId,)
@@ -289,7 +289,7 @@ const StaffQuiz = () => {
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
-      title: 'License',
+      title: 'Bằng lái',
       dataIndex: 'licenseId',
       key: 'licenseId',
       render: (licenseId, quiz) => (
@@ -307,7 +307,7 @@ const StaffQuiz = () => {
       ),
     },
     {
-      title: 'Name',
+      title: 'Tên bài quiz',
       dataIndex: 'name',
       key: 'name',
       render: (name, quiz) => (
@@ -325,21 +325,21 @@ const StaffQuiz = () => {
     },
 
     {
-      title: 'Actions',
+      title: 'Tác vụ',
       dataIndex: 'actions',
       key: 'actions',
       render: (text, quiz) => (
         <span>
           {isEditing && editQuiz.id === quiz.id ? (
             <>
-              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Save</Button>
-              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Lưu</Button>
+              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Huỷ</Button>
             </>
           ) : (
             <>
-              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(quiz)}>Edit</Button>
-              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(quiz.id)}>Delete</Button>
-              <Button icon={<ViewArrayOutlined />} className="view-button" onClick={() => handleViewQuiz(quiz.id)}>View questions</Button>
+              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(quiz)}>Chỉnh sửa</Button>
+              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(quiz.id)}>Xoá bài Quiz</Button>
+              <Button icon={<ViewArrayOutlined />} className="view-button" onClick={() => handleViewQuiz(quiz.id)}>Xem danh sách câu hỏi</Button>
             </>
           )}
         </span>
@@ -351,22 +351,22 @@ const StaffQuiz = () => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
         <Button type="primary" onClick={handleOpenAddQuestionModal}>
-          Add Question
+          Thêm câu hỏi
         </Button>
         <Button type="primary" onClick={showModal}>
-          Add Quiz
+          Thêm bài Quiz
         </Button>
       </div>
       <Table columns={columns} dataSource={quizzes} />
 
       <Modal
-        title="Add Quiz"
+        title="Thêm bài Quiz"
         visible={isModalVisible}
         onOk={handleAddQuiz}
         onCancel={handleCancel}
       >
         <Form>
-          <Form.Item label="Name">
+          <Form.Item label="Tên bài quiz">
             <Input
               type="text"
               name="name"
@@ -374,7 +374,7 @@ const StaffQuiz = () => {
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="License">
+          <Form.Item label="Loại bằng lái">
             <Select
               value={newQuizData.licenseId}
               onChange={(value) => handleInputChange({ target: { name: 'licenseId', value } })}
@@ -400,14 +400,14 @@ const StaffQuiz = () => {
               className="save-button"
               onClick={handleSaveEditQuestion}
             >
-              Save
+              Lưu
             </Button>
           ) : isQuizEmpty ? (
             <Button
               icon={<SaveOutlined />}
               onClick={handleOpenAddQuestionModal}
             >
-              Add Question
+              Thêm câu hỏi
             </Button>
           ) : (
             <Button
@@ -415,7 +415,7 @@ const StaffQuiz = () => {
               className="save-button"
               onClick={handleSaveEditQuestion}
             >
-              Save
+              Lưu
             </Button>
           )
         }
@@ -424,7 +424,7 @@ const StaffQuiz = () => {
         {isEditingQuestion ? (
           <div>
             <Form>
-              <Form.Item label="Content">
+              <Form.Item label="Nội dung câu hỏi">
                 <Input
                   type="text"
                   name="content"
@@ -434,7 +434,7 @@ const StaffQuiz = () => {
                   }
                 />
               </Form.Item>
-              <Form.Item label="Answer 1">
+              <Form.Item label="Đáp án #1">
                 <Input
                   type="text"
                   name="answer1"
@@ -444,7 +444,7 @@ const StaffQuiz = () => {
                   }
                 />
               </Form.Item>
-              <Form.Item label="Answer 2">
+              <Form.Item label="Đáp án #2">
                 <Input
                   type="text"
                   name="answer2"
@@ -454,7 +454,7 @@ const StaffQuiz = () => {
                   }
                 />
               </Form.Item>
-              <Form.Item label="Answer 3">
+              <Form.Item label="Đáp án #3">
                 <Input
                   type="text"
                   name="answer3"
@@ -464,7 +464,7 @@ const StaffQuiz = () => {
                   }
                 />
               </Form.Item>
-              <Form.Item label="Answer 4">
+              <Form.Item label="Đáp án #4">
                 <Input
                   type="text"
                   name="answer4"
@@ -474,7 +474,7 @@ const StaffQuiz = () => {
                   }
                 />
               </Form.Item>
-              <Form.Item label="Correct Answer">
+              <Form.Item label="Đáp án đúng">
                 <Input
                   type="text"
                   name="correctAnswer"
@@ -484,7 +484,7 @@ const StaffQuiz = () => {
                   }
                 />
               </Form.Item>
-              <Form.Item label="License">
+              <Form.Item label="Loại bằng lái">
                 <Select
                   value={editedQuestion.licenseId}
                   onChange={(value) => setEditedQuestion({ ...editedQuestion, licenseId: value })}
@@ -505,32 +505,32 @@ const StaffQuiz = () => {
                 dataSource={questions}
                 columns={[
                   {
-                    title: "ID",
+                    title: "ID câu hỏi",
                     dataIndex: "id",
                     key: "id",
                   },
                   {
-                    title: "Content",
+                    title: "Nội dung câu hỏi",
                     dataIndex: "content",
                     key: "content",
                   },
                   {
-                    title: "Answer 1",
+                    title: "Đáp án #1",
                     dataIndex: "answer1",
                     key: "answer1",
                   },
                   {
-                    title: "Answer 2",
+                    title: "Đáp án #2",
                     dataIndex: "answer2",
                     key: "answer2",
                   },
                   {
-                    title: "Answer 3",
+                    title: "Đáp án #3",
                     dataIndex: "answer3",
                     key: "answer3",
                   },
                   {
-                    title: "Answer 4",
+                    title: "Đáp án #4",
                     dataIndex: "answer4",
                     key: "answer4",
                   },
@@ -540,7 +540,7 @@ const StaffQuiz = () => {
                     key: "correctAnswer",
                   },
                   {
-                    title: "License",
+                    title: "Loại bằng lái",
                     dataIndex: "licenseId",
                     key: "licenseId",
                     render: (licenseId, question) => (
@@ -548,7 +548,7 @@ const StaffQuiz = () => {
                     ),
                   },
                   {
-                    title: "Actions",
+                    title: "Tác vụ",
                     dataIndex: "actions",
                     key: "actions",
                     render: (text, question) => (
@@ -558,14 +558,14 @@ const StaffQuiz = () => {
                           className="edit-button"
                           onClick={() => handleEditQuestion(question)}
                         >
-                          Edit
+                          Chỉnh sửa
                         </Button>
                         <Button
                           icon={<DeleteOutlined />}
                           className="delete-button"
                           onClick={() => handleDeleteQuestion(question.id)}
                         >
-                          Delete
+                          Xoá
                         </Button>
                       </span>
                     ),
@@ -573,14 +573,14 @@ const StaffQuiz = () => {
                 ]}
               />
             ) : (
-              <p>No questions available.</p>
+              <p>Bài quiz không có câu hỏi</p>
             )}
           </div>
         )}
       </Modal>
 
       <Modal
-        title="Add Question"
+        title="Thêm câu hỏi"
         visible={isAddingQuestion}
         onCancel={handleCloseAddQuestionModal}
         footer={
@@ -595,7 +595,7 @@ const StaffQuiz = () => {
         width={1500}
       >
         <Form>
-          <Form.Item label="Content">
+          <Form.Item label="Nội dung câu hỏi">
             <Input
               type="text"
               name="content"
@@ -603,7 +603,7 @@ const StaffQuiz = () => {
               onChange={(e) => setNewQuestion({ ...newQuestion, content: e.target.value })}
             />
           </Form.Item>
-          <Form.Item label="Answer 1">
+          <Form.Item label="Đáp án #1">
             <Input
               type="text"
               name="answer1"
@@ -611,7 +611,7 @@ const StaffQuiz = () => {
               onChange={(e) => setNewQuestion({ ...newQuestion, answer1: e.target.value })}
             />
           </Form.Item>
-          <Form.Item label="Answer 2">
+          <Form.Item label="Đáp án #2">
             <Input
               type="text"
               name="answer2"
@@ -619,7 +619,7 @@ const StaffQuiz = () => {
               onChange={(e) => setNewQuestion({ ...newQuestion, answer2: e.target.value })}
             />
           </Form.Item>
-          <Form.Item label="Answer 3">
+          <Form.Item label="Đáp án #3">
             <Input
               type="text"
               name="answer3"
@@ -627,7 +627,7 @@ const StaffQuiz = () => {
               onChange={(e) => setNewQuestion({ ...newQuestion, answer3: e.target.value })}
             />
           </Form.Item>
-          <Form.Item label="Answer 4">
+          <Form.Item label="Đáp án #4">
             <Input
               type="text"
               name="answer4"
@@ -635,7 +635,7 @@ const StaffQuiz = () => {
               onChange={(e) => setNewQuestion({ ...newQuestion, answer4: e.target.value })}
             />
           </Form.Item>
-          <Form.Item label="Correct Answer">
+          <Form.Item label="Đáp án đúng">
             <Input
               type="text"
               name="correctAnswer"
@@ -643,7 +643,7 @@ const StaffQuiz = () => {
               onChange={(e) => setNewQuestion({ ...newQuestion, correctAnswer: e.target.value })}
             />
           </Form.Item>
-          <Form.Item label="License">
+          <Form.Item label="Loại bằng lái">
             <Select
               value={newQuestion.licenseId}
               onChange={(value) => setNewQuestion({ ...newQuestion, licenseId: value })}
@@ -655,14 +655,14 @@ const StaffQuiz = () => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label="ID Quiz">
+          <Form.Item label="Tên bài quiz">
             <Select
               value={newQuestion.quizId}
               onChange={(value) => setNewQuestion({ ...newQuestion, quizId: value })}
             >
               {quizzes.map((quiz) => (
                 <Select.Option key={quiz.id} value={quiz.id}>
-                  {quiz.id}
+                  {quiz.name}
                 </Select.Option>
               ))}
             </Select>

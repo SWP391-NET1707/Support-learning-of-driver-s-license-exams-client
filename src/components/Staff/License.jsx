@@ -90,7 +90,7 @@ const License = () => {
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
-      title: 'Name',
+      title: 'Tên bằng lái',
       dataIndex: 'name',
       key: 'name',
       render: (name, license) => (
@@ -107,20 +107,20 @@ const License = () => {
       ),
     },
     {
-      title: 'Actions',
+      title: 'Tác vụ',
       dataIndex: 'actions',
       key: 'actions',
       render: (text, license) => (
         <span>
           {isEditing && editLicense.id === license.id ? (
             <>
-              <Button  icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Save</Button>
-              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button  icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Lưu</Button>
+              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Huỷ</Button>
             </>
           ) : (
             <>
-              <Button icon={<EditOutlined />} className="edit-button"  onClick={() => handleEdit(license)}>Edit</Button>
-              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(license.id)}>Delete</Button>
+              <Button icon={<EditOutlined />} className="edit-button"  onClick={() => handleEdit(license)}>Chỉnh sửa</Button>
+              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(license.id)}>Xoá bằng lái</Button>
             </>
           )}
         </span>
@@ -137,17 +137,17 @@ const License = () => {
   return (
     <div>
       <Button type="primary" className="button-right" onClick={handleShowModal}>
-        Add License
+        Thêm bằng lái
       </Button>
       <Table columns={columns} dataSource={currentLicenses} />
       <Modal
-        title="Add License"
+        title="Thêm bằng lái"
         visible={isModalVisible}
         onOk={handleAddLicense}
         onCancel={handleCancel}
       >
         <Form>
-          <Form.Item label="Name">
+          <Form.Item label="Tên bằng lái">
             <Input
               type="text"
               value={newLicenseName}
