@@ -76,15 +76,17 @@ const Course = () => {
 
     // Fetch user's registered courses using the API service function if user and accessToken exist
     if (user && accessToken && userRegisteredCourses.length === 0) {
+      if (!isCourseDataFetched) {
       getOwnStudentCourse(accessToken)
         .then((response) => {
           const registeredCourses = response.data.map((course) => course.courseId);
           setUserRegisteredCourses(registeredCourses);
+          setIsCourseDataFetched(true);
         })
         .catch((error) => {
           console.error('Error fetching user registered courses:', error);
         });
-    }
+    }}
   }, [user, accessToken, isCourseDataFetched, location.search, userRegisteredCourses]);
 
   const handleRegistrationClick = async (selectedCourse, price) => {
