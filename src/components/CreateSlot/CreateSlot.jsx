@@ -74,10 +74,6 @@ const CreateSlot = () => {
 
       setModalText('The modal will be closed after two seconds');
       setConfirmLoading(true);
-      setTimeout(() => {
-        setOpen(false);
-        setConfirmLoading(false);
-      }, 2000);
       // window.location.reload();
 
     } catch (error) {

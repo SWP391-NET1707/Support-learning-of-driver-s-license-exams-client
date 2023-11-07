@@ -144,17 +144,7 @@ const Mentor = () => {
         alert('Vui lòng điền đầy đủ thông tin');
         return;
       }
-      console.log(editMentor.id);
-      
-      const updatedMentor = {
-        id: editMentor.id,
-        name: editName,
-        email: editMentor.email,
-        password: editMentor.password,
-        active: editActive,
-        mentorLicenseID: editMentor.mentorLicenseID,
-      };
-      console.log(updatedMentor)
+      console.log(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID)
       // Send a PUT request to update the mentor
       await putMentorById(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID, accessToken);
 
@@ -170,21 +160,21 @@ const Mentor = () => {
 
 
   // Function to handle deleting a mentor
-  const handleDelete = async (id) => {
-    try {
-      // Filter out the mentor with the specified ID
-      const updatedMentors = mentors.filter((mentor) => mentor.id !== id);
+  // const handleDelete = async (id) => {
+  //   try {
+  //     // Filter out the mentor with the specified ID
+  //     const updatedMentors = mentors.filter((mentor) => mentor.id !== id);
 
-      // Send a DELETE request to remove the mentor (implement the deleteMentorById function)
+  //     // Send a DELETE request to remove the mentor (implement the deleteMentorById function)
 
 
-      setMentors(updatedMentors);
-      await DeleteMentorbyID(id, accessToken);
-      await fetchMentorData();
-    } catch (error) {
-      console.error('Error during mentor deletion:', error);
-    }
-  };
+  //     setMentors(updatedMentors);
+  //     await DeleteMentorbyID(id, accessToken);
+  //     await fetchMentorData();
+  //   } catch (error) {
+  //     console.error('Error during mentor deletion:', error);
+  //   }
+  // };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -287,6 +277,7 @@ const Mentor = () => {
         if (isEditing && editMentor.id === mentor.id) {
           return (
             <SelectField
+              mode="multiple"
               value={editMentor.mentorLicenseID}
               onChange={(value) => setEditMentor({ ...editMentor, mentorLicenseID: value })}
               licensesUpdate={licensesUpdate}
@@ -312,7 +303,7 @@ const Mentor = () => {
           ) : (
             <>
               <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(mentor)}>Chỉnh sửa</Button>
-              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(mentor.id)}>Xoá giảng viên</Button>
+              {/* <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(mentor.id)}>Xoá giảng viên</Button> */}
             </>
           )}
         </span>

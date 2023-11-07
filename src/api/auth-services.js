@@ -605,7 +605,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
           },
         }
       );
-      alert("Success");
+      alert(response.data);
     } catch (error) {
       if (error.response) {
         console.error('Error Response Data:', error.response.data);
@@ -905,5 +905,53 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
     } catch (error) {
       console.error('Error:', error);
       throw error; // You can handle the error as needed in your application
+    }
+  }
+
+  export async function putStudentProfile(name, password, accessToken) {
+    try {
+      const response = await axios.put(`${API_URL}/User/update/student`, 
+      {
+        "name": name,
+        "password": password,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+          // Add any other headers you need here
+        },
+      }
+      );
+       alert("Đổi thành công, Xin hãy đăng nhập lại")
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  export async function postForgotpwd(email, password, confirmPassword,  emailToken) {
+    try {
+      const response = await axios.post(`${API_URL}/User/forgot-password/student`, 
+      {
+        "email": email,
+        "password": password,
+        "confirmPassword": confirmPassword,
+        "emailToken": emailToken
+      }
+      );
+       alert("Lấy lại mật khẩu thành công, Xin hãy đăng nhập lại")
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  export async function getOtpResetPwd(email){
+    try {
+      const response = await axios.post(`${API_URL}/User/otp/email/forgotpassword`, email,
+      {headers: { 'Content-Type': 'application/json' }}
+      );
+       alert("Gửi mã thành công")
+    } catch (error) {
+      console.error('Error:', error);
     }
   }
