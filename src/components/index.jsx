@@ -13,3 +13,5 @@ export {default as MentorList} from './Staff/MentorList';
 export {default as StaffCourse} from './Staff/StaffCourse';
 export {default as StaffQuiz} from './Staff/StaffQuiz';
 export {default as NavbarStaff} from './navbar-staff/NavbarStaff';
+export {default as StaffList} from './Admin/StaffList'
+export {default as CourseList} from './Admin/CourseList'

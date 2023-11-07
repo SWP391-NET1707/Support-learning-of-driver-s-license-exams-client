@@ -79,7 +79,7 @@ const StaffList = () => {
 
   const handleSaveEdit = async () => {
     try {
-      if (!editName || !editStaff.email || !editStaff.password) {
+      if (!editName  || !editStaff.password) {
         alert('Please fill in all fields');
         return;
       }
