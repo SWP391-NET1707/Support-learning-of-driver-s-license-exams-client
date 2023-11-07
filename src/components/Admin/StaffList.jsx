@@ -91,8 +91,10 @@ const StaffList = () => {
         password: editStaff.password,
         active: editActive,
       };
+      console.log(updatedStaff)
+      console.log(updatedStaff.id)
 
-      const response = await putStaff(accessToken, updatedStaff.id, updatedStaff.name, updatedStaff.password, updatedStaff.active);
+      const response = await putStaff( updatedStaff.id, updatedStaff.name, updatedStaff.password, updatedStaff.active);
 
       // Handle the response or perform any necessary actions
       console.log(response);
