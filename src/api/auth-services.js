@@ -813,9 +813,9 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
     }
   }
 
-  export async function putStaff(id, accessToken, name, password, active){
+  export async function putStaff(id, name, password, active){
     try {
-      const response = await axios.put(`${API_URL}/User/get/staff/${id}`,
+      const response = await axios.put(`${API_URL}/User/update/staff/${id}`,
       {
        "name" : name,
        "password" : password,
@@ -823,10 +823,10 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
       },
       {
         
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        }
+        // headers: {
+        //   'Content-Type': 'application/json',
+        //   'Authorization': `Bearer ${accessToken}`
+        // }
       });
   
       return response.data

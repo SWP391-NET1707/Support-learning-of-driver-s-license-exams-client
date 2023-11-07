@@ -5,9 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/bootstrap.scss';
 import 'animate.css';
 
-import { CreateSlot, License, MentorList, Navbar, Schedule, StaffCourse, StaffQuiz, TakeAttend, Timetable, NavbarStaff} from './components';
+import { CreateSlot, License, MentorList, Navbar, Schedule, StaffCourse, StaffQuiz, TakeAttend, Timetable, NavbarStaff,StaffList,CourseList} from './components';
 import { Footer } from './containers';
-import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor, Payment, PaymentFail, Test, Mophong, Staff } from './pages';
+import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor, Payment, PaymentFail, Test, Mophong, Staff,Admin } from './pages';
 import app from './pages/admin/App';
 import Dashboard from './pages/admin/scenes/dashboard';
 import { Layout } from 'antd';
@@ -17,10 +17,6 @@ import { useEffect } from 'react';
 import authService from './api/auth-services';
 import TakeSlot from './components/TakeSlot/TakeSlot';
 
-import StudentCourseList from './components/Staff/StudentList';
-import Admin from './pages/Admin';
-import StaffList from './components/Admin/StaffList';
-import CourseList from './components/Admin/CourseList';
 
 
 
@@ -98,11 +94,11 @@ function AppM() {
                 {/*Admin page start*/}
                 {(role === 'Admin') &&(
                     <>
-                <Route path="/admin" element={<Admin />} />
-                    <Route path="MentorList" element={<MentorList/>}/>
+                <Route path="/Admin" element={<Admin />} >
+                    {/* <Route path="MentorList" element={<MentorList/>}/> */}
                     <Route path="StaffList" element={<StaffList/>}/>
                     <Route path="CourseList" element={<CourseList/>}/>
-                <Route/>    
+                </Route>    
                 </>
                 )}
 
