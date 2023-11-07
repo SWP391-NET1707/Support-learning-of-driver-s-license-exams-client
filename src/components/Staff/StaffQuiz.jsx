@@ -147,10 +147,11 @@ const StaffQuiz = () => {
       alert('Vui lòng điền đầy đủ thông tin');
       return;
     }
-
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    const Token = user.accessToken;
+  
     // Send a POST request to add the quiz (implement the postQuizz function)
-    await postQuizz(newQuizData.name, newQuizData.licenseId, accessToken);
-
+    await postQuizz(newQuizData.name, newQuizData.licenseId, Token);
     // Clear the form and hide the modal
     setNewQuizData({
       name: '',
@@ -176,10 +177,8 @@ const StaffQuiz = () => {
         alert('Vui lòng điền đầy đủ thông tin');
         return;
       }
-      console.log(editQuiz.id, editQuiz.name, editQuiz.licenseId,)
       // Send a PUT request to update the quiz
       await putQuizzById(editQuiz.id, editQuiz.name, editedLicenseId, accessToken);
-
       // Clear the edit state
       setIsEditing(false);
       setEditQuiz({ id: 0, name: '', licenseId: 0 });
@@ -280,12 +279,6 @@ const StaffQuiz = () => {
     });
   };
 
-  const handleLicenseIdChange = (e) => {
-    const value = e.target.value;
-    setEditedLicenseId(value); // Update the edited License ID
-
-  };
-
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
@@ -295,11 +288,17 @@ const StaffQuiz = () => {
       render: (licenseId, quiz) => (
         <span>
           {isEditing && editQuiz.id === quiz.id ? (
-            <Input
-              type="text"
-              value={getLicenseNameById(editedLicenseId)}
-              onChange={handleLicenseIdChange}
-            />
+            <Select
+              style={{ width: '100%' }}
+              value={editedLicenseId}
+              onChange={(value) => setEditedLicenseId(value)}
+            >
+              {licenses.map((license) => (
+                <Select.Option key={license.id} value={license.id}>
+                  {license.name}
+                </Select.Option>
+              ))}
+            </Select>
           ) : (
             <span>{getLicenseNameById(licenseId)}</span>
           )}

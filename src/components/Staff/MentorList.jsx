@@ -7,14 +7,14 @@ import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from 
 const Mentor = () => {
   const [mentors, setMentors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [editMentor, setEditMentor] = useState({ id: 0, name: '', email: '', password: '', mentorLicenseID: 0 });
+  const [editMentor, setEditMentor] = useState({ id: 0, name: '', email: '', password: '', mentorLicenseID: [] });
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [licenses, setLicenses] = useState([]);
   const [licensesUpdate, setLicensesUpdate] = useState([]);
-  const [editedLicenseId, setEditedLicenseId] = useState(0);
+  const [editedLicenseId, setEditedLicenseId] = useState([]);
   const fetchLicenseData = async () => {
     try {
       const licenseData = await getLicense(accessToken);
@@ -46,9 +46,9 @@ const Mentor = () => {
     const license = licenses.find((license) => license.id === licenseId);
     return license ? license.name : 'Không rõ';
   };
+
   const getLicenseNameById2 = (licenseId) => {
     const licenseUpdate = licensesUpdate.find((licenseUpdate) => licenseUpdate.id === licenseId);
-    console.log(licenseId);
     return licenseUpdate ? licenseUpdate.name : 'Không rõ';
   };
 
@@ -56,7 +56,7 @@ const Mentor = () => {
     name: '',
     email: '',
     password: '',
-    mentorLicenseId: '',
+    mentorLicenseId: [],
     active: false,
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -101,22 +101,24 @@ const Mentor = () => {
       alert('Vui lòng điền đầy đủ thông tin');
       return;
     }
-    let mentorLicenseIDArray = [];
-  
-  if (typeof newMentorData.mentorLicenseId === 'number' ) {
-    mentorLicenseIDArray.push(newMentorData.mentorLicenseId);
-  } else {
-    console.error("type of value error");
-  }
-    // Send a POST request to add the mentor (implement the postMentor function)
-    await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, mentorLicenseIDArray, accessToken);
 
+    // let mentorLicenseIDArray = [];
+  
+  // if (typeof newMentorData.mentorLicenseId === 'number' ) {
+  //   mentorLicenseIDArray.push(newMentorData.mentorLicenseId);
+  // } else {
+  //   console.error("type of value error");
+  // }
+    // Send a POST request to add the mentor (implement the postMentor function)
+    // await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, mentorLicenseIDArray, accessToken);
+
+    await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, newMentorData.mentorLicenseId, accessToken);
     // Clear the form and hide the modal
     setNewMentorData({
       name: '',
       email: '',
       password: '',
-      mentorLicenseID: '',
+      mentorLicenseID: [],
       active: true,
     });
 
@@ -132,8 +134,7 @@ const Mentor = () => {
     setEditMentor(mentor);
     setEditName(mentor.name);
     setEditActive(mentor.active);
-
-
+    setEditedLicenseId(mentor.mentorLicenseId)
   };
 
   const handleSaveEdit = async () => {
@@ -160,7 +161,7 @@ const Mentor = () => {
       // Clear the edit state
       setIsEditing(false);
       await fetchMentorData();
-      setEditMentor({ id: 0, name: '', email: '', password: '', mentorLicenseID: 0 });
+      setEditMentor({ id: 0, name: '', email: '', password: '', mentorLicenseID: [] });
 
     } catch (error) {
       console.error('Error during mentor update:', error);
@@ -193,28 +194,21 @@ const Mentor = () => {
     setIsModalVisible(false);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    // If the input field is mentorLicenseID, just store it as a string
-    if (name === 'mentorLicenseID') {
-      setNewMentorData({
-        ...newMentorData,
-        mentorLicenseId: value,
-      });
-    } else {
-      setNewMentorData({
-        ...newMentorData,
-        [name]: type === 'checkbox' ? checked : value,
-      });
-    }
-  };
-  const handleLicenseIdChange = (e) => {
-    const value = e.target.value;
-    setEditedLicenseId(value); // Update the edited License ID
-
-  };
-
+  const SelectField = React.memo(({ value, onChange, licensesUpdate }) => (
+    <Select
+      mode="multiple"
+      value={value}
+      onChange={onChange}
+      style={{ width: '100%' }}
+    >
+      {licensesUpdate.map((license) => (
+        <Select.Option key={license.id} value={license.id}>
+          {getLicenseNameById2(license.id)}
+        </Select.Option>
+      ))}
+    </Select>
+  ));
+  
 
   const indexOfLastMentor = currentPage * mentorsPerPage;
   const indexOfFirstMentor = indexOfLastMentor - mentorsPerPage;
@@ -292,16 +286,11 @@ const Mentor = () => {
       render: (licenses, mentor) => {
         if (isEditing && editMentor.id === mentor.id) {
           return (
-            <Select
-            value={editMentor.mentorLicenseID}
-            onChange={(value) => setEditMentor({ ...editMentor, mentorLicenseID: parseInt(value, 10) })}
-          >
-            {licensesUpdate.map((license) => (
-              <Select.Option key={license.id} value={license.id}>
-                {getLicenseNameById2(license.id)}
-              </Select.Option>
-            ))}
-          </Select> 
+            <SelectField
+              value={editMentor.mentorLicenseID}
+              onChange={(value) => setEditMentor({ ...editMentor, mentorLicenseID: value })}
+              licensesUpdate={licensesUpdate}
+            />
           );
         } else {
           const licenseNames = licenses.map((license) => getLicenseNameById(license.licenseId)).join(', ');
@@ -378,7 +367,7 @@ const Mentor = () => {
             />
           </Form.Item>
           <Form.Item label="Bằng lái giảng viên">
-            <Select value={newMentorData.mentorLicenseId} onChange={e => setNewMentorData({...newMentorData, mentorLicenseId: e})}>
+            <Select mode="multiple" value={newMentorData.mentorLicenseId} onChange={e => setNewMentorData({...newMentorData, mentorLicenseId: e})}>
               {licenses.map((license) => (
                 <Select.Option key={license.id} value={license.id}>
                     {license.name}

@@ -359,9 +359,9 @@ export async function postCourse(name, price, duration, description, licenseId) 
     });
 
     if (response.status === 200) {
-      console.log('Course successfully posted');
+      alert('Course successfully posted');
     } else {
-      console.log('Course posting failed');
+      alert('Course posting failed');
     }
   } catch (err) {
     console.error('Error during course posting:', err);
@@ -378,12 +378,10 @@ export async function putCourseById(id,name, price, duration, description, licen
       licenseId,
     });
 
-    console.log('Response:', response);
-
     if (response.status === 200) {
-      console.log('Course successfully updated');
+      alert('Course successfully updated');
     } else {
-      console.log('Course updating failed');
+      alert('Course updating failed');
     }
   } catch (err) {
     console.error('Error during course update:', err);
@@ -403,9 +401,9 @@ export async function DeleteCourseById(id, accessToken) {
     console.log('Response:', response);
 
     if (response.status === 200) {
-      console.log('Course successfully deleted');
+      alert('Course successfully deleted');
     } else {
-      console.log('Course deletion failed');
+      alert('Course deletion failed');
     }
   } catch (err) {
     console.error('Error during course update:', err);
@@ -745,7 +743,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      alert("Tao thanh cong")
+      alert("Tạo Bài Quiz thành công")
     } catch (error) {
       console.error('Error:', error);
     }
@@ -766,7 +764,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
           },
         }
       );
-      alert("Success");
+      alert("Sửa đổi thành công");
     } catch (error) {
       if (error.response) {
         console.error('Error Response Data:', error.response.data);
@@ -777,7 +775,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
   }
 
   export async function deleteQuizzById(id, accessToken) {
-    try {
+    try { 
       const response = await axios.delete(`${API_URL}/Quizz/${id}`,
       {
         headers: {
