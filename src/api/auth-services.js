@@ -864,7 +864,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
 
 export async function getQuestionById(id, accessToken) {
   try {
-    const response = await axios.get(`${API_URL}/Question/license/${id}`, {
+    const response = await axios.get(`${API_URL}/Question/quiz-staff/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`,
@@ -981,3 +981,37 @@ export async function getQuestionById(id, accessToken) {
       console.error('Error:', error);
     }
   }
+
+  export async function getPointByQuizId(accessToken, id){
+    try{
+      const response = await axios.get(`${API_URL}/StudentQuiz/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+          // Add any other headers you need here
+        }}
+      )
+      
+    }
+    catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  export async function postStudentScorebyQuizId(accessToken, quizId, score){
+    try{
+      const response = await axios.post(`${API_URL}/StudentQuiz`, quizId, score,  {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+          // Add any other headers you need here
+        }}
+      )
+      
+    }
+    catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+
