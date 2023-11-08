@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getQuestionById } from '../api/auth-services';
+import { getQuestionById, postStudentQuiz } from '../api/auth-services';
 
 import '../style/quizpage.css';
 
@@ -14,22 +14,26 @@ function QuizPage() {
   const [isQuizFinished, setIsQuizFinished] = useState(false);
   const [timeLeft, setTimeLeft] = useState(1200); // 20 minutes in seconds
   const [quiz, setQuiz] = useState({ JS: [] });
+  const [userAnswers, setUserAnswers] = useState([]);
   const user = JSON.parse(sessionStorage.getItem('user'));
   const accessToken = user ? user.accessToken : null;
-
+  
   useEffect(() => {
     if (quizId) {
       getQuestionById(quizId, accessToken)
         .then((questions) => {
           const mappedQuestions = questions.map((question) => {
             // Exclude 'id', 'licenseId', and 'quizId' properties
-            const { id, licenseId, quizId, ...rest } = question;
-            return rest;
-          });
+            const {  licenseId, quizId, ...rest } = question;
 
+            return rest;
+            
+          });
+          console.log(mappedQuestions)
           setQuiz({ JS: mappedQuestions });
           setSelectedOpts(Array(mappedQuestions.length).fill(''));
         })
+      
         .catch((error) => {
           console.error('Error fetching questions:', error);
         });
@@ -74,17 +78,54 @@ function QuizPage() {
   };
 
   const finishQuiz = () => {
-    let totalCorrectAnswers = 0;
-
-    for (let i = 0; i < quiz.JS.length; i++) {
-      if (checkAnswer(i)) {
-        totalCorrectAnswers += 1;
+    if (quizId && quiz.JS.length > 0) {
+      let totalCorrectAnswers = 0;
+      const userAnswersData = [];
+  
+      for (let i = 0; i < quiz.JS.length; i++) {
+        if (checkAnswer(i)) {
+          totalCorrectAnswers += 1;
+        }
+  
+        // Verify that the id property is present in quiz.JS[i]
+        if (quiz.JS[i].id) {
+          userAnswersData.push({ id: quiz.JS[i].id, correctAnswer: selectedOpts[i] });
+        } else {
+          console.error(`Missing id property in quiz.JS[${i}]`);
+        }
       }
-    }
+  
+      setUserAnswers(userAnswersData); // Store user's answers
+  
+      setScore(totalCorrectAnswers);
+      setIsQuizFinished(true);
+  
+      // Convert userAnswersData to a JSON string
+      const userAnswersDataJson = JSON.stringify(userAnswersData);
+  
+      // Create the data structure for API call
+      const quizData = {
+        questions: JSON.parse(userAnswersDataJson),
+        quizId: quizId
+      };
 
-    setScore(totalCorrectAnswers);
-    setIsQuizFinished(true);
+      
+      const sendData = JSON.stringify(quizData, null, 2)
+      console.log("this is", quizData);
+  
+      // Send data to the API
+      postStudentQuiz(accessToken, sendData)
+        .then((response) => {
+          // Handle success if needed
+        })
+        .catch((error) => {
+          console.error('Error posting student quiz:', error);
+        });
+    } else {
+      console.error('quizId is undefined or quiz.JS is empty');
+    }
   };
+  
 
   const currentQuestion = quiz.JS[currentque];
 
@@ -92,10 +133,10 @@ function QuizPage() {
     <div className="quiz-container">
       {/* Timer display */}
       <div className="timer">
-        <span>Time Left: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
+        <span>Thời gian: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
       </div>
       <div className="question-buttons-container">
-        <h3>Question IDs</h3>
+        <h3>Câu hỏi</h3>
         <div className="question-buttons">
           {quiz.JS.map((question, index) => (
             <button
@@ -203,21 +244,21 @@ function QuizPage() {
 )}
             </div>
             <div className="quiz-navigation">
-              <button className='prev-button' onClick={() => changeQuestion(-1)}>Previous</button>
-              <button className='finish-button' onClick={finishQuiz}>Finish Quiz</button>
-              <button className='next-button' onClick={() => changeQuestion(1)}>Next</button>
+              <button className='prev-button' onClick={() => changeQuestion(-1)}>Quay về</button>
+              <button className='finish-button' onClick={finishQuiz}>Hoàn thành</button>
+              <button className='next-button' onClick={() => changeQuestion(1)}>Tiếp</button>
             </div>
           </div>
         )}
       </div>
       {isQuizFinished && (
   <div>
-    <h1>Total Score: {score}/{quiz.JS.length}</h1>
+    <h1>Tổng Điểm: {score}/{quiz.JS.length}</h1>
     {quiz.JS.map((question, index) => (
       <div key={index}>
-        <div>Q{index + 1}. Your answer: {selectedOpts[index] ? `Option ${selectedOpts[index]}` : 'Not answered'}</div>
-        <div><b>Correct answer:</b> Option {question.correctAnswer}</div>
-        <div><b>Score:</b> {checkAnswer(index) ? '✅' : '❌'}</div>
+        <div>Q{index + 1}. Bạn chọn: {selectedOpts[index] ? `Đáp án ${selectedOpts[index]}` : 'Chưa chọn'}</div>
+        <div><b>Đáp án đúng:</b> Đáp án {question.correctAnswer}</div>
+        <div><b>Kết quả:</b> {checkAnswer(index) ? '✅' : '❌'}</div>
       </div>
     ))}
   </div>

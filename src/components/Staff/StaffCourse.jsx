@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { getCourse, postCourse, putCourseById, deleteCourseById, DeleteCourseById,getLicense } from '../../api/auth-services'; // Import API functions
-import { Button, Form, Input, Modal, Table } from 'antd';
+import { Button, Form, Input, Modal, Select, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { Option } from 'antd/es/mentions';
 
 const StaffCourse = () => {
   const [courses, setCourses] = useState([]);
   const [editedLicenseId, setEditedLicenseId] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
-  const [editCourse, setEditCourse] = useState({ id: 0, name: '', price: 0, duration: '', description: '', licenseId: 0 });
+  const [editCourse, setEditCourse] = useState({ id: 0, name: '', price: 0, duration: '', description: '', licenseId: [] });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [licenses, setLicenses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -59,14 +60,14 @@ const StaffCourse = () => {
   const handleAddCourse = async () => {
     // Send a POST request to add the course (implement the postCourse function)
     await postCourse(newCourseData.name, newCourseData.price, newCourseData.duration, newCourseData.description, newCourseData.licenseId, accessToken);
-
+    
     // Clear the form and hide the modal
     setNewCourseData({
       name: '',
       price: 0,
-      duration: '',
+      duration: 0,
       description: '',
-      licenseId: 0,
+      licenseId: '',
     });
 
     setIsModalVisible(false);
@@ -91,7 +92,7 @@ const StaffCourse = () => {
 
     // Clear the edit state
     setIsEditing(false);
-    setEditCourse({ id: 0, name: '', price: 0, duration: '', description: '', licenseId: 0 });
+    setEditCourse({ id: 0, name: '', price: 0, duration: 0, description: '', licenseId: [] });
 
     fetchCourseData();
   };
@@ -207,11 +208,17 @@ const StaffCourse = () => {
       render: (licenseId, course) => (
         <span>
           {isEditing && editCourse.id === course.id ? (
-            <Input
-              type="text"
-              value={getLicenseNameById(editCourse.licenseId)}
-              onChange={handleLicenseIdChange}
-            />
+            <Select
+              style={{ width: '100%' }}
+              value={editCourse.licenseId}
+              onChange={(value) => setEditCourse({ ...editCourse, licenseId: value })}
+            >
+              {licenses.map((license) => (
+                <Option key={license.id} value={license.id}>
+                  {license.name}
+                </Option>
+              ))}
+            </Select>
           ) : (
             <span>{getLicenseNameById(licenseId)}</span>
           )}
@@ -272,7 +279,7 @@ const StaffCourse = () => {
           </Form.Item>
           <Form.Item label="Thời lượng">
             <Input
-              type="text"
+              type="number"
               name="duration"
               value={newCourseData.duration}
               onChange={handleInputChange}
@@ -286,13 +293,20 @@ const StaffCourse = () => {
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="Loại băng lái">
-            <Input
-              type="number"
+          <Form.Item label="Loại bằng lái">
+            <Select
+              style={{ width: '100%' }}
+              type="text"
               name="licenseId"
               value={newCourseData.licenseId}
-              onChange={handleInputChange}
-            />
+              onChange={(value) => setNewCourseData({ ...newCourseData, licenseId: value })}
+            >
+              {licenses.map((license) => (
+                <Option key={license.id} value={license.id}>
+                  {license.name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
         </Form>
       </Modal>

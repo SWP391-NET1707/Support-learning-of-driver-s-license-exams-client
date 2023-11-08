@@ -7,18 +7,18 @@ import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from 
 const Mentor = () => {
   const [mentors, setMentors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [editMentor, setEditMentor] = useState({ id: 0, name: '', email: '', password: '', mentorLicenseID: 0 });
+  const [editMentor, setEditMentor] = useState({ id: 0, name: '', email: '', password: '', mentorLicenseID: [] });
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [licenses, setLicenses] = useState([]);
-  const [editedLicenseId, setEditedLicenseId] = useState(0);
+  const [licensesUpdate, setLicensesUpdate] = useState([]);
+  const [editedLicenseId, setEditedLicenseId] = useState([]);
   const fetchLicenseData = async () => {
     try {
       const licenseData = await getLicense(accessToken);
       setLicenses(licenseData);
-      console.log(licenseData);
       setLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -28,16 +28,35 @@ const Mentor = () => {
   useEffect(() => {
     fetchLicenseData();
   }, []);
+  const fetchLicenseUpdateData = async () => {
+    try {
+      const licenseData = await getLicense(accessToken);
+      setLicensesUpdate(licenseData);
+      console.log(licenseData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchLicenseUpdateData();
+  }, []);
   const getLicenseNameById = (licenseId) => {
     const license = licenses.find((license) => license.id === licenseId);
     return license ? license.name : 'Không rõ';
+  };
+
+  const getLicenseNameById2 = (licenseId) => {
+    const licenseUpdate = licensesUpdate.find((licenseUpdate) => licenseUpdate.id === licenseId);
+    return licenseUpdate ? licenseUpdate.name : 'Không rõ';
   };
 
   const [newMentorData, setNewMentorData] = useState({
     name: '',
     email: '',
     password: '',
-    mentorLicenseId: '',
+    mentorLicenseId: [],
     active: false,
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -82,22 +101,24 @@ const Mentor = () => {
       alert('Vui lòng điền đầy đủ thông tin');
       return;
     }
-    let mentorLicenseIDArray = [];
-  
-  if (typeof newMentorData.mentorLicenseId === 'number' ) {
-    mentorLicenseIDArray.push(newMentorData.mentorLicenseId);
-  } else {
-    console.error("type of value error");
-  }
-    // Send a POST request to add the mentor (implement the postMentor function)
-    await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, mentorLicenseIDArray, accessToken);
 
+    // let mentorLicenseIDArray = [];
+  
+  // if (typeof newMentorData.mentorLicenseId === 'number' ) {
+  //   mentorLicenseIDArray.push(newMentorData.mentorLicenseId);
+  // } else {
+  //   console.error("type of value error");
+  // }
+    // Send a POST request to add the mentor (implement the postMentor function)
+    // await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, mentorLicenseIDArray, accessToken);
+
+    await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, newMentorData.mentorLicenseId, accessToken);
     // Clear the form and hide the modal
     setNewMentorData({
       name: '',
       email: '',
       password: '',
-      mentorLicenseID: '',
+      mentorLicenseID: [],
       active: true,
     });
 
@@ -113,8 +134,7 @@ const Mentor = () => {
     setEditMentor(mentor);
     setEditName(mentor.name);
     setEditActive(mentor.active);
-
-
+    setEditedLicenseId(mentor.mentorLicenseId)
   };
 
   const handleSaveEdit = async () => {
@@ -124,23 +144,14 @@ const Mentor = () => {
         alert('Vui lòng điền đầy đủ thông tin');
         return;
       }
-
-      const updatedMentor = {
-        id: editMentor.id,
-        name: editName,
-        email: editMentor.email,
-        password: editMentor.password,
-        active: editActive,
-        mentorLicenseID: editMentor.mentorLicenseID,
-      };
-      console.log(updatedMentor)
+      console.log(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID)
       // Send a PUT request to update the mentor
       await putMentorById(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID, accessToken);
 
       // Clear the edit state
       setIsEditing(false);
       await fetchMentorData();
-      setEditMentor({ id: 0, name: '', email: '', password: '', mentorLicenseID: 0 });
+      setEditMentor({ id: 0, name: '', email: '', password: '', mentorLicenseID: [] });
 
     } catch (error) {
       console.error('Error during mentor update:', error);
@@ -149,21 +160,21 @@ const Mentor = () => {
 
 
   // Function to handle deleting a mentor
-  const handleDelete = async (id) => {
-    try {
-      // Filter out the mentor with the specified ID
-      const updatedMentors = mentors.filter((mentor) => mentor.id !== id);
+  // const handleDelete = async (id) => {
+  //   try {
+  //     // Filter out the mentor with the specified ID
+  //     const updatedMentors = mentors.filter((mentor) => mentor.id !== id);
 
-      // Send a DELETE request to remove the mentor (implement the deleteMentorById function)
+  //     // Send a DELETE request to remove the mentor (implement the deleteMentorById function)
 
 
-      setMentors(updatedMentors);
-      await DeleteMentorbyID(id, accessToken);
-      await fetchMentorData();
-    } catch (error) {
-      console.error('Error during mentor deletion:', error);
-    }
-  };
+  //     setMentors(updatedMentors);
+  //     await DeleteMentorbyID(id, accessToken);
+  //     await fetchMentorData();
+  //   } catch (error) {
+  //     console.error('Error during mentor deletion:', error);
+  //   }
+  // };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -173,28 +184,21 @@ const Mentor = () => {
     setIsModalVisible(false);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    // If the input field is mentorLicenseID, just store it as a string
-    if (name === 'mentorLicenseID') {
-      setNewMentorData({
-        ...newMentorData,
-        mentorLicenseId: value,
-      });
-    } else {
-      setNewMentorData({
-        ...newMentorData,
-        [name]: type === 'checkbox' ? checked : value,
-      });
-    }
-  };
-  const handleLicenseIdChange = (e) => {
-    const value = e.target.value;
-    setEditedLicenseId(value); // Update the edited License ID
-
-  };
-
+  const SelectField = React.memo(({ value, onChange, licensesUpdate }) => (
+    <Select
+      mode="multiple"
+      value={value}
+      onChange={onChange}
+      style={{ width: '100%' }}
+    >
+      {licensesUpdate.map((license) => (
+        <Select.Option key={license.id} value={license.id}>
+          {getLicenseNameById2(license.id)}
+        </Select.Option>
+      ))}
+    </Select>
+  ));
+  
 
   const indexOfLastMentor = currentPage * mentorsPerPage;
   const indexOfFirstMentor = indexOfLastMentor - mentorsPerPage;
@@ -272,10 +276,11 @@ const Mentor = () => {
       render: (licenses, mentor) => {
         if (isEditing && editMentor.id === mentor.id) {
           return (
-            <input
-              type="text"
-              value={getLicenseNameById(editMentor.mentorLicenseID)}
-              onChange={(e) => setEditMentor({ ...editMentor, mentorLicenseID: parseInt(e.target.value, 10) })}
+            <SelectField
+              mode="multiple"
+              value={editMentor.mentorLicenseID}
+              onChange={(value) => setEditMentor({ ...editMentor, mentorLicenseID: value })}
+              licensesUpdate={licensesUpdate}
             />
           );
         } else {
@@ -298,7 +303,7 @@ const Mentor = () => {
           ) : (
             <>
               <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(mentor)}>Chỉnh sửa</Button>
-              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(mentor.id)}>Xoá giảng viên</Button>
+              {/* <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(mentor.id)}>Xoá giảng viên</Button> */}
             </>
           )}
         </span>
@@ -353,7 +358,7 @@ const Mentor = () => {
             />
           </Form.Item>
           <Form.Item label="Bằng lái giảng viên">
-            <Select value={newMentorData.mentorLicenseId} onChange={e => setNewMentorData({...newMentorData, mentorLicenseId: e})}>
+            <Select mode="multiple" value={newMentorData.mentorLicenseId} onChange={e => setNewMentorData({...newMentorData, mentorLicenseId: e})}>
               {licenses.map((license) => (
                 <Select.Option key={license.id} value={license.id}>
                     {license.name}

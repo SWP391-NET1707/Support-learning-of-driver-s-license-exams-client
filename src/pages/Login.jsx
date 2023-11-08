@@ -34,6 +34,9 @@ const Login = () => {
                   } else if (userRole === "Staff"){
                     navigate("/Staff")
                     window.location.reload();
+                  }else if (userRole === "Admin"){
+                    navigate("/Admin")
+                    window.location.reload();
                   }
 
               

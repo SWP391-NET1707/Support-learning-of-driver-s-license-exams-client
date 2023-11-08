@@ -18,7 +18,7 @@ const Course = () => {
   const [licenseid, setLicenseID] = useState('');
   const [userRegisteredCourses, setUserRegisteredCourses] = useState([]);
   const [courseData, setCourseData] = useState([]);
-
+  const [isCourseDataFetched, setIsCourseDataFetched] = useState(false); // Add a state to track if course data has been fetched
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
@@ -44,34 +44,26 @@ const Course = () => {
     }
   };
 
-   // Calculate the total number of pages
-   const totalPages = Math.ceil(courseData.length / itemsPerPage);
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(courseData.length / itemsPerPage);
 
-   // Handle clicking the right arrow
-   const nextPage = () => {
-     setCurrentPage((prevPage) => (prevPage === totalPages ? 1 : prevPage + 1));
-   };
- 
-   // Handle clicking the left arrow
-   const prevPage = () => {
-     setCurrentPage((prevPage) => (prevPage === 1 ? totalPages : prevPage - 1));
-   };
+  // Handle clicking the right arrow
+  const nextPage = () => {
+    setCurrentPage((prevPage) => (prevPage === totalPages ? 1 : prevPage + 1));
+  };
+
+  // Handle clicking the left arrow
+  const prevPage = () => {
+    setCurrentPage((prevPage) => (prevPage === 1 ? totalPages : prevPage - 1));
+  };
 
   useEffect(() => {
     // Fetch course data only when it hasn't been fetched yet
-    if ( courseData.length === 0) {
-      const Course_URL = 'https://drivingschoolapi20231005104822.azurewebsites.net/api/Course';
-      axios
-        .get(Course_URL)
+    if (!isCourseDataFetched) {
+      getCourse()
         .then((response) => {
-          const courseData = response.data;
-          setCourseData(courseData);
-          setId(courseData.id);
-          setName(courseData.name);
-          setPrice(courseData.price);
-          setDuration(courseData.duration);
-          setDescription(courseData.description);
-          setLicenseID(courseData.licenseid);
+          setCourseData(response); // Set the entire course data
+          setIsCourseDataFetched(true); // Mark course data as fetched
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
@@ -84,25 +76,27 @@ const Course = () => {
 
     // Fetch user's registered courses using the API service function if user and accessToken exist
     if (user && accessToken && userRegisteredCourses.length === 0) {
+      if (!isCourseDataFetched) {
       getOwnStudentCourse(accessToken)
         .then((response) => {
           const registeredCourses = response.data.map((course) => course.courseId);
           setUserRegisteredCourses(registeredCourses);
+          setIsCourseDataFetched(true);
         })
         .catch((error) => {
           console.error('Error fetching user registered courses:', error);
         });
-    }
-  }, [user, accessToken, courseData, location.search, userRegisteredCourses]);
+    }}
+  }, [user, accessToken, isCourseDataFetched, location.search, userRegisteredCourses]);
 
-  const handleRegistrationClick = async (selectedCourse,price) => {
+  const handleRegistrationClick = async (selectedCourse, price) => {
     if (userRegisteredCourses.includes(selectedCourse)) {
       alert('Bạn đã đăng ký khóa này');
     } else {
       try {
         sessionStorage.setItem('courseId', selectedCourse);
         console.log(selectedCourse);
-        console.log()
+        console.log();
         const accessToken = user.accessToken;
         const paymentUrl = await handlePaymentRequest(accessToken, price);
         if (paymentUrl) {
@@ -129,7 +123,9 @@ const Course = () => {
             <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" key={course.id}>
               <div className="courses-item d-flex flex-column bg-white overflow-hidden h-100">
                 <div className="text-center p-4 pt-0">
-                  <div className="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">{ Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(course.price)}</div>
+                  <div className="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">
+                    {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(course.price)}
+                  </div>
                   <h5 className="mb-3">{course.name}</h5>
                   <p>{course.description}</p>
                   <ol className="breadcrumb justify-content-center mb-0">
@@ -144,7 +140,7 @@ const Course = () => {
                   <div className="courses-overlay">
                     <button
                       className="btn btn-outline-primary border-2"
-                      onClick={() => handleRegistrationClick(course.id,course.price)}
+                      onClick={() => handleRegistrationClick(course.id, course.price)}
                       disabled={userRegisteredCourses.includes(course.id)}
                     >
                       Đăng ký
