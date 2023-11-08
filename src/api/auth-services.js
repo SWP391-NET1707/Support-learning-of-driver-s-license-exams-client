@@ -919,16 +919,16 @@ export async function getQuestionById(id, accessToken) {
     }
   }
 
-  export async function postStudentQuiz(accessToken, dataToAdd){
+  export async function postStudentQuiz(accessToken, dataToAdd) {
     try {
       console.log(dataToAdd);
-      const response = await axios.post(`${API_URL}/StudentQuiz`, dataToAdd, {
+      const response = await axios.post(`${API_URL}/StudentQuiz`, dataToAdd, 
+      {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      alert("Them cau hoi thanh cong");
     } catch (error) {
       console.error('Error:', error);
     }

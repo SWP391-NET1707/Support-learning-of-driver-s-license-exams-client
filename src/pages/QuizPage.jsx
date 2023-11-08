@@ -17,7 +17,7 @@ function QuizPage() {
   const [userAnswers, setUserAnswers] = useState([]);
   const user = JSON.parse(sessionStorage.getItem('user'));
   const accessToken = user ? user.accessToken : null;
-
+  
   useEffect(() => {
     if (quizId) {
       getQuestionById(quizId, accessToken)
@@ -25,6 +25,7 @@ function QuizPage() {
           const mappedQuestions = questions.map((question) => {
             // Exclude 'id', 'licenseId', and 'quizId' properties
             const {  licenseId, quizId, ...rest } = question;
+
             return rest;
             
           });
@@ -99,15 +100,21 @@ function QuizPage() {
       setScore(totalCorrectAnswers);
       setIsQuizFinished(true);
   
+      // Convert userAnswersData to a JSON string
+      const userAnswersDataJson = JSON.stringify(userAnswersData);
+  
       // Create the data structure for API call
       const quizData = {
-        questions: [userAnswersData],
-        quizId: quizId,
+        questions: JSON.parse(userAnswersDataJson),
+        quizId: quizId
       };
-  
+
+      
+      const sendData = JSON.stringify(quizData, null, 2)
       console.log("this is", quizData);
+  
       // Send data to the API
-      postStudentQuiz(accessToken, quizData)
+      postStudentQuiz(accessToken, sendData)
         .then((response) => {
           // Handle success if needed
         })
@@ -126,10 +133,10 @@ function QuizPage() {
     <div className="quiz-container">
       {/* Timer display */}
       <div className="timer">
-        <span>Time Left: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
+        <span>Thời gian: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
       </div>
       <div className="question-buttons-container">
-        <h3>Question IDs</h3>
+        <h3>Câu hỏi</h3>
         <div className="question-buttons">
           {quiz.JS.map((question, index) => (
             <button
@@ -237,21 +244,21 @@ function QuizPage() {
 )}
             </div>
             <div className="quiz-navigation">
-              <button className='prev-button' onClick={() => changeQuestion(-1)}>Previous</button>
-              <button className='finish-button' onClick={finishQuiz}>Finish Quiz</button>
-              <button className='next-button' onClick={() => changeQuestion(1)}>Next</button>
+              <button className='prev-button' onClick={() => changeQuestion(-1)}>Quay về</button>
+              <button className='finish-button' onClick={finishQuiz}>Hoàn thành</button>
+              <button className='next-button' onClick={() => changeQuestion(1)}>Tiếp</button>
             </div>
           </div>
         )}
       </div>
       {isQuizFinished && (
   <div>
-    <h1>Total Score: {score}/{quiz.JS.length}</h1>
+    <h1>Tổng Điểm: {score}/{quiz.JS.length}</h1>
     {quiz.JS.map((question, index) => (
       <div key={index}>
-        <div>Q{index + 1}. Your answer: {selectedOpts[index] ? `Option ${selectedOpts[index]}` : 'Not answered'}</div>
-        <div><b>Correct answer:</b> Option {question.correctAnswer}</div>
-        <div><b>Score:</b> {checkAnswer(index) ? '✅' : '❌'}</div>
+        <div>Q{index + 1}. Bạn chọn: {selectedOpts[index] ? `Đáp án ${selectedOpts[index]}` : 'Chưa chọn'}</div>
+        <div><b>Đáp án đúng:</b> Đáp án {question.correctAnswer}</div>
+        <div><b>Kết quả:</b> {checkAnswer(index) ? '✅' : '❌'}</div>
       </div>
     ))}
   </div>
