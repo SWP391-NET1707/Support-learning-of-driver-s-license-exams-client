@@ -21,6 +21,7 @@ import StudentCourseList from './components/Staff/StudentList';
 import Admin from './pages/Admin';
 import StaffList from './components/Admin/StaffList';
 import CourseList from './components/Admin/CourseList';
+import {default as GuestNavbar} from './components/navbar/GuestNavbar'
 
 
 
@@ -40,7 +41,8 @@ function AppM() {
 
     return (
         <main className="App">
-            {(role === 'Student' || role === null) && <Navbar />}
+            {(role === 'Student' ) && <Navbar />}
+            {(role === null)&& <GuestNavbar/> }
             {/* {(role === 'Staff') && <NavbarStaff />} */}
             <Routes>
                 {/* public */}
