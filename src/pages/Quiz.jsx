@@ -46,7 +46,7 @@
               <div className="ant-card ant-card-bordered ant-card-hoverable" style={{ background: 'white' }}>
                 <div className="ant-card-body">
                   <div>
-                  <Link to={`/QuizPage/${quiz.id}`}>
+                  <Link to={`/QuizPage/${quiz.licenseId}`}>
                     <h2>{quiz.name}</h2>
                     </Link>
                   </div>

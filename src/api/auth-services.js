@@ -657,6 +657,10 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
       console.error('Error:', error);
     }
   }
+
+
+
+
   export async function updateQuestion(questionId, accessToken, dataToUpdate) {
     try {
       const response = await axios.put(
@@ -858,21 +862,28 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
     }
    }
 
-   export async function getQuestionById(id, accessToken) {
-    try {
-      const response = await axios.get(`${API_URL}/Question/license/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-          // Add any other headers you need here
-        },
-      });
+export async function getQuestionById(id, accessToken) {
+  try {
+    const response = await axios.get(`${API_URL}/Question/license/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+        // Add any other headers you need here
+      },
+    });
+    console.log(response)
+
+    if (Array.isArray(response.data)) {
       return response.data;
-    } catch (error) {
-      console.error('Error:', error);
-      throw error; // You can handle the error as needed in your application
+    } else {
+      console.error('API response is not an array:', response.data);
+      throw new Error('API response is not as expected');
     }
+  } catch (error) {
+    console.error('Error fetching questions:', error);
+    throw error;
   }
+}
   
   export async function getRegisteredSlots(accessToken) {
     try {
@@ -905,5 +916,20 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
     } catch (error) {
       console.error('Error:', error);
       throw error; // You can handle the error as needed in your application
+    }
+  }
+
+  export async function postStudentQuiz(accessToken, dataToAdd){
+    try {
+      console.log(dataToAdd);
+      const response = await axios.post(`${API_URL}/StudentQuiz`, dataToAdd, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      alert("Them cau hoi thanh cong");
+    } catch (error) {
+      console.error('Error:', error);
     }
   }
