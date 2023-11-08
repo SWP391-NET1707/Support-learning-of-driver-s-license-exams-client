@@ -10,33 +10,33 @@ const TakeAttend = () => {
     const token = JSON.parse(sessionStorage.getItem('user'));
     const accessToken = token.accessToken;
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const slotData = await getSlotbyMentor(accessToken);
-                setSlotsData(slotData);
+    async function fetchData() {
+        try {
+            const slotData = await getSlotbyMentor(accessToken);
+            setSlotsData(slotData);
 
-                // Filter out slots with null studentId
-                const slotsWithStudent = slotData.filter((slot) => slot.studentId !== null);
+            // Filter out slots with null studentId
+            const slotsWithStudent = slotData.filter((slot) => slot.studentId !== null);
 
-                // Fetch student data for each slot with a valid studentId
-                const studentsDataPromises = slotsWithStudent.map((slot) => {
-                    return getStudentById(slot.studentId, accessToken);
-                });
+            // Fetch student data for each slot with a valid studentId
+            const studentsDataPromises = slotsWithStudent.map((slot) => {
+                return getStudentById(slot.studentId, accessToken);
+            });
 
-                const studentsInfo = await Promise.all(studentsDataPromises);
-                const studentsInfoMap = {};
+            const studentsInfo = await Promise.all(studentsDataPromises);
+            const studentsInfoMap = {};
 
-                studentsInfo.forEach((student) => {
-                    studentsInfoMap[student.id] = student;
-                });
+            studentsInfo.forEach((student) => {
+                studentsInfoMap[student.id] = student;
+            });
 
-                setStudentsData(studentsInfoMap);
-            } catch (error) {
-                console.error('Error:', error);
-            }
+            setStudentsData(studentsInfoMap);
+        } catch (error) {
+            console.error('Error:', error);
         }
+    }
 
+    useEffect(() => {
         fetchData();
     }, [accessToken]);
 
@@ -53,6 +53,7 @@ const TakeAttend = () => {
             const isAttended = attendance[slotId] || false;
             await postTakeAttendant(slotId, isAttended, accessToken);
             // Handle any further actions if needed
+            fetchData();
         } catch (error) {
             console.error('Error taking attendance:', error);
         }

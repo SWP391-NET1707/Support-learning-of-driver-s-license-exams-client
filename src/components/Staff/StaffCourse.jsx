@@ -8,7 +8,7 @@ const StaffCourse = () => {
   const [courses, setCourses] = useState([]);
   const [editedLicenseId, setEditedLicenseId] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
-  const [editCourse, setEditCourse] = useState({ id: 0, name: '', price: 0, duration: '', description: '', licenseId: 0 });
+  const [editCourse, setEditCourse] = useState({ id: 0, name: '', price: 0, duration: '', description: '', licenseId: [] });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [licenses, setLicenses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -92,7 +92,7 @@ const StaffCourse = () => {
 
     // Clear the edit state
     setIsEditing(false);
-    setEditCourse({ id: 0, name: '', price: 0, duration: 0, description: '', licenseId: 0 });
+    setEditCourse({ id: 0, name: '', price: 0, duration: 0, description: '', licenseId: [] });
 
     fetchCourseData();
   };

@@ -1,9 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
+import { getOtpResetPwd, postForgotpwd } from '../api/auth-services';
 // import '../style/home.css'
 // import '../style/register.css'
 
 const ForgotPassword = () => {
+  const [email, setEmail] = useState('')
+  const [pwd, setPwd] = useState('')
+  const [confirmedPwd, setConfirmedPwd] = useState('')
+  const [otp, setOTP] = useState('')
+
+  const handleSendCode  = async () => {
+    try {
+      await getOtpResetPwd(email);
+      console.log(email)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  const handleSubmit  = async () => {
+    try {
+      await postForgotpwd(email, pwd, confirmedPwd, otp);
+    } catch (error) {
+      alert(error);
+    }
+  }
+
   return (
     <div>
       <section className="vh-100 bg-image bg-colo">
@@ -24,7 +46,8 @@ const ForgotPassword = () => {
                         <div className="form-outline mb-4">
                           <input
                             type="email"
-                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className="form-control form-control-lg"
                             placeholder="Nhập email của bạn"
                             required
@@ -34,7 +57,8 @@ const ForgotPassword = () => {
                         <div className="form-outline mb-4 position-relative">
                           <input
                             type="text"
-                            id="confirmation-code"
+                            value={otp}
+                            onChange={(e) => setOTP(e.target.value)}
                             className="form-control form-control-lg"
                             placeholder="Nhập mã xác nhận"
                             required
@@ -47,6 +71,7 @@ const ForgotPassword = () => {
                           <button
                             type="button"
                             className="btn btn-primary btn-lg gradient-custom-4 text-body position-absolute top-0 end-0"
+                            onClick={handleSendCode}
                           >
                             Lấy Mã
                           </button>
@@ -55,7 +80,8 @@ const ForgotPassword = () => {
                         <div className="form-outline mb-4">
                           <input
                             type="password"
-                            id="password"
+                            value={pwd}
+                            onChange={(e) => setPwd(e.target.value)}
                             className="form-control form-control-lg"
                             placeholder="Nhập mật khẩu mới của bạn (8-30 ký tự)"
                             required
@@ -67,7 +93,8 @@ const ForgotPassword = () => {
                         <div className="form-outline mb-4">
                           <input
                             type="password"
-                            id="confirm-password"
+                            value={confirmedPwd}
+                            onChange={(e) => setConfirmedPwd(e.target.value)}
                             className="form-control form-control-lg"
                             placeholder="Nhập lại mật khẩu mới của bạn"
                             required
@@ -98,6 +125,7 @@ const ForgotPassword = () => {
                           <button
                             type="submit"
                             className="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
+                            onClick={handleSubmit}
                           >
                             Xác nhận
                           </button>
