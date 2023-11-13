@@ -1,12 +1,13 @@
   import React, { useState, useEffect } from 'react';
   import { Link } from 'react-router-dom';
-  import { getQuizz, getLicense } from '../api/auth-services';
+  import { getQuizz, getLicense, getPointByQuizId } from '../api/auth-services';
 
   function Quiz() {
     const user = JSON.parse(sessionStorage.getItem('user'));
     const accessToken = user ? user.accessToken : null;
     const [licenseData, setLicenseData] = useState([]);
     const [quizData, setQuizData] = useState([]);
+    const [pointData, setPointData] = useState([]);
 
     useEffect(() => {
       // Fetch license data and quiz data
@@ -27,6 +28,8 @@
       fetchData();
     }, [accessToken]);
 
+
+
     // Create a mapping of license IDs to license names
     const licenseMapping = {};
     for (const license of licenseData) {
@@ -37,6 +40,8 @@
     const handleLinkClick = (id) => {
       console.log(`Clicked quizId: ${id}`);
     }
+ 
+
 
     return (
       <div className="ant-box" style={{ margin: '12px' }}>
@@ -46,11 +51,12 @@
               <div className="ant-card ant-card-bordered ant-card-hoverable" style={{ background: 'white' }}>
                 <div className="ant-card-body">
                   <div>
-                  <Link to={`/QuizPage/${quiz.licenseId}`}>
+                  <Link to={`/QuizPage/${quiz.id}`}>
                     <h2>{quiz.name}</h2>
                     </Link>
                   </div>
                   <p>Thể loại: {licenseMapping[quiz.licenseId]}</p>
+                  <p>Điểm trước: {getPointByQuizId(quiz.id)} </p>
                 </div>
               </div>
             </div>

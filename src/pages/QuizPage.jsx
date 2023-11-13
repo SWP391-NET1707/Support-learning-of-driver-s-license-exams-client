@@ -130,6 +130,7 @@ function QuizPage() {
   const currentQuestion = quiz.JS[currentque];
 
   return (
+    <div>
     <div className="quiz-container">
       {/* Timer display */}
       <div className="timer">
@@ -251,8 +252,9 @@ function QuizPage() {
           </div>
         )}
       </div>
+      </div>
       {isQuizFinished && (
-  <div>
+  <div className='quiz-container'>
     <h1>Tổng Điểm: {score}/{quiz.JS.length}</h1>
     {quiz.JS.map((question, index) => (
       <div key={index}>
