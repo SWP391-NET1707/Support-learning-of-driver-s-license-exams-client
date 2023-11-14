@@ -5,8 +5,7 @@ import '../style/register.css';
 import { handleRegistrationRequest, handleConfirmationCodeRequest } from '../api/auth-services';
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -25,11 +24,6 @@ const Register = () => {
 
   const handleRegistration = (e) => {
     e.preventDefault();
-    // console.log('Name:', name);
-    // console.log('Email:', email);
-    // console.log('Confirmation Code:', emailToken);
-    // console.log('Password:', password);
-    // console.log('Confirm Password:', confirmPassword);
     handleRegistrationRequest(name, email, emailToken, password, confirmPassword, setRegistrationError);
 
   };

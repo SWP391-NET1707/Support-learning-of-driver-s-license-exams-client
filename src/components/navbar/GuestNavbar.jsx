@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, json } from 'react-router-dom';
-import { Button, Modal, Form, Input, Checkbox } from 'antd';
+
 
 import './Navbar.css';
 import jwtDecode from 'jwt-decode';
@@ -16,8 +16,7 @@ function App() {
   }
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
 
 
 

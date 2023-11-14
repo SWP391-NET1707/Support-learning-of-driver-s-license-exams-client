@@ -5,24 +5,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/bootstrap.scss';
 import 'animate.css';
 
-import { CreateSlot, License, MentorList, Navbar, Schedule, StaffCourse, StaffQuiz, TakeAttend, Timetable, NavbarStaff,StaffList,CourseList} from './components';
+import { CreateSlot, License, MentorList, Navbar, Schedule, StaffCourse, StaffQuiz, TakeAttend, Timetable, NavbarStaff,StaffList,CourseList, GuestNavBar} from './components';
 import { Footer } from './containers';
 import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor, Payment, PaymentFail, Test, Mophong, Staff,Admin } from './pages';
-import app from './pages/admin/App';
-import Dashboard from './pages/admin/scenes/dashboard';
-import { Layout } from 'antd';
-import authHeader from './api/auth-header';
+
 import jwtDecode from 'jwt-decode';
-import { useEffect } from 'react';
-import authService from './api/auth-services';
 import TakeSlot from './components/TakeSlot/TakeSlot';
 
-import {default as GuestNavbar} from './components/navbar/GuestNavbar'
 
 
 
 function AppM() {
-    // const { auth } = useAuth();
+
 
 
 
@@ -38,8 +32,8 @@ function AppM() {
     return (
         <main className="App">
             {(role === 'Student' ) && <Navbar />}
-            {(role === null)&& <GuestNavbar/> }
-            {/* {(role === 'Staff') && <NavbarStaff />} */}
+            {(role === null) && <GuestNavBar /> }
+         
             <Routes>
                 {/* public */}
                 <Route path="/Home" element={<Home />} />
