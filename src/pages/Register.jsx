@@ -17,7 +17,6 @@ const Register = () => {
   const [registrationError, setRegistrationError] = useState('');
 
   const handleConfirmationCode = () => {
-    console.log('Email:', email);
     handleConfirmationCodeRequest(email, setConfirmationCodeError);
     alert("da gui OTP thanh cong")
   };
