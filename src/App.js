@@ -5,9 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/bootstrap.scss';
 import 'animate.css';
 
-import { CreateSlot, License, MentorList, Navbar, Schedule, StaffCourse, StaffQuiz, TakeAttend, Timetable, NavbarStaff,StaffList,CourseList} from './components';
+import { CreateSlot, License, MentorList, Navbar, Schedule, StaffCourse, StaffQuiz, TakeAttend, Timetable, NavbarStaff, StaffList, CourseList } from './components';
 import { Footer } from './containers';
-import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor, Payment, PaymentFail, Test, Mophong, Staff,Admin } from './pages';
+import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor, Payment, PaymentFail, Test, Mophong, Staff, Admin } from './pages';
 import app from './pages/admin/App';
 import Dashboard from './pages/admin/scenes/dashboard';
 import { Layout } from 'antd';
@@ -40,50 +40,53 @@ function AppM() {
             {/* {(role === 'Staff') && <NavbarStaff />} */}
             <Routes>
                 {/* public */}
-                <Route path="/Home" element={<Home />} />
-                <Route path="/Login" element={<Login />} />
-                <Route path="/Quiz" element={<Quiz />} />
-                <Route path="/Register" element={<Register />} />
-                <Route path="/ForgotPassword" element={<ForgotPassword />} />
-                <Route path="/Mophong" element={<Mophong />} />
-                <Route path="/TakeSlot" element={<TakeSlot />} />
-                <Route path="/QuizPage" element={<QuizPage />} />
-
+                <Route path="/">
+                    <Route index element={<Home />} />
+                    <Route path="Home" element={<Home />} />
+                    <Route path="Login" element={<Login />} />
+                    <Route path="Quiz" element={<Quiz />} />
+                    <Route path="Register" element={<Register />} />
+                    <Route path="ForgotPassword" element={<ForgotPassword />} />
+                    <Route path="Mophong" element={<Mophong />} />
+                    <Route path="TakeSlot" element={<TakeSlot />} />
+                    <Route path="QuizPage" element={<QuizPage />} />
+                </Route>
                 {/*Test function page*/}
                 <Route path="/test" element={<Test />} />
                 <Route path="/test" element={<Test />} />
 
                 {(role === 'Student') && (
                     <>
-                        <Route path="/PaySuccess" element={<PaySuccess />} />
-                        <Route path="/PayFail" element={<PaymentFail />} />
-                        <Route path="/payment" element={<Payment />} />
-                        <Route path="/schedule" element={<Schedule />} />
-                        <Route path="/QuizPage/:id" element={<QuizPage />} />
-                        <Route path="/User" element={<User />} />
-                        <Route path="/PaySuccess" element={<PaySuccess />} />
-                        <Route path="/PayFail" element={<PaymentFail />} />
-                        <Route path="/payment" element={<Payment />} />
-                        <Route path="/schedule" element={<Schedule />} />
-                       
-                        <Route path="/User" element={<User />} />
+                        <Route path="/">
+                            <Route index element={<Home />} />
+                            <Route path="/PaySuccess" element={<PaySuccess />} />
+                            <Route path="/PayFail" element={<PaymentFail />} />
+                            <Route path="/payment" element={<Payment />} />
+                            <Route path="/schedule" element={<Schedule />} />
+                            <Route path="/QuizPage/:id" element={<QuizPage />} />
+                            <Route path="/User" element={<User />} />
+                            <Route path="/PaySuccess" element={<PaySuccess />} />
+                            <Route path="/PayFail" element={<PaymentFail />} />
+                            <Route path="/payment" element={<Payment />} />
+                            <Route path="/schedule" element={<Schedule />} />
+                            <Route path="/User" element={<User />} />
+                        </Route>
                     </>
                 )}
 
                 {(role === 'Mentor') && (
                     <>
                         <Route path="/Mentor" element={<Mentor />}>
+                            <Route index element={<TakeAttend />} />
                             <Route path="takeattend" element={<TakeAttend />} />
                             <Route path="createslot" element={<CreateSlot />} />
                         </Route>
-                        <Route path="/QuizPage" element={<QuizPage />} />
-                        <Route path="/User" element={<User />} />
-
                     </>
                 )}
                 {(role === 'Staff') && (
                     <>
                         <Route path="/Staff" element={<Staff />} >
+                            <Route index element={<MentorList />} />
                             <Route path="License" element={<License />} />
                             <Route path="MentorList" element={<MentorList />} />
                             <Route path="StaffCourse" element={<StaffCourse />} />
@@ -92,14 +95,15 @@ function AppM() {
                     </>
                 )}
                 {/*Admin page start*/}
-                {(role === 'Admin') &&(
+                {(role === 'Admin') && (
                     <>
-                <Route path="/Admin" element={<Admin />} >
-                    {/* <Route path="MentorList" element={<MentorList/>}/> */}
-                    <Route path="StaffList" element={<StaffList/>}/>
-                    <Route path="CourseList" element={<CourseList/>}/>
-                </Route>    
-                </>
+                        <Route path="/Admin" element={<Admin />} >
+                            {/* <Route path="MentorList" element={<MentorList/>}/> */}
+                            <Route index element={<StaffList />} />
+                            <Route path="StaffList" element={<StaffList />} />
+                            <Route path="CourseList" element={<CourseList />} />
+                        </Route>
+                    </>
                 )}
 
 
