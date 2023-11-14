@@ -101,8 +101,13 @@
     outline: none;
 }
 
-.navbar .navbar-nav .nav-link:hover,
+/* .navbar .navbar-nav .nav-link:hover,
 .navbar .navbar-nav .nav-link.active {
+    color: var(--primary);
+} */
+
+.navbar .navbar-nav .nav-link:hover
+ {
     color: var(--primary);
 }
 

@@ -40,7 +40,6 @@ function AppM() {
                     <Route index element={<Home />} />
                     <Route path="Home" element={<Home />} />
                     <Route path="Login" element={<Login />} />
-                    <Route path="Quiz" element={<Quiz />} />
                     <Route path="Register" element={<Register />} />
                     <Route path="ForgotPassword" element={<ForgotPassword />} />
                     <Route path="Mophong" element={<Mophong />} />
@@ -59,6 +58,7 @@ function AppM() {
                             <Route path="/PayFail" element={<PaymentFail />} />
                             <Route path="/payment" element={<Payment />} />
                             <Route path="/schedule" element={<Schedule />} />
+                            <Route path="Quiz" element={<Quiz />} />
                             <Route path="/QuizPage/:id" element={<QuizPage />} />
                             <Route path="/User" element={<User />} />
                             <Route path="/PaySuccess" element={<PaySuccess />} />
