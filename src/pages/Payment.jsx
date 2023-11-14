@@ -22,7 +22,7 @@ const Payment = () => {
   };
 
   useEffect(() => {
-    // Check if there are query parameters in the URL
+
     if (location.search) {
       handleRedirect();
     }

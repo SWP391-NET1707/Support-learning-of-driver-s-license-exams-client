@@ -15,3 +15,4 @@ export {default as StaffQuiz} from './Staff/StaffQuiz';
 export {default as NavbarStaff} from './navbar-staff/NavbarStaff';
 export {default as StaffList} from './Admin/StaffList'
 export {default as CourseList} from './Admin/CourseList'
+export {default as GuestNavBar} from './navbar/GuestNavbar'
