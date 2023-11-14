@@ -991,7 +991,7 @@ export async function getQuestionById(id, accessToken) {
           // Add any other headers you need here
         }}
       )
-      
+      return response.data;
     }
     catch (error) {
       console.error('Error:', error);
