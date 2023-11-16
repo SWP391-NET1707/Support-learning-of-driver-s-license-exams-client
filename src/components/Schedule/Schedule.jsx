@@ -100,7 +100,7 @@ const Schedule = () => {
       return 'Unknown Time';
     }
     const slotTime = slotTimes.find((slotTime) => slotTime.id === slotTimeId);
-    console.log(slotTime)
+    // console.log(slotTime)
     return slotTime ? slotTime.startTime + '-' + slotTime.endTime : 'Unknown Time';
   }
 
