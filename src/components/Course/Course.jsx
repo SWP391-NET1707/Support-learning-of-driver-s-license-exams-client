@@ -95,8 +95,8 @@ const Course = () => {
     } else {
       try {
         sessionStorage.setItem('courseId', selectedCourse);
-        console.log(selectedCourse);
-        console.log();
+        // console.log(selectedCourse);
+        // console.log();
         const accessToken = user.accessToken;
         const paymentUrl = await handlePaymentRequest(accessToken, price);
         if (paymentUrl) {

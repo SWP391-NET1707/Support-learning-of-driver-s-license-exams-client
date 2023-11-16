@@ -53,7 +53,7 @@ const StaffList = () => {
     try {
       const response = await postStaff(accessToken, newStaffData.name, newStaffData.email, newStaffData.password);
       // Handle the response or perform any necessary actions
-      console.log(response);
+      // console.log(response);
 
       setNewStaffData({
         name: '',
@@ -91,13 +91,13 @@ const StaffList = () => {
         password: editStaff.password,
         active: editActive,
       };
-      console.log(updatedStaff)
-      console.log(updatedStaff.id)
+      // console.log(updatedStaff)
+      // console.log(updatedStaff.id)
 
       const response = await putStaff( updatedStaff.id, updatedStaff.name, updatedStaff.password, updatedStaff.active);
 
       // Handle the response or perform any necessary actions
-      console.log(response);
+      // console.log(response);
 
       setIsEditing(false);
       setEditStaff({ id: 0, name: '', email: '', password: '', active: false });

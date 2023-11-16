@@ -38,7 +38,7 @@ const Payment = () => {
   
       const paymentUrl = await handlePaymentRequest(accessToken, amount); // Use the function
   
-      console.log(amount, window.location.href);
+      // console.log(amount, window.location.href);
   
       if (paymentUrl) {
         setPaymentUrl(paymentUrl);

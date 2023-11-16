@@ -109,7 +109,7 @@ export async function handleConfirmationCodeRequest(email, setConfirmationCodeEr
 }
 
 const isValidEmail = (email) => {
-  console.log(email);
+  // console.log(email);
   // Use a regular expression to validate the email format
   const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   return emailPattern.test(email);
@@ -174,7 +174,7 @@ export async function getLicenseById(id) {
   try {
     const response = await axios.get(`${API_URL}/License/${id}`);
 
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error:', error);
@@ -192,7 +192,7 @@ export async function DeleteLicenseById(id, accessToken) {
       }
     });
 
-    console.log(response.data);
+    // console.log(response.data);
     alert("Xóa Thành C")
     return response.data;
 
@@ -215,7 +215,7 @@ export async function putLicenseById( id, name, accessToken) {
       }
     );
 
-    console.log('Response:', response);
+    // console.log('Response:', response);
 
     if (response.status === 200) {
       console.log('License successfully updated');
@@ -272,7 +272,7 @@ export async function getWallet(accessToken) {
    
 
    
-    console.log(response.data);
+    // console.log(response.data);
   } catch (error) {
     console.error('Error:', error);
   }
@@ -306,7 +306,7 @@ export async function postSlotTime(startTime, endTime,id) {
       endTime
     });
 
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error:', error);
@@ -318,7 +318,7 @@ export async function DeleteSlotTimeById(id) {
   try {
     const response = await axios.delete(`${API_URL}/SlotTime/${id}`);
 
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error:', error);
@@ -399,7 +399,7 @@ export async function DeleteCourseById(id, accessToken) {
       }
     });
 
-    console.log('Response:', response);
+    // console.log('Response:', response);
 
     if (response.status === 200) {
       alert('Course successfully deleted');
@@ -495,7 +495,7 @@ export async function afterPaymentSuccess(id,accessToken) {
     );
 
    
-     console.log(response.data);
+    //  console.log(response.data);
   } catch (error) {
     console.error('Error:', error);
   }
@@ -543,7 +543,7 @@ try {
         'Authorization': `Bearer ${accessToken}`
       }
     });
-    console.log(response)
+    // console.log(response)
     alert("đăng kí thành công")
     return response.data
     
@@ -646,7 +646,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
   }
   export async function postQuestion(accessToken, dataToAdd){
     try {
-      console.log(dataToAdd);
+      // console.log(dataToAdd);
       const response = await axios.post(`${API_URL}/Question/create`, dataToAdd, {
         headers: {
           'Content-Type': 'application/json',
@@ -872,7 +872,7 @@ export async function getQuestionById(id, accessToken) {
         // Add any other headers you need here
       },
     });
-    console.log(response)
+    // console.log(response)
 
     if (Array.isArray(response.data)) {
       return response.data;
@@ -922,7 +922,7 @@ export async function getQuestionById(id, accessToken) {
 
   export async function postStudentQuiz(accessToken, dataToAdd) {
     try {
-      console.log(dataToAdd);
+      // console.log(dataToAdd);
       const response = await axios.post(`${API_URL}/StudentQuiz`, dataToAdd, 
       {
         headers: {

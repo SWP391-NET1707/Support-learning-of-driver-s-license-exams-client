@@ -18,7 +18,7 @@ const Mentor = () => {
     try {
       const licenseData = await getLicense(accessToken);
       setLicenses(licenseData);
-      console.log(licenseData);
+      // console.log(licenseData);
       setLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -127,7 +127,7 @@ const Mentor = () => {
         active: editActive,
         mentorLicenseID: editMentor.mentorLicenseID,
       };
-      console.log(updatedMentor)
+      // console.log(updatedMentor)
       // Send a PUT request to update the mentor
       await putMentorById(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID, accessToken);
 

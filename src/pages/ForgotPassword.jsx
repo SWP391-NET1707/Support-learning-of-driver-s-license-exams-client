@@ -13,7 +13,7 @@ const ForgotPassword = () => {
   const handleSendCode  = async () => {
     try {
       await getOtpResetPwd(email);
-      console.log(email)
+      // console.log(email)
     } catch (error) {
       console.error('Error:', error);
     }
