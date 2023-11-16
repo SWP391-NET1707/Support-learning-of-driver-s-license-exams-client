@@ -314,7 +314,7 @@ export async function postSlotTime(startTime, endTime,id) {
   }
 }
 
-export async function DeleteSlotTimeById(id) {
+export async function deleteSlotTimeById(id) {
   try {
     const response = await axios.delete(`${API_URL}/SlotTime/${id}`);
 
@@ -992,6 +992,7 @@ export async function getQuestionById(id, accessToken) {
           // Add any other headers you need here
         }}
       )
+      console.log(response.data)
       return response.data;
     }
     catch (error) {

@@ -167,10 +167,84 @@ const CourseList = () => {
         </span>
       ),
     },
-    { title: 'Price', dataIndex: 'price', key: 'price' },
-    { title: 'Duration', dataIndex: 'duration', key: 'duration' },
-    { title: 'Description', dataIndex: 'description', key: 'description' },
-    { title: 'License ID', dataIndex: 'licenseId', key: 'licenseId' },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price, course) => (
+        <span>
+          {isEditing && editCourse.id === course.id ? (
+            <Input
+              value={editCourse.price}
+              onChange={(e) =>
+                setEditCourse({ ...editCourse, price: e.target.value })
+              }
+              type="number"
+            />
+          ) : (
+            <span>{price}</span>
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Duration',
+      dataIndex: 'duration',
+      key: 'duration',
+      render: (duration, course) => (
+        <span>
+          {isEditing && editCourse.id === course.id ? (
+            <Input
+              value={editCourse.duration}
+              onChange={(e) =>
+                setEditCourse({ ...editCourse, duration: e.target.value })
+              }
+            />
+          ) : (
+            <span>{duration}</span>
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+      render: (description, course) => (
+        <span>
+          {isEditing && editCourse.id === course.id ? (
+            <Input
+              value={editCourse.description}
+              onChange={(e) =>
+                setEditCourse({ ...editCourse, description: e.target.value })
+              }
+            />
+          ) : (
+            <span>{description}</span>
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'License ID',
+      dataIndex: 'licenseId',
+      key: 'licenseId',
+      render: (licenseId, course) => (
+        <span>
+          {isEditing && editCourse.id === course.id ? (
+            <Input
+              value={editCourse.licenseId}
+              onChange={(e) =>
+                setEditCourse({ ...editCourse, licenseId: e.target.value })
+              }
+              type="number"
+            />
+          ) : (
+            <span>{licenseId}</span>
+          )}
+        </span>
+      ),
+    },
     {
       title: 'Actions',
       dataIndex: 'actions',
@@ -179,13 +253,21 @@ const CourseList = () => {
         <span>
           {isEditing && editCourse.id === course.id ? (
             <>
-              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Save</Button>
-              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>
+                Save
+              </Button>
+              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>
+                Cancel
+              </Button>
             </>
           ) : (
             <>
-              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(course)}>Edit</Button>
-              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(course.id)}>Delete</Button>
+              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(course)}>
+                Edit
+              </Button>
+              <Button icon={<DeleteOutlined />} className="delete-button" onClick={() => handleDelete(course.id)}>
+                Delete
+              </Button>
             </>
           )}
         </span>
