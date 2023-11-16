@@ -29,7 +29,7 @@ function QuizPage() {
             return rest;
             
           });
-          console.log(mappedQuestions)
+          // console.log(mappedQuestions)
           setQuiz({ JS: mappedQuestions });
           setSelectedOpts(Array(mappedQuestions.length).fill(''));
         })
@@ -111,7 +111,7 @@ function QuizPage() {
 
       
       const sendData = JSON.stringify(quizData, null, 2)
-      console.log("this is", quizData);
+      // console.log("this is", quizData);
   
       // Send data to the API
       postStudentQuiz(accessToken, sendData)
