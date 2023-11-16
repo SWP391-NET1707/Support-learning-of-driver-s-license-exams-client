@@ -19,8 +19,8 @@
           setQuizData(quizResponse);
   
           // Log the fetched data
-          console.log('Fetched License Data:', licenseResponse);
-          console.log('Fetched Quiz Data:', quizResponse);
+          // console.log('Fetched License Data:', licenseResponse);
+          // console.log('Fetched Quiz Data:', quizResponse);
         } catch (error) {
           console.error('Error:', error);
         }
@@ -62,7 +62,7 @@
             
             const licenseName = await getLicenseById(quiz.licenseId);
             licenseNames[quiz.licenseId] = licenseName.name; 
-            console.log(licenseNames)
+            // console.log(licenseNames)
           } catch (error) {
             console.error('Error fetching point data:', error);
             
