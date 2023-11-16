@@ -74,7 +74,7 @@ const User = () => {
         try {
           const accessToken = user.accessToken;
             await putStudentProfile(userName,pwd,accessToken)
-            console.log(userName,pwd,accessToken)
+            // console.log(userName,pwd,accessToken)
             fetchData();
         } catch (error) {
           console.error('Error during slot creation:', error);
