@@ -40,10 +40,11 @@ const Schedule = () => {
     
         // Filter slots with a monthYear that is at least tomorrow
         const currentDate = new Date();
+        currentDate.setHours(0,0,0,0);
         currentDate.setDate(currentDate.getDate() + 1); // Add one day to the current date
         const filteredSlotsTomorrow = filteredSlots.filter(slot => new Date(slot.monthYear) >= currentDate);
-    
-        setSlots(filteredSlotsTomorrow);
+        
+        setSlots(filteredSlotsTomorrow);  
         setMentors(mentorData);
         setCourse(courseData);
       } catch (error) {
