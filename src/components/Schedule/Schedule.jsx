@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getSlot, getMentor, handlePaymentRequest, getCourse, postStudentSlot } from '../../api/auth-services';
+import { getSlot, getMentor, handlePaymentRequest, getCourse, postStudentSlot, getSlotTime } from '../../api/auth-services';
 import '../TakeSlot/TakeSlot.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ const Schedule = () => {
   const [courseData, setCourse] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [slotsPerPage] = useState(10);
+  const [slotTimes, setTimeData] = useState([]);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -34,6 +35,7 @@ const Schedule = () => {
         const slotData = await getSlot();
         const mentorData = await getMentor();
         const courseData = await getCourse();
+        const timeData = await getSlotTime();
     
         // Filter slots where studentId is null
         const filteredSlots = slotData.filter(slot => slot.studentId === null);
@@ -47,6 +49,9 @@ const Schedule = () => {
         setSlots(filteredSlotsTomorrow);  
         setMentors(mentorData);
         setCourse(courseData);
+        setTimeData(timeData)
+        
+        
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -89,6 +94,16 @@ const Schedule = () => {
     return mentor ? mentor.name : 'Unknown Mentor';
   }
 
+  function getSlotTimes(slotTimeId) {
+    
+    if (!slotTimeId || !slotTimes ) {
+      return 'Unknown Time';
+    }
+    const slotTime = slotTimes.find((slotTime) => slotTime.id === slotTimeId);
+    console.log(slotTime)
+    return slotTime ? slotTime.startTime + '-' + slotTime.endTime : 'Unknown Time';
+  }
+
   const indexOfLastSlot = currentPage * slotsPerPage;
   const indexOfFirstSlot = indexOfLastSlot - slotsPerPage;
   const currentSlots = slots.slice(indexOfFirstSlot, indexOfLastSlot);
@@ -127,7 +142,8 @@ const Schedule = () => {
                           <th scope="col">Giảng viên</th>
                           <th scope="col">Mô tả</th>
                           <th scope="col">Lớp học</th>
-                          <th scope="col">Button</th>
+                          <th scope="col">Giờ</th>
+                          <th scope="col">Đăng ký</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -142,6 +158,7 @@ const Schedule = () => {
                             <td>{getMentorNames(slot.mentorId)}</td>
                             <td>{slot.courses?.description ? `${slot.courses.description}` : ''}</td>
                             <td>{slot.courses?.name || 'N/A'}</td>
+                            <td>{getSlotTimes(slot.slotTimeId)} </td>
                             <td>
                               <div className="primary-btn">
                                 <button onClick={() => handleOk(slot)} className="btn btn-primary">Đăng kí buổi học</button>

@@ -281,6 +281,7 @@ export async function getWallet(accessToken) {
 export async function getSlotTime() {
   try {
     const response = await axios.get(`${API_URL}/SlotTime`);
+    return response.data
     // console.log(response.data);
   } catch (error) {
     alert(error.response.data)

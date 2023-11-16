@@ -14,7 +14,7 @@ function App() {
   if (user !== null) {
   username = jwtDecode(user).name
   }
-  console.log(username);
+  // console.log(username);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [email, setEmail] = useState("");

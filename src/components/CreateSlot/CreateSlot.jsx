@@ -33,7 +33,7 @@ const CreateSlot = () => {
     currentDate.setHours(0, 0, 0, 0);
     const data = slotsData
     const filteredSlots = data.filter((slot) => new Date(slot.monthYear) >= currentDate);
-    console.log(currentDate)
+    // console.log(currentDate)
     return filteredSlots;
   }
 
@@ -55,7 +55,7 @@ const CreateSlot = () => {
         setCourses(course)
         setSlots(slotsWithTimeData);
         setLoading(false);
-        console.log(filteredSlots)
+        // console.log(filteredSlots)
       } catch (error) {
         console.error('Error:', error);
         setLoading(false);
@@ -92,7 +92,7 @@ const CreateSlot = () => {
       const accessToken = user.accessToken;
       setIsAttended(isAttended)
       await postTakeAttendant(slot.id, isAttended, accessToken)
-      console.log(isAttended)
+      // console.log(isAttended)
       window.location.reload();
     } catch (error) {
       // console.log(error.response)
