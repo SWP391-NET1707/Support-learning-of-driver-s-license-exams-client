@@ -157,11 +157,11 @@ const User = () => {
                                 pagination={false}
                                 style={{ width: '100%' }} // Set the table width to 100%
                             >
-                                <Column title="Month/Year" dataIndex="monthYear" key="monthYear" width="25%" />
-                                <Column title="Description" dataIndex="description" key="description" width="25%" />
-                                <Column title="Course" dataIndex={["courses", "name"]} key="course" width="25%" />
+                                <Column title="Ngày" dataIndex="monthYear" key="monthYear" width="25%" />
+                                <Column title="Nội dung" dataIndex="description" key="description" width="25%" />
+                                <Column title="Khóa học" dataIndex={["courses", "name"]} key="course" width="25%" />
                                 <Column
-                                    title="Slot Time"
+                                    title="Giờ"
                                     key="slotTime"
                                     render={(text, record) => {
                                         if (record.slotTimeData) {

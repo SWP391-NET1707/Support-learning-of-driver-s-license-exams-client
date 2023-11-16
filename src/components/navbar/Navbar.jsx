@@ -41,7 +41,7 @@ function App() {
     <div>
       <nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0" id="header-home-1">
         <Link to="/home" className="navbar-brand d-flex align-items-center border-end px-4 px-lg-5">
-          <h2 className="m-0"><i className="fa fa-car text-primary me-2"></i>Học và thi bằng lái</h2>
+          <h2 className="m-0"><i className="fa fa-car text-primary me-2"></i>HỌC LÁI XE</h2>
         </Link>
         <button type="button" className="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
           <span className="navbar-toggler-icon"></span>
