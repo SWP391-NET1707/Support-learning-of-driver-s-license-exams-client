@@ -788,7 +788,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      alert("xoa thanh cong")
+      alert("Xóa thanh cong")
     } catch (error) {
       console.error('Error:', error);
     }
