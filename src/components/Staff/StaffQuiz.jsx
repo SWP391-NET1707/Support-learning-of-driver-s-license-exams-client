@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getQuizz, postQuizz, putQuizzById, deleteQuizzById, getQuestionInQuizz, updateQuestion, deleteQuestion, getLicense, postQuestion } from '../../api/auth-services'; // Import API functions
-import { Button, Form, Input, Modal, Table, Select } from 'antd';
+import { Button, Form, Input, Modal, Table, Select, Row, Col } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import './tableStaf.css'
 import { ViewArrayOutlined } from '@mui/icons-material';
@@ -25,6 +25,7 @@ const StaffQuiz = () => {
   const [licenses, setLicenses] = useState([]);
   const [isAddingQuestion, setIsAddingQuestion] = useState(false);
   const [isQuizEmpty, setIsQuizEmpty] = useState(true);
+  const defaultLicense = licenses.find((license) => license.id === newQuizData.licenseId);
   const [newQuestion, setNewQuestion] = useState({
     content: '',
     answer1: '',
@@ -45,9 +46,18 @@ const StaffQuiz = () => {
   const { Option } = Select;
   const handleAddQuestion = async () => {
     try {
-      // Kiểm tra xem thông tin câu hỏi đã được điền đầy đủ
       if (!newQuestion.content || !newQuestion.answer1 || !newQuestion.answer2 || !newQuestion.answer3 || !newQuestion.answer4 || !newQuestion.correctAnswer) {
         alert('Vui lòng điền đầy đủ thông tin câu hỏi.');
+        return;
+      }
+      const answers = [
+        newQuestion.answer1,
+        newQuestion.answer2,
+        newQuestion.answer3,
+        newQuestion.answer4,
+      ];
+      if (!answers.includes(newQuestion.correctAnswer) && newQuestion.correctAnswer !== 'null') {
+        alert('Đáp án đúng phải trùng với một trong các đáp án đã nhập khác "null".');
         return;
       }
 
@@ -149,7 +159,7 @@ const StaffQuiz = () => {
     }
     const user = JSON.parse(sessionStorage.getItem("user"));
     const Token = user.accessToken;
-  
+
     // Send a POST request to add the quiz (implement the postQuizz function)
     await postQuizz(newQuizData.name, newQuizData.licenseId, Token);
     // Clear the form and hide the modal
@@ -191,9 +201,9 @@ const StaffQuiz = () => {
   };
   const handleSaveEditQuestion = async () => {
     try {
-      // Kiểm tra xem thông tin câu hỏi đã thay đổi
+
       if (editedQuestion.id) {
-        // Gọi API để cập nhật câu hỏi
+
         await updateQuestion(editedQuestion.id, accessToken, {
           content: editedQuestion.content,
           answer1: editedQuestion.answer1,
@@ -224,11 +234,12 @@ const StaffQuiz = () => {
       const questionData = await getQuestionInQuizz(id, accessToken);
       if (questionData && questionData.length > 0) {
         setQuestions(questionData);
-        setCurrentQuestion(null); // Reset current question
+        setCurrentQuestion(null);
         setIsViewingQuestions(true);
         setIsQuizEmpty(false);
       } else {
-        setIsQuizEmpty(true)
+        setIsQuizEmpty(true);
+        alert('Bài quiz này chưa có câu hỏi nào, hãy thêm câu hỏi cho bài quiz này')
       }
     } catch (error) {
       console.error('Error:', error);
@@ -236,10 +247,10 @@ const StaffQuiz = () => {
   };
   const handleDeleteQuestion = async (questionId) => {
     try {
-      // Gọi hàm xóa câu hỏi từ API
+
       await deleteQuestion(questionId, accessToken);
 
-      // Xóa câu hỏi khỏi danh sách hiện tại
+
       setQuestions(questions.filter((question) => question.id !== questionId));
     } catch (error) {
       console.error('Error during question deletion:', error);
@@ -247,15 +258,14 @@ const StaffQuiz = () => {
   };
   const handleDelete = async (id) => {
     try {
-      // Filter out the quiz with the specified ID
+
       const updatedQuizzes = quizzes.filter((quiz) => quiz.id !== id);
 
-      // Send a DELETE request to remove the quiz (implement the deleteQuizzById function)
+
       await deleteQuizzById(id, accessToken);
 
       setQuizzes(updatedQuizzes);
 
-      // Fetch the updated quiz data
       fetchQuizData();
     } catch (error) {
       console.error('Error during quiz deletion:', error);
@@ -364,34 +374,49 @@ const StaffQuiz = () => {
         onOk={handleAddQuiz}
         onCancel={handleCancel}
       >
-        <Form>
-          <Form.Item label="Tên bài quiz">
-            <Input
-              type="text"
-              name="name"
-              value={newQuizData.name}
-              onChange={handleInputChange}
-            />
-          </Form.Item>
-          <Form.Item label="Loại bằng lái">
-            <Select
-              value={newQuizData.licenseId}
-              onChange={(value) => handleInputChange({ target: { name: 'licenseId', value } })}
-            >
-              {licenses.map((license) => (
-                <Option key={license.id} value={license.id}>
-                  {license.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Form>
+        <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Form layout="vertical">
+              <Row gutter={[16, 16]}>
+                <Col span={24}>
+                  <Form.Item label="Tên bài quiz">
+                    <Input
+                      type="text"
+                      name="name"
+                      value={newQuizData.name}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Form.Item label="Loại bằng lái">
+                    <Select
+                      value={newQuizData.licenseId || (defaultLicense && defaultLicense.id)}
+                      onChange={(value) =>
+                        handleInputChange({ target: { name: 'licenseId', value } })
+                      }
+                    >
+                      {licenses.map((license) => (
+                        <Select.Option key={license.id} value={license.id}>
+                          {license.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Col>
+        </Row>
       </Modal>
 
       <Modal
-        title={isEditingQuestion ? "Edit Question" : "Questions in Quiz"}
+        title={isEditingQuestion ? "Chỉnh sửa câu hỏi" : "Danh sách câu hỏi trong bài"}
         visible={isViewingQuestions}
-        onCancel={() => setIsViewingQuestions(false)}
+        onCancel={() => {
+          setIsEditingQuestion(false);
+          setIsViewingQuestions(false);
+        }}
         footer={
           isEditingQuestion ? (
             <Button
@@ -421,82 +446,102 @@ const StaffQuiz = () => {
         width={1500}
       >
         {isEditingQuestion ? (
-          <div>
-            <Form>
-              <Form.Item label="Nội dung câu hỏi">
-                <Input
-                  type="text"
-                  name="content"
-                  value={editedQuestion.content}
-                  onChange={(e) =>
-                    setEditedQuestion({ ...editedQuestion, content: e.target.value })
-                  }
-                />
-              </Form.Item>
-              <Form.Item label="Đáp án #1">
-                <Input
-                  type="text"
-                  name="answer1"
-                  value={editedQuestion.answer1}
-                  onChange={(e) =>
-                    setEditedQuestion({ ...editedQuestion, answer1: e.target.value })
-                  }
-                />
-              </Form.Item>
-              <Form.Item label="Đáp án #2">
-                <Input
-                  type="text"
-                  name="answer2"
-                  value={editedQuestion.answer2}
-                  onChange={(e) =>
-                    setEditedQuestion({ ...editedQuestion, answer2: e.target.value })
-                  }
-                />
-              </Form.Item>
-              <Form.Item label="Đáp án #3">
-                <Input
-                  type="text"
-                  name="answer3"
-                  value={editedQuestion.answer3}
-                  onChange={(e) =>
-                    setEditedQuestion({ ...editedQuestion, answer3: e.target.value })
-                  }
-                />
-              </Form.Item>
-              <Form.Item label="Đáp án #4">
-                <Input
-                  type="text"
-                  name="answer4"
-                  value={editedQuestion.answer4}
-                  onChange={(e) =>
-                    setEditedQuestion({ ...editedQuestion, answer4: e.target.value })
-                  }
-                />
-              </Form.Item>
-              <Form.Item label="Đáp án đúng">
-                <Input
-                  type="text"
-                  name="correctAnswer"
-                  value={editedQuestion.correctAnswer}
-                  onChange={(e) =>
-                    setEditedQuestion({ ...editedQuestion, correctAnswer: e.target.value })
-                  }
-                />
-              </Form.Item>
-              <Form.Item label="Loại bằng lái">
-                <Select
-                  value={editedQuestion.licenseId}
-                  onChange={(value) => setEditedQuestion({ ...editedQuestion, licenseId: value })}
-                >
-                  {licenses.map((license) => (
-                    <Select.Option key={license.id} value={license.id}>
-                      {license.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Form>
-          </div>
+          <Row gutter={[16, 16]}>
+            <Col span={24}>
+              <Form layout="vertical">
+                <Row gutter={[16, 16]}>
+                  <Col span={24}>
+                    <Form.Item label="Nội dung câu hỏi">
+                      <Input
+                        type="text"
+                        name="content"
+                        value={editedQuestion.content}
+                        onChange={(e) =>
+                          setEditedQuestion({ ...editedQuestion, content: e.target.value })
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Đáp án #1">
+                      <Input
+                        type="text"
+                        name="answer1"
+                        value={editedQuestion.answer1}
+                        onChange={(e) =>
+                          setEditedQuestion({ ...editedQuestion, answer1: e.target.value })
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Đáp án #2">
+                      <Input
+                        type="text"
+                        name="answer2"
+                        value={editedQuestion.answer2}
+                        onChange={(e) =>
+                          setEditedQuestion({ ...editedQuestion, answer2: e.target.value })
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Đáp án #3">
+                      <Input
+                        type="text"
+                        name="answer3"
+                        value={editedQuestion.answer3}
+                        onChange={(e) =>
+                          setEditedQuestion({ ...editedQuestion, answer3: e.target.value })
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Đáp án #4">
+                      <Input
+                        type="text"
+                        name="answer4"
+                        value={editedQuestion.answer4}
+                        onChange={(e) =>
+                          setEditedQuestion({ ...editedQuestion, answer4: e.target.value })
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item label="Đáp án đúng">
+                      <Input
+                        type="text"
+                        name="correctAnswer"
+                        value={editedQuestion.correctAnswer}
+                        onChange={(e) =>
+                          setEditedQuestion({ ...editedQuestion, correctAnswer: e.target.value })
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item label="Loại bằng lái">
+                      <Select
+                        value={editedQuestion.licenseId}
+                        onChange={(value) =>
+                          setEditedQuestion({ ...editedQuestion, licenseId: value })
+                        }
+                      >
+                        {licenses.map((license) => (
+                          <Select.Option key={license.id} value={license.id}>
+                            {license.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Form>
+            </Col>
+          </Row>
         ) : (
           <div>
             {isViewingQuestions ? (
@@ -527,14 +572,16 @@ const StaffQuiz = () => {
                     title: "Đáp án #3",
                     dataIndex: "answer3",
                     key: "answer3",
+                    render: (text) => (text !== 'null' ? text : 'Không có đáp án'),
                   },
                   {
                     title: "Đáp án #4",
                     dataIndex: "answer4",
                     key: "answer4",
+                    render: (text) => (text !== 'null' ? text : 'Không có đáp án'),
                   },
                   {
-                    title: "Correct Answer",
+                    title: "Đáp án đúng",
                     dataIndex: "correctAnswer",
                     key: "correctAnswer",
                   },
@@ -556,6 +603,7 @@ const StaffQuiz = () => {
                           icon={<EditOutlined />}
                           className="edit-button"
                           onClick={() => handleEditQuestion(question)}
+                          style={{ width: '125px' }}
                         >
                           Chỉnh sửa
                         </Button>
@@ -563,6 +611,7 @@ const StaffQuiz = () => {
                           icon={<DeleteOutlined />}
                           className="delete-button"
                           onClick={() => handleDeleteQuestion(question.id)}
+                          style={{ width: '125px' }}
                         >
                           Xoá
                         </Button>
@@ -593,80 +642,127 @@ const StaffQuiz = () => {
         }
         width={1500}
       >
-        <Form>
-          <Form.Item label="Nội dung câu hỏi">
-            <Input
-              type="text"
-              name="content"
-              value={newQuestion.content}
-              onChange={(e) => setNewQuestion({ ...newQuestion, content: e.target.value })}
-            />
-          </Form.Item>
-          <Form.Item label="Đáp án #1">
-            <Input
-              type="text"
-              name="answer1"
-              value={newQuestion.answer1}
-              onChange={(e) => setNewQuestion({ ...newQuestion, answer1: e.target.value })}
-            />
-          </Form.Item>
-          <Form.Item label="Đáp án #2">
-            <Input
-              type="text"
-              name="answer2"
-              value={newQuestion.answer2}
-              onChange={(e) => setNewQuestion({ ...newQuestion, answer2: e.target.value })}
-            />
-          </Form.Item>
-          <Form.Item label="Đáp án #3">
-            <Input
-              type="text"
-              name="answer3"
-              value={newQuestion.answer3}
-              onChange={(e) => setNewQuestion({ ...newQuestion, answer3: e.target.value })}
-            />
-          </Form.Item>
-          <Form.Item label="Đáp án #4">
-            <Input
-              type="text"
-              name="answer4"
-              value={newQuestion.answer4}
-              onChange={(e) => setNewQuestion({ ...newQuestion, answer4: e.target.value })}
-            />
-          </Form.Item>
-          <Form.Item label="Đáp án đúng">
-            <Input
-              type="text"
-              name="correctAnswer"
-              value={newQuestion.correctAnswer}
-              onChange={(e) => setNewQuestion({ ...newQuestion, correctAnswer: e.target.value })}
-            />
-          </Form.Item>
-          <Form.Item label="Loại bằng lái">
-            <Select
-              value={newQuestion.licenseId}
-              onChange={(value) => setNewQuestion({ ...newQuestion, licenseId: value })}
-            >
-              {licenses.map((license) => (
-                <Select.Option key={license.id} value={license.id}>
-                  {license.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item label="Tên bài quiz">
-            <Select
-              value={newQuestion.quizId}
-              onChange={(value) => setNewQuestion({ ...newQuestion, quizId: value })}
-            >
-              {quizzes.map((quiz) => (
-                <Select.Option key={quiz.id} value={quiz.id}>
-                  {quiz.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Form>
+        <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Form layout="vertical">
+              <Row gutter={[16, 16]}>
+                <Col span={24}>
+                  <Form.Item label="Nội dung câu hỏi">
+                    <Input
+                      type="text"
+                      name="content"
+                      value={newQuestion.content}
+                      onChange={(e) =>
+                        setNewQuestion({ ...newQuestion, content: e.target.value })
+                      }
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item label="Đáp án #1">
+                    <Input
+                      type="text"
+                      name="answer1"
+                      value={newQuestion.answer1}
+                      onChange={(e) =>
+                        setNewQuestion({ ...newQuestion, answer1: e.target.value })
+                      }
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item label="Đáp án #2">
+                    <Input
+                      type="text"
+                      name="answer2"
+                      value={newQuestion.answer2}
+                      onChange={(e) =>
+                        setNewQuestion({ ...newQuestion, answer2: e.target.value })
+                      }
+                    />
+                  </Form.Item>
+                </Col>
+                {newQuestion.answer3 !== null && (
+                  <Col span={12}>
+                    <Form.Item label="Đáp án #3">
+                      <Input
+                        placeholder='Nếu câu hỏi không có đáp án #3, vui lòng điền null'
+                        type="text"
+                        name="answer3"
+                        value={newQuestion.answer3}
+                        onChange={(e) =>
+                          setNewQuestion({ ...newQuestion, answer3: e.target.value })
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+                {newQuestion.answer4 !== null && (
+                  <Col span={12}>
+                    <Form.Item label="Đáp án #4">
+                      <Input
+                        placeholder='Nếu câu hỏi không có đáp án #4, vui lòng điền null'
+                        type="text"
+                        name="answer4"
+                        value={newQuestion.answer4}
+                        onChange={(e) =>
+                          setNewQuestion({ ...newQuestion, answer4: e.target.value })
+                        }
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+                <Col span={24}>
+                  <Form.Item label="Đáp án đúng">
+                    <Select
+                      value={newQuestion.correctAnswer}
+                      onChange={(value) =>
+                        setNewQuestion({ ...newQuestion, correctAnswer: value })
+                      }
+                    >
+                      <Select.Option value="1">1</Select.Option>
+                      <Select.Option value="2">2</Select.Option>
+                      <Select.Option value="3">3</Select.Option>
+                      <Select.Option value="4">4</Select.Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Form.Item label="Loại bằng lái">
+                    <Select
+                      value={newQuestion.licenseId}
+                      onChange={(value) =>
+                        setNewQuestion({ ...newQuestion, licenseId: value })
+                      }
+                    >
+                      {licenses.map((license) => (
+                        <Select.Option key={license.id} value={license.id}>
+                          {license.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Form.Item label="Tên bài quiz">
+                    <Select
+                      value={newQuestion.quizId}
+                      onChange={(value) =>
+                        setNewQuestion({ ...newQuestion, quizId: value })
+                      }
+                    >
+                      {quizzes.map((quiz) => (
+                        <Select.Option key={quiz.id} value={quiz.id}>
+                          {quiz.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Col>
+        </Row>
       </Modal>
     </div>
   );
