@@ -23,7 +23,7 @@ const StaffCourse = () => {
     try {
       const licenseData = await getLicense(accessToken);
       setLicenses(licenseData);
-      console.log(licenseData);
+      // console.log(licenseData);
       setLoading(false);
     } catch (error) {
       console.error('Error:', error);

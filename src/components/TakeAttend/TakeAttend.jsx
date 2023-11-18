@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Radio } from 'antd';
-import { getSlotbyMentor, getStudentById, postTakeAttendant } from '../../api/auth-services';
+import { getSlotTimeById, getSlotbyMentor, getStudentById, postTakeAttendant } from '../../api/auth-services';
+import '../TakeAttend/style.css'
+import Link from 'antd/es/typography/Link';
 
 const TakeAttend = () => {
     const [slotsData, setSlotsData] = useState([]);
     const [studentsData, setStudentsData] = useState({});
     const [attendance, setAttendance] = useState({});
+    const [slotTimeData, setSlotTimeData] = useState({});
+    const [unattendedSlots, setUnattendedSlots] = useState([]);
+    const [showUnattendedSlots, setShowUnattendedSlots] = useState(false);
     const currentDate = new Date().toLocaleDateString("en-US");
     const token = JSON.parse(sessionStorage.getItem('user'));
     const accessToken = token.accessToken;
@@ -29,8 +34,27 @@ const TakeAttend = () => {
             studentsInfo.forEach((student) => {
                 studentsInfoMap[student.id] = student;
             });
-
+            console.log(slotData[1].attendance)
             setStudentsData(studentsInfoMap);
+
+            const slotTimesPromises = slotData.map((slot) => getSlotTimeById(slot.slotTimeId));
+            const slotTimes = await Promise.all(slotTimesPromises);
+
+            const slotTimesMap = {};
+            slotTimes.forEach((time, index) => {
+                slotTimesMap[slotData[index].id] = time;
+            });
+
+            setSlotTimeData(slotTimesMap);
+            // Check if there are unattended slots
+            const unattendedSlots = slotData.filter(
+                (slot) =>
+                    slot.attendance === null &&
+                    slot.studentId !== null &&
+                    new Date(slot.monthYear).toLocaleDateString("en-US") < currentDate
+            );
+            setUnattendedSlots(unattendedSlots);
+
         } catch (error) {
             console.error('Error:', error);
         }
@@ -72,6 +96,7 @@ const TakeAttend = () => {
                                 <table className="table mb-0">
                                     <thead className="small text-uppercase bg-body text-muted">
                                         <tr>
+                                            <th className="text-center"> Slot </th>
                                             <th className="text-center">Tên</th>
                                             <th className="text-center">Email</th>
                                             <th className="text-center">Điểm danh</th>
@@ -85,30 +110,47 @@ const TakeAttend = () => {
                                                 // Check if the slot date matches the current date
                                                 new Date(slot.monthYear).toLocaleDateString("en-US") === currentDate && (
                                                     <tr key={slot.id} className="align-middle">
-                                                        <td className="text-center">
+                                                        <td className="text-center" >
                                                             <div className="d-flex align-items-center justify-content-center">
                                                                 <div>
-                                                                    <div className="h6 mb-0 lh-1">
-                                                                        {studentsData[slot.studentId]?.name}
-                                                                    </div>
+                                                                    <span><h4>{slot.slotTimeId}</h4></span>
+                                                                    <p>{slotTimeData[slot.id]?.startTime} - {slotTimeData[slot.id]?.endTime}</p>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td className="text-center">{studentsData[slot.studentId]?.email}</td>
                                                         <td className="text-center">
-                                                            <Radio.Group
-                                                                onChange={(e) => setAttendanceForStudent(slot.id, e.target.value)}
-                                                                value={attendance[slot.id]}
-                                                            >
-                                                                <Radio value={true}>Có mặt</Radio>
-                                                                <Radio value={false}>Vắng</Radio>
-                                                            </Radio.Group>
+                                                            <div className="d-flex align-items-center justify-content-center">
+                                                                <div className="h6 mb-0 lh-1 center-content">
+                                                                    {studentsData[slot.studentId]?.name}
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                         <td className="text-center">
-                                                            <span>{new Date(slot.monthYear).toLocaleDateString("en-US")}</span>
+                                                            <div className='center-content'>
+                                                                {studentsData[slot.studentId]?.email}
+                                                            </div>
                                                         </td>
                                                         <td className="text-center">
-                                                            <Button onClick={() => handleTakeAttendance(slot.id)}>Điểm danh</Button>
+                                                            <div className='center-content'>
+                                                                <Radio.Group
+                                                                    onChange={(e) => setAttendanceForStudent(slot.id, e.target.value)}
+                                                                    value={attendance[slot.id]}
+                                                                    defaultValue={slot.attendance || null || false}
+                                                                >
+                                                                    <Radio value={true} >Có mặt</Radio>
+                                                                    <Radio value={false}>Vắng</Radio>
+                                                                </Radio.Group>
+                                                            </div>
+                                                        </td>
+                                                        <td className="text-center">
+                                                            <div className='center-content'>
+                                                                <span>{new Date(slot.monthYear).toLocaleDateString("en-US")}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="text-center">
+                                                            <div className='center-content'>
+                                                                <Button onClick={() => handleTakeAttendance(slot.id)}>Điểm danh</Button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 )
@@ -121,65 +163,89 @@ const TakeAttend = () => {
                     </div>
                 </div>
             </div>
-            <div className="container">
-                <div className="row">
-                    <div className="col-12 mb-3 mb-lg-5">
-                        <div className="overflow-hidden card table-nowrap table-card">
-                            <div className="card-header d-flex justify-content-between align-items-center">
-                                <h5 className="mb-0 text-center">Các buổi chưa được điểm danh</h5>
-                            </div>
-                            <div className="table-responsive">
-                                <table className="table mb-0">
-                                    <thead className="small text-uppercase bg-body text-muted">
-                                        <tr>
-                                            <th className="text-center">Tên</th>
-                                            <th className="text-center">Email</th>
-                                            <th className="text-center">Điểm danh</th>
-                                            <th className="text-center">Ngày</th>
-                                            <th className="text-center"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {slotsData.map((slot) => (
-                                            // Check if both attendance is null, studentId is not null, and the date is in the past
-                                            slot.attendance === null && slot.studentId !== null && new Date(slot.monthYear) < new Date() && (
-                                                <tr key={slot.id} className="align-middle">
-                                                    <td className="text-center">
-                                                        <div className="d-flex align-items-center justify-content-center">
-                                                            <div>
-                                                                <div className="h6 mb-0 lh-1">
+            <Link onClick={() => setShowUnattendedSlots(!showUnattendedSlots)}>
+                {unattendedSlots.length > 0
+                    ? `Có ${unattendedSlots.length} buổi chưa được điểm danh !   >>>`
+                    : 'Không có buổi nào chưa được điểm danh'}
+            </Link>
+            {showUnattendedSlots && unattendedSlots.length > 0 && (
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12 mb-3 mb-lg-5">
+                            <div className="overflow-hidden card table-nowrap table-card">
+                                <div className="card-header d-flex justify-content-between align-items-center">
+                                    <h5 className="mb-0 text-center">Các buổi chưa được điểm danh</h5>
+                                </div>
+                                <div className="table-responsive">
+                                    <table className="table mb-0">
+                                        <thead className="small text-uppercase bg-body text-muted">
+                                            <tr>
+                                                <th className="text-center"> Slot </th>
+                                                <th className="text-center">Tên</th>
+                                                <th className="text-center">Email</th>
+                                                <th className="text-center">Điểm danh</th>
+                                                <th className="text-center">Ngày</th>
+                                                <th className="text-center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {slotsData.map((slot) => (
+                                                // Check if both attendance is null, studentId is not null, and the date is in the past
+                                                slot.attendance === null && slot.studentId !== null && new Date(slot.monthYear).toLocaleDateString("en-US") < currentDate && (
+                                                    <tr key={slot.id} className="align-middle">
+                                                        <td className="text-center" >
+                                                            <div className="d-flex align-items-center justify-content-center">
+                                                                <div>
+                                                                    <span><h4>{slot.slotTimeId}</h4></span>
+                                                                    <p>{slotTimeData[slot.id]?.startTime} - {slotTimeData[slot.id]?.endTime}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="text-center">
+                                                            <div className="d-flex align-items-center justify-content-center">
+                                                                <div className="h6 mb-0 lh-1 center-content">
                                                                     {studentsData[slot.studentId]?.name}
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="text-center">{studentsData[slot.studentId]?.email}</td>
-                                                    <td className="text-center">
-                                                        <Radio.Group
-                                                            onChange={(e) => setAttendanceForStudent(slot.id, e.target.value)}
-                                                            value={attendance[slot.id]}
-                                                        >
-                                                            <Radio value={true}>Có mặt</Radio>
-                                                            <Radio value={false}>Vắng</Radio>
-                                                        </Radio.Group>
-                                                    </td>
-                                                    <td className="text-center">
-                                                        <span>{new Date(slot.monthYear).toLocaleDateString("en-US")}</span>
-                                                    </td>
-                                                    <td className="text-center">
-                                                        <Button onClick={() => handleTakeAttendance(slot.id)}>Điểm danh</Button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        ))}
-                                    </tbody>
-                                </table>
+                                                        </td>
+                                                        <td className="text-center">
+                                                            <div className='center-content'>
+                                                                {studentsData[slot.studentId]?.email}
+                                                            </div>
+                                                        </td>
+                                                        <td className="text-center">
+                                                            <div className='center-content'>
+                                                                <Radio.Group
+                                                                    onChange={(e) => setAttendanceForStudent(slot.id, e.target.value)}
+                                                                    value={attendance[slot.id]}
+                                                                    defaultValue={slot.attendance || null || false}
+                                                                >
+                                                                    <Radio value={true} >Có mặt</Radio>
+                                                                    <Radio value={false}>Vắng</Radio>
+                                                                </Radio.Group>
+                                                            </div>
+                                                        </td>
+                                                        <td className="text-center">
+                                                            <div className='center-content'>
+                                                                <span>{new Date(slot.monthYear).toLocaleDateString("en-US")}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="text-center">
+                                                            <div className='center-content'>
+                                                                <Button onClick={() => handleTakeAttendance(slot.id)}>Điểm danh</Button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+            )}
         </div>
     );
 };

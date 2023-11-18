@@ -32,7 +32,7 @@ const Mentor = () => {
     try {
       const licenseData = await getLicense(accessToken);
       setLicensesUpdate(licenseData);
-      console.log(licenseData);
+      // console.log(licenseData);
       setLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -144,7 +144,7 @@ const Mentor = () => {
         alert('Vui lòng điền đầy đủ thông tin');
         return;
       }
-      console.log(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID)
+      // console.log(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID)
       // Send a PUT request to update the mentor
       await putMentorById(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID, accessToken);
 
