@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getQuestionById, postStudentQuiz } from '../api/auth-services';
+import QuestionButtons from './QuestionButtons';
+
+import { Button, Form, Input, Modal, Table } from 'antd';
 
 import '../style/quizpage.css';
 
 function QuizPage() {
   const pathname = window.location.pathname;
   const quizId = pathname.split('/').pop();
-
+  const [showModal, setShowModal] = useState(false);
+  const [alreadyOpenModal,setAlreadyOpenModal] =useState(false)
   const [score, setScore] = useState(0);
   const [currentque, setCurrentQue] = useState(0);
   const [selectedOpts, setSelectedOpts] = useState([]);
@@ -46,7 +50,7 @@ function QuizPage() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (timeLeft > 0) {
+      if (timeLeft > 0&& !isQuizFinished) {
         setTimeLeft(timeLeft - 1);
       } else {
         finishQuiz();
@@ -105,8 +109,9 @@ function QuizPage() {
   
       // Create the data structure for API call
       const quizData = {
-        questions: JSON.parse(userAnswersDataJson),
-        quizId: quizId
+        
+        quizId: quizId,
+        point: totalCorrectAnswers
       };
 
       
@@ -129,6 +134,27 @@ function QuizPage() {
 
   const currentQuestion = quiz.JS[currentque];
 
+
+
+  const openModal = () => {
+   if(!alreadyOpenModal){
+    setShowModal(true);
+    setAlreadyOpenModal(true)  
+  }
+    
+  
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setAlreadyOpenModal(false)
+  };
+
+  const handleFinishQuiz = () => {
+    finishQuiz();
+    closeModal(); // Close the modal after finishing the quiz
+  };
+
   return (
     <div>
     <div className="quiz-container">
@@ -136,7 +162,7 @@ function QuizPage() {
       <div className="timer">
         <span>Thời gian: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
       </div>
-      <div className="question-buttons-container">
+      {/* <div className="question-buttons-container">
         <h3>Câu hỏi</h3>
         <div className="question-buttons">
           {quiz.JS.map((question, index) => (
@@ -145,11 +171,13 @@ function QuizPage() {
               onClick={() => displayQuiz(index)}
               className={`question-button ${currentque === index ? 'active' : ''}`}
             >
-              Q{index + 1} {/* Count questions from one */}
+              Q{index + 1} 
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
+       <div className="question-and-buttons-container">
+        <div className="quiz-container-left">
       <div className="question-display">
         {currentQuestion && (
           <div>
@@ -243,16 +271,42 @@ function QuizPage() {
     </label>
   </div>
 )}
+    
+    
             </div>
+            
             <div className="quiz-navigation">
               <button className='prev-button' onClick={() => changeQuestion(-1)}>Quay về</button>
-              <button className='finish-button' onClick={finishQuiz}>Hoàn thành</button>
+              <button className='finish-button' onClick={openModal}>Kết Thúc Bài </button>
               <button className='next-button' onClick={() => changeQuestion(1)}>Tiếp</button>
             </div>
           </div>
+       
         )}
+           <Modal
+           title="Bạn có muốn kết thúc thi?"
+       visible={showModal}
+        onCancel={closeModal}
+        onOk={handleFinishQuiz}
+      />
       </div>
       </div>
+      <div className='quiz-container-right'>
+      <div className="question-buttons-container">
+<QuestionButtons
+          quiz={quiz}
+          displayQuiz={displayQuiz}
+          currentque={currentque}
+          setSelectedOpts={setSelectedOpts}
+          selectedOpts={selectedOpts}
+        />
+        </div>
+        </div>
+      </div>
+
+      </div>
+  
+  
       {isQuizFinished && (
   <div className='quiz-container'>
     <h1>Tổng Điểm: {score}/{quiz.JS.length}</h1>
