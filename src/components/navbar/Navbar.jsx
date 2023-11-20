@@ -1,28 +1,18 @@
-import React, { useState } from 'react';
-import { Link, json } from 'react-router-dom';
-import { Button, Modal, Form, Input, Checkbox } from 'antd';
-
-import './Navbar.css';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import authService from '../../api/auth-services';
-import { useEffect } from 'react';
-const user = sessionStorage.getItem("user")
+import { Dropdown, Menu } from 'antd';
 
 function App() {
   let username = null;
-  const user = sessionStorage.getItem("user")
+  const user = sessionStorage.getItem("user");
   if (user !== null) {
-  username = jwtDecode(user).name
+    username = jwtDecode(user).name;
   }
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-
-
   useEffect(() => {
-    
     // Check if there is a current user
     const currentUser = authService.getCurrentUser();
     if (currentUser) {
@@ -34,9 +24,23 @@ function App() {
     // Clear the session storage and log the user out
     sessionStorage.removeItem('user');
     setIsLoggedIn(false);
-    window.location.href = '/home'
+    window.location.href = '/home';
   };
-
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <Link to="/Schedule" className="nav-item btn">Đăng ký học buổi học thực hành</Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to="/User" className="nav-item btn" >Thời khóa biểu</Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link type="link" className="btn btn-danger" onClick={handleLogout}>
+          Đăng xuất
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0" id="header-home-1">
@@ -49,22 +53,21 @@ function App() {
         <div className="collapse navbar-collapse" id="navbarCollapse">
           <div className="navbar-nav ms-auto p-4 p-lg-0">
             <Link to="/home" className="nav-item nav-link active">Trang chủ</Link>
-            {/* <Link to="/Quiz" className="nav-item nav-link">Khóa học lái xe</Link> */}
             <Link to="/Quiz" className="nav-item nav-link">Thi lý thuyết bằng lái xe online</Link>
             {isLoggedIn ? (
-              <Link to="/User" className="nav-item nav-link">{username}</Link>
+               <Dropdown overlay={menu} placement="bottomRight">
+                <button
+                  className="nav-item nav-link"
+                >
+                  {username}
+                </button>
+                </Dropdown>
             ) : (
               <Link to="/login" className="nav-item nav-link active">Đăng nhập</Link>
-             
             )}
           </div>
-          {isLoggedIn ? (
-            <button onClick={handleLogout} className="btn btn-danger">Đăng xuất</button>
-          ) : null}
         </div>
       </nav>
-
-     
     </div>
   );
 }

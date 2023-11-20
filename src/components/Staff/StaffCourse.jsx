@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getCourse, postCourse, putCourseById, deleteCourseById, DeleteCourseById,getLicense } from '../../api/auth-services'; // Import API functions
-import { Button, Form, Input, Modal, Select, Table } from 'antd';
+import { getCourse, postCourse, putCourseById, deleteCourseById, DeleteCourseById, getLicense } from '../../api/auth-services'; // Import API functions
+import { Button, Form, Input, Modal, Select, Table, Row, Col } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Option } from 'antd/es/mentions';
 
@@ -23,7 +23,7 @@ const StaffCourse = () => {
     try {
       const licenseData = await getLicense(accessToken);
       setLicenses(licenseData);
-      console.log(licenseData);
+      // console.log(licenseData);
       setLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -43,7 +43,7 @@ const StaffCourse = () => {
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const accessToken = user.accessToken;
-  
+
   const fetchCourseData = async () => {
     try {
       const courseData = await getCourse(accessToken);
@@ -60,7 +60,7 @@ const StaffCourse = () => {
   const handleAddCourse = async () => {
     // Send a POST request to add the course (implement the postCourse function)
     await postCourse(newCourseData.name, newCourseData.price, newCourseData.duration, newCourseData.description, newCourseData.licenseId, accessToken);
-    
+
     // Clear the form and hide the modal
     setNewCourseData({
       name: '',
@@ -129,6 +129,7 @@ const StaffCourse = () => {
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
   const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
+  const defaultLicense = licenses.find((license) => license.id === newCourseData.licenseId);
 
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
@@ -260,54 +261,68 @@ const StaffCourse = () => {
         onOk={handleAddCourse}
         onCancel={handleCancel}
       >
-        <Form>
-          <Form.Item label="Tên khoá học">
-            <Input
-              type="text"
-              name="name"
-              value={newCourseData.name}
-              onChange={handleInputChange}
-            />
-          </Form.Item>
-          <Form.Item label="Tổng giá">
-            <Input
-              type="number"
-              name="price"
-              value={newCourseData.price}
-              onChange={handleInputChange}
-            />
-          </Form.Item>
-          <Form.Item label="Thời lượng">
-            <Input
-              type="number"
-              name="duration"
-              value={newCourseData.duration}
-              onChange={handleInputChange}
-            />
-          </Form.Item>
-          <Form.Item label="Mô tả">
-            <Input
-              type="text"
-              name="description"
-              value={newCourseData.description}
-              onChange={handleInputChange}
-            />
-          </Form.Item>
-          <Form.Item label="Loại bằng lái">
-            <Select
-              style={{ width: '100%' }}
-              type="text"
-              name="licenseId"
-              value={newCourseData.licenseId}
-              onChange={(value) => setNewCourseData({ ...newCourseData, licenseId: value })}
-            >
-              {licenses.map((license) => (
-                <Option key={license.id} value={license.id}>
-                  {license.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+        <Form layout="vertical">
+          <Row gutter={[16, 16]}>
+            <Col span={24}>
+              <Form.Item label="Tên khoá học">
+                <Input
+                  type="text"
+                  name="name"
+                  value={newCourseData.name}
+                  onChange={handleInputChange}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Tổng giá">
+                <Input
+                  type="number"
+                  name="price"
+                  value={newCourseData.price}
+                  onChange={handleInputChange}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Thời lượng">
+                <Input
+                  type="number"
+                  name="duration"
+                  value={newCourseData.duration}
+                  onChange={handleInputChange}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="Mô tả">
+                <Input
+                  type="text"
+                  name="description"
+                  value={newCourseData.description}
+                  onChange={handleInputChange}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="Loại bằng lái">
+                <Select
+                  style={{ width: '100%' }}
+                  type="text"
+                  name="licenseId"
+                  value={newCourseData.licenseId || (defaultLicense && defaultLicense.id)}
+                  onChange={(value) =>
+                    setNewCourseData({ ...newCourseData, licenseId: value })
+                  }
+                >
+                  {licenses.map((license) => (
+                    <Select.Option key={license.id} value={license.id}>
+                      {license.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     </div>

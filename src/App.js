@@ -27,7 +27,6 @@ function AppM() {
         role = jwtDecode(userToken).role;
     }
 
-    console.log(role);
 
     return (
         <main className="App">

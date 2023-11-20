@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DeleteMentorbyID, getMentor, postMentor, putMentorById, getLicense } from '../../api/auth-services'; // Import API functions
-import { Button, Checkbox, Form, Input, Modal, Table, Select } from 'antd';
+import { Button, Checkbox, Form, Input, Modal, Table, Select, Row, Col } from 'antd';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
@@ -32,7 +32,7 @@ const Mentor = () => {
     try {
       const licenseData = await getLicense(accessToken);
       setLicensesUpdate(licenseData);
-      console.log(licenseData);
+      // console.log(licenseData);
       setLoading(false);
     } catch (error) {
       console.error('Error:', error);
@@ -144,7 +144,7 @@ const Mentor = () => {
         alert('Vui lòng điền đầy đủ thông tin');
         return;
       }
-      console.log(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID)
+      // console.log(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID)
       // Send a PUT request to update the mentor
       await putMentorById(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID, accessToken);
 
@@ -319,64 +319,62 @@ const Mentor = () => {
       <Table columns={columns} dataSource={currentMentors} />
 
       <Modal
-        title="Thêm giảng viên"
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={
-          <Button
-            icon={<SaveOutlined />}
-            className="save-button"
-            onClick={handleAddMentor}
+  title="Thêm giảng viên"
+  visible={isModalVisible}
+  onOk={handleAddMentor}
+  onCancel={handleCancel}
+>
+  <Form layout="vertical">
+    <Row gutter={[16, 16]}>
+      <Col span={24}>
+        <Form.Item label="Tên giảng viên">
+          <Input
+            type="text"
+            name="name"
+            value={newMentorData.name}
+            onChange={(e) => setNewMentorData({ ...newMentorData, name: e.target.value })}
+          />
+        </Form.Item>
+      </Col>
+      <Col span={24}>
+        <Form.Item label="Email">
+          <Input
+            type="email"
+            name="email"
+            value={newMentorData.email}
+            onChange={(e) => setNewMentorData({ ...newMentorData, email: e.target.value })}
+          />
+        </Form.Item>
+      </Col>
+      <Col span={24}>
+        <Form.Item label="Mật khẩu">
+          <Input
+            type="password"
+            name="password"
+            value={newMentorData.password}
+            onChange={(e) => setNewMentorData({ ...newMentorData, password: e.target.value })}
+          />
+        </Form.Item>
+      </Col>
+      <Col span={24}>
+        <Form.Item label="Bằng lái giảng viên">
+          <Select
+            mode="multiple"
+            value={newMentorData.mentorLicenseId}
+            onChange={(value) => setNewMentorData({ ...newMentorData, mentorLicenseId: value })}
+            style={{ width: '100%' }}
           >
-            Lưu
-          </Button>
-        }
-      >
-        <Form>
-          <Form.Item label="Tên giảng viên">
-            <Input
-              type="text"
-              name="name"
-              value={newMentorData.name}
-              onChange={e => setNewMentorData({...newMentorData, name: e.target.value})}
-            />
-          </Form.Item>
-          <Form.Item label="Email">
-            <Input
-              type="email"
-              name="email"
-              value={newMentorData.email}
-              onChange={e => setNewMentorData({...newMentorData, email: e.target.value})}
-            />
-          </Form.Item>
-          <Form.Item label="Mật khẩu">
-            <Input
-              type="password"
-              name="password"
-              value={newMentorData.password}
-              onChange={e => setNewMentorData({...newMentorData, password: e.target.value})}
-            />
-          </Form.Item>
-          <Form.Item label="Bằng lái giảng viên">
-            <Select mode="multiple" value={newMentorData.mentorLicenseId} onChange={e => setNewMentorData({...newMentorData, mentorLicenseId: e})}>
-              {licenses.map((license) => (
-                <Select.Option key={license.id} value={license.id}>
-                    {license.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          {/* <Form.Item label="Active">
-            <Checkbox
-              name="active"
-              checked={newMentorData.active}
-              onChange={handleInputChange}
-            >
-              Is Active
-            </Checkbox>
-          </Form.Item> */}
-        </Form>
-      </Modal>
+            {licenses.map((license) => (
+              <Select.Option key={license.id} value={license.id}>
+                {license.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+      </Col>
+    </Row>
+  </Form>
+</Modal>
     </div>
   );
 

@@ -26,10 +26,10 @@ const Mentor = () => {
               </a>
             </li>
             <li>
-              <Link to="takeattend">Điểm danh</Link>
+              <Link to="takeattend">Lịch dạy hôm nay</Link>
             </li>
             <li>
-              <Link to="createslot">Tạo slot</Link>
+              <Link to="createslot">Đăng ký buổi dạy</Link>
             </li>
             <li>
             <button onClick={handleLogout} className="btn btn-danger">Đăng xuất</button>
