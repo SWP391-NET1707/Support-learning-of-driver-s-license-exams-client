@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './scss/bootstrap.scss';
 import 'animate.css';
 
-import { CreateSlot, License, MentorList, Navbar, Schedule, StaffCourse, StaffQuiz, TakeAttend, Timetable, NavbarStaff,StaffList,CourseList, GuestNavBar} from './components';
+import { CreateSlot, License, MentorList, Navbar, Schedule, StaffCourse, StaffQuiz, TakeAttend, Timetable, NavbarStaff,StaffList,CourseList, GuestNavBar, SlotTime} from './components';
 import { Footer } from './containers';
 import { Home, Register, Quiz, Login, Courses, ForgotPassword, QuizPage, User, PaySuccess, Mentor, Payment, PaymentFail, Test, Mophong, Staff,Admin } from './pages';
 
@@ -86,6 +86,7 @@ function AppM() {
                             <Route path="MentorList" element={<MentorList />} />
                             <Route path="StaffCourse" element={<StaffCourse />} />
                             <Route path="StaffQuiz" element={<StaffQuiz />} />
+                            
                         </Route>
                     </>
                 )}
@@ -97,6 +98,7 @@ function AppM() {
                             <Route index element={<StaffList />} />
                             <Route path="StaffList" element={<StaffList />} />
                             <Route path="CourseList" element={<CourseList />} />
+                            <Route path="SlotTime" element={<SlotTime />} />
                         </Route>
                     </>
                 )}
