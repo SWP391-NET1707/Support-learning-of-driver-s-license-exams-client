@@ -19,6 +19,8 @@ function QuizPage() {
   const [timeLeft, setTimeLeft] = useState(1200); // 20 minutes in seconds
   const [quiz, setQuiz] = useState({ JS: [] });
   const [userAnswers, setUserAnswers] = useState([]);
+  const [finishTest,setFinishTest]= useState(false)
+
   const user = JSON.parse(sessionStorage.getItem('user'));
   const accessToken = user ? user.accessToken : null;
   
@@ -119,7 +121,8 @@ function QuizPage() {
       // console.log("this is", quizData);
   
       // Send data to the API
-      postStudentQuiz(accessToken, sendData)
+      setFinishTest(true)
+      postStudentQuiz(accessToken, sendData)     
         .then((response) => {
           // Handle success if needed
         })
@@ -137,10 +140,12 @@ function QuizPage() {
 
 
   const openModal = () => {
+    if(!finishTest){
    if(!alreadyOpenModal){
     setShowModal(true);
     setAlreadyOpenModal(true)  
   }
+}
     
   
   };
@@ -307,7 +312,7 @@ function QuizPage() {
       </div>
   
   
-      {isQuizFinished && (
+      {isQuizFinished &&  (
   <div className='quiz-container'>
     <h1>Tổng Điểm: {score}/{quiz.JS.length}</h1>
     {quiz.JS.map((question, index) => (
