@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getQuizz, postQuizz, putQuizzById, deleteQuizzById, getQuestionInQuizz, updateQuestion, deleteQuestion, getLicense, postQuestion } from '../../api/auth-services'; // Import API functions
+import { getQuizz, postQuizz, putQuizzById, deleteQuizzById, getQuestionInQuizz, updateQuestion, deleteQuestion, getLicense, postQuestion } from '../../api/auth-services';
 import { Button, Form, Input, Modal, Table, Select, Row, Col } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import './tableStaf.css'
@@ -44,23 +44,111 @@ const StaffQuiz = () => {
     setIsAddingQuestion(false);
   };
   const { Option } = Select;
+  const countNullAnswers = () => {
+    let nullCount = 0;
+    if (newQuestion.answer1 === 'null') {
+      nullCount++;
+    }
+    if (newQuestion.answer2 === 'null') {
+      nullCount++;
+    }
+    if (newQuestion.answer3 === 'null') {
+      nullCount++;
+    }
+    if (newQuestion.answer4 === 'null') {
+      nullCount++;
+    }
+    return nullCount;
+  };
+  const swapNonNullAnswers = () => {
+    const nonNullAnswers = [];
+
+    if (newQuestion.answer1 && newQuestion.answer1 !== 'null') {
+      nonNullAnswers.push(newQuestion.answer1);
+    }
+    if (newQuestion.answer2 && newQuestion.answer2 !== 'null') {
+      nonNullAnswers.push(newQuestion.answer2);
+    }
+    if (newQuestion.answer3 && newQuestion.answer3 !== 'null') {
+      nonNullAnswers.push(newQuestion.answer3);
+    }
+    if (newQuestion.answer4 && newQuestion.answer4 !== 'null') {
+      nonNullAnswers.push(newQuestion.answer4);
+    }
+    if (nonNullAnswers.length === 2) {
+      newQuestion.answer1 = nonNullAnswers[0];
+      newQuestion.answer2 = nonNullAnswers[1];
+      newQuestion.answer3 = 'null';
+      newQuestion.answer4 = 'null';
+
+      if (newQuestion.correctAnswer == 2) {
+        newQuestion.correctAnswer -= 1;
+      }
+      if (newQuestion.correctAnswer >= 3) {
+        newQuestion.correctAnswer -= 2;
+      }
+    }
+    if (nonNullAnswers.length === 3) {
+      newQuestion.answer1 = nonNullAnswers[0];
+      newQuestion.answer2 = nonNullAnswers[1];
+      newQuestion.answer3 = nonNullAnswers[2];
+      newQuestion.answer4 = 'null';
+      if (newQuestion.correctAnswer >= 2) {
+        newQuestion.correctAnswer -= 1;
+      }
+    }
+  };
+  const swapNonNullAnswersEdit = () => {
+    const nonNullAnswers = [];
+
+    if (editedQuestion.answer1 && editedQuestion.answer1 !== 'null') {
+      nonNullAnswers.push(editedQuestion.answer1);
+    }
+    if (editedQuestion.answer2 && editedQuestion.answer2 !== 'null') {
+      nonNullAnswers.push(editedQuestion.answer2);
+    }
+    if (editedQuestion.answer3 && editedQuestion.answer3 !== 'null') {
+      nonNullAnswers.push(editedQuestion.answer3);
+    }
+    if (editedQuestion.answer4 && editedQuestion.answer4 !== 'null') {
+      nonNullAnswers.push(editedQuestion.answer4);
+    }
+    if (nonNullAnswers.length === 2) {
+      editedQuestion.answer1 = nonNullAnswers[0];
+      editedQuestion.answer2 = nonNullAnswers[1];
+      editedQuestion.answer3 = 'null';
+      editedQuestion.answer4 = 'null';
+
+      if (editedQuestion.correctAnswer == 2) {
+        editedQuestion.correctAnswer -= 1;
+      }
+      if (editedQuestion.correctAnswer >= 3) {
+        editedQuestion.correctAnswer -= 2;
+      }
+    }
+    if (nonNullAnswers.length === 3) {
+      editedQuestion.answer1 = nonNullAnswers[0];
+      editedQuestion.answer2 = nonNullAnswers[1];
+      editedQuestion.answer3 = nonNullAnswers[2];
+      editedQuestion.answer4 = 'null';
+      if (editedQuestion.correctAnswer >= 2) {
+        editedQuestion.correctAnswer -= 1;
+      }
+    }
+  };
   const handleAddQuestion = async () => {
     try {
+      const nullAnswerCount = countNullAnswers();
+      swapNonNullAnswers();
       if (!newQuestion.content || !newQuestion.answer1 || !newQuestion.answer2 || !newQuestion.answer3 || !newQuestion.answer4 || !newQuestion.correctAnswer) {
         alert('Vui lòng điền đầy đủ thông tin câu hỏi.');
         return;
       }
-      const answers = [
-        newQuestion.answer1,
-        newQuestion.answer2,
-        newQuestion.answer3,
-        newQuestion.answer4,
-      ];
-      if (!answers.includes(newQuestion.correctAnswer) && newQuestion.correctAnswer !== 'null') {
-        alert('Đáp án đúng phải trùng với một trong các đáp án đã nhập khác "null".');
+
+      if (nullAnswerCount >= 3) {
+        alert('Câu hỏi phải có ít nhất 2 đáp án.');
         return;
       }
-
       await postQuestion(accessToken, {
         content: newQuestion.content,
         answer1: newQuestion.answer1,
@@ -152,7 +240,7 @@ const StaffQuiz = () => {
   };
 
   const handleAddQuiz = async () => {
-    // Validate the input
+    
     if (!newQuizData.name || !newQuizData.licenseId) {
       alert('Vui lòng điền đầy đủ thông tin');
       return;
@@ -160,17 +248,14 @@ const StaffQuiz = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     const Token = user.accessToken;
 
-    // Send a POST request to add the quiz (implement the postQuizz function)
     await postQuizz(newQuizData.name, newQuizData.licenseId, Token);
-    // Clear the form and hide the modal
+
     setNewQuizData({
       name: '',
       licenseId: 0,
     });
 
     setIsModalVisible(false);
-
-    // Fetch the updated quiz data
     fetchQuizData();
   };
 
@@ -182,18 +267,17 @@ const StaffQuiz = () => {
 
   const handleSaveEdit = async () => {
     try {
-      // Validate the input
+     
       if (!editQuiz.name || !editQuiz.licenseId) {
         alert('Vui lòng điền đầy đủ thông tin');
         return;
       }
-      // Send a PUT request to update the quiz
+     
       await putQuizzById(editQuiz.id, editQuiz.name, editedLicenseId, accessToken);
-      // Clear the edit state
+   
       setIsEditing(false);
       setEditQuiz({ id: 0, name: '', licenseId: 0 });
 
-      // Fetch the updated quiz data
       fetchQuizData();
     } catch (error) {
       console.error('Error during quiz update:', error);
@@ -203,7 +287,7 @@ const StaffQuiz = () => {
     try {
 
       if (editedQuestion.id) {
-
+        swapNonNullAnswersEdit();
         await updateQuestion(editedQuestion.id, accessToken, {
           content: editedQuestion.content,
           answer1: editedQuestion.answer1,
@@ -215,15 +299,13 @@ const StaffQuiz = () => {
           quizId: editedQuestion.quizId,
         });
 
-        // Cập nhật thông tin câu hỏi trong danh sách hiện tại
         setQuestions((prevQuestions) =>
           prevQuestions.map((question) =>
             question.id === editedQuestion.id ? { ...question, ...editedQuestion } : question
           )
         );
 
-        setIsEditingQuestion(false); // Kết thúc chỉnh sửa
-        alert('Cập nhật câu hỏi thành công');
+        setIsEditingQuestion(false);
       }
     } catch (error) {
       console.error('Lỗi khi cập nhật câu hỏi:', error);
@@ -511,17 +593,20 @@ const StaffQuiz = () => {
                     </Form.Item>
                   </Col>
                   <Col span={24}>
-                    <Form.Item label="Đáp án đúng">
-                      <Input
-                        type="text"
-                        name="correctAnswer"
-                        value={editedQuestion.correctAnswer}
-                        onChange={(e) =>
-                          setEditedQuestion({ ...editedQuestion, correctAnswer: e.target.value })
-                        }
-                      />
-                    </Form.Item>
-                  </Col>
+                  <Form.Item label="Đáp án đúng">
+                    <Select
+                      value={editedQuestion.correctAnswer}
+                      onChange={(value) =>
+                        setEditedQuestion({ ...editedQuestion, correctAnswer: value })
+                      }
+                    >
+                      <Select.Option value="1">1</Select.Option>
+                      <Select.Option value="2">2</Select.Option>
+                      <Select.Option value="3">3</Select.Option>
+                      <Select.Option value="4">4</Select.Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
                   <Col span={24}>
                     <Form.Item label="Loại bằng lái">
                       <Select
