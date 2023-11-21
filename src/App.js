@@ -86,7 +86,7 @@ function AppM() {
                             <Route path="MentorList" element={<MentorList />} />
                             <Route path="StaffCourse" element={<StaffCourse />} />
                             <Route path="StaffQuiz" element={<StaffQuiz />} />
-                            
+                            <Route path="SlotTime" element={<SlotTime />} />
                         </Route>
                     </>
                 )}
@@ -98,7 +98,7 @@ function AppM() {
                             <Route index element={<StaffList />} />
                             <Route path="StaffList" element={<StaffList />} />
                             <Route path="CourseList" element={<CourseList />} />
-                            <Route path="SlotTime" element={<SlotTime />} />
+                            
                         </Route>
                     </>
                 )}

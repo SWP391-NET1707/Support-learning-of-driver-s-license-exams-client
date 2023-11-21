@@ -34,6 +34,9 @@ const Staff = () => {
               <Link to="StaffQuiz">Quiz</Link>
             </li>
             <li>
+              <Link to="SlotTime">Giờ Học</Link>
+            </li>
+            <li>
               <button onClick={handleLogout} className="btn btn-danger">Đăng xuất</button>
             </li>
           </ul>

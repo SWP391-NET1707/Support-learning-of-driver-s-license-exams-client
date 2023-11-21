@@ -63,8 +63,9 @@ const SlotTime = () => {
 
   const handleDelete = async (id) => {
     const updatedSlotTimes = slotTimes.filter((slotTime) => slotTime.id !== id);
+   
     await deleteSlotTimeById(id);
-    setSlotTimes(updatedSlotTimes);
+    fetchSlotTimeData()
   };
 
   const columns = [

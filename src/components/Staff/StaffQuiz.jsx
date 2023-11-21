@@ -33,7 +33,7 @@ const StaffQuiz = () => {
     answer3: '',
     answer4: '',
     correctAnswer: '',
-    licenseId: '',
+    
     quizId: '',
   });
   const handleOpenAddQuestionModal = () => {
@@ -156,7 +156,7 @@ const StaffQuiz = () => {
         answer3: newQuestion.answer3,
         answer4: newQuestion.answer4,
         correctAnswer: newQuestion.correctAnswer,
-        licenseId: newQuestion.licenseId,
+       
         quizId: newQuestion.quizId,
       });
 
@@ -168,7 +168,7 @@ const StaffQuiz = () => {
         answer3: '',
         answer4: '',
         correctAnswer: '',
-        licenseId: '',
+       
         quizId: '',
       });
       setIsAddingQuestion(false);
@@ -186,7 +186,7 @@ const StaffQuiz = () => {
     answer3: '',
     answer4: '',
     correctAnswer: '',
-    licenseId: '',
+  
     quizId: ''
   });
   const fetchLicenseData = async () => {
@@ -233,7 +233,7 @@ const StaffQuiz = () => {
       answer3: question.answer3,
       answer4: question.answer4,
       correctAnswer: question.correctAnswer,
-      licenseId: question.licenseId,
+     
       quizId: question.quizId,
     });
     setIsEditingQuestion(true);
@@ -295,7 +295,7 @@ const StaffQuiz = () => {
           answer3: editedQuestion.answer3,
           answer4: editedQuestion.answer4,
           correctAnswer: editedQuestion.correctAnswer,
-          licenseId: editedQuestion.licenseId,
+         
           quizId: editedQuestion.quizId,
         });
 
@@ -607,7 +607,7 @@ const StaffQuiz = () => {
                     </Select>
                   </Form.Item>
                 </Col>
-                  <Col span={24}>
+                  {/* <Col span={24}>
                     <Form.Item label="Loại bằng lái">
                       <Select
                         value={editedQuestion.licenseId}
@@ -622,7 +622,7 @@ const StaffQuiz = () => {
                         ))}
                       </Select>
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                 </Row>
               </Form>
             </Col>
@@ -670,14 +670,14 @@ const StaffQuiz = () => {
                     dataIndex: "correctAnswer",
                     key: "correctAnswer",
                   },
-                  {
-                    title: "Loại bằng lái",
-                    dataIndex: "licenseId",
-                    key: "licenseId",
-                    render: (licenseId, question) => (
-                      <span>{getLicenseNameById(licenseId)}</span>
-                    ),
-                  },
+                  // {
+                  //   title: "Loại bằng lái",
+                  //   dataIndex: "licenseId",
+                  //   key: "licenseId",
+                  //   render: (licenseId, question) => (
+                  //     <span>{getLicenseNameById(licenseId)}</span>
+                  //   ),
+                  // },
                   {
                     title: "Tác vụ",
                     dataIndex: "actions",
@@ -812,7 +812,7 @@ const StaffQuiz = () => {
                     </Select>
                   </Form.Item>
                 </Col>
-                <Col span={24}>
+                {/* <Col span={24}>
                   <Form.Item label="Loại bằng lái">
                     <Select
                       value={newQuestion.licenseId}
@@ -827,7 +827,7 @@ const StaffQuiz = () => {
                       ))}
                     </Select>
                   </Form.Item>
-                </Col>
+                </Col> */}
                 <Col span={24}>
                   <Form.Item label="Tên bài quiz">
                     <Select

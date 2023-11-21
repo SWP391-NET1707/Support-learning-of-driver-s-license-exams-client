@@ -29,9 +29,7 @@ const Admin = () => {
             <li>
               <Link to="CourseList">Danh sách Courses</Link>
             </li>
-            <li>
-              <Link to="SlotTime">Danh sách Slots</Link>
-            </li>
+       
             <li>
               <button onClick={handleLogout} className="btn btn-danger">
                 Đăng xuất

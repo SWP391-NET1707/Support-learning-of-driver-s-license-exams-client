@@ -160,8 +160,13 @@ function QuizPage() {
     closeModal(); // Close the modal after finishing the quiz
   };
 
+  const reloadPage = () =>{
+    window.location.reload()
+  }
+
   return (
     <div>
+    {!isQuizFinished&&  (
     <div className="quiz-container">
       {/* Timer display */}
       <div className="timer">
@@ -310,7 +315,7 @@ function QuizPage() {
       </div>
 
       </div>
-  
+    )};
   
       {isQuizFinished &&  (
   <div className='quiz-container'>
@@ -320,8 +325,10 @@ function QuizPage() {
         <div>Q{index + 1}. Bạn chọn: {selectedOpts[index] ? `Đáp án ${selectedOpts[index]}` : 'Chưa chọn'}</div>
         <div><b>Đáp án đúng:</b> Đáp án {question.correctAnswer}</div>
         <div><b>Kết quả:</b> {checkAnswer(index) ? '✅' : '❌'}</div>
+        
       </div>
     ))}
+    <button className='next-button' onClick={() => reloadPage()}>Làm lại</button>
   </div>
 )}
     </div>
