@@ -138,3 +138,16 @@
 .btn-edit-profile{
     left: 20%;
 }
+
+
+.c-Red .anticon svg {
+    fill: red; /* Change the fill color to red */
+  }
+  
+  .Ch-Green .anticon svg {
+    fill: #28a745; /* Change the fill color to green (#28a745) */
+  }
+
+  .Q-Yellow .anticon svg{
+    fill: gold;
+  }

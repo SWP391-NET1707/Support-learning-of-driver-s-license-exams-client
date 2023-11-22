@@ -299,9 +299,9 @@ export async function getSlotTimeById(id) {
   }
 }
 
-export async function postSlotTime(startTime, endTime,id) {
+export async function putSlotTime(startTime, endTime,id) {
   try {
-    const response = await axios.get(`${API_URL}/SlotTime/update/${id}`,{
+    const response = await axios.put(`${API_URL}/SlotTime/update/${id}`,{
       startTime,
       endTime
     });
@@ -309,8 +309,21 @@ export async function postSlotTime(startTime, endTime,id) {
     // console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error('Error:', error);
-    return null;
+    alert(error.response.data)
+  }
+}
+
+export async function postSlotTime(startTime, endTime) {
+  try {
+    const response = await axios.post(`${API_URL}/SlotTime`,{
+      startTime,
+      endTime
+    });
+
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data)
   }
 }
 

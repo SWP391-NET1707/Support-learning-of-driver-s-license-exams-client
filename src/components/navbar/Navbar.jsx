@@ -29,15 +29,18 @@ function App() {
   const menu = (
     <Menu>
       <Menu.Item>
-        <Link to="/Schedule" className="nav-item btn">Đăng ký học buổi học thực hành</Link>
+      <div className='center-btn'>
+        <Link to="/Schedule" className="nav-item btn">Đăng ký học buổi học thực hành</Link></div>
       </Menu.Item>
-      <Menu.Item>
-        <Link to="/User" className="nav-item btn" >Thời khóa biểu</Link>
+      <Menu.Item >
+      <div className='center-btn'>
+        <Link to="/User" className="nav-item btn" >Thời khóa biểu</Link></div>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item >
+        <div className='center-btn'>
         <Link type="link" className="btn btn-danger" onClick={handleLogout}>
           Đăng xuất
-        </Link>
+        </Link></div>
       </Menu.Item>
     </Menu>
   );

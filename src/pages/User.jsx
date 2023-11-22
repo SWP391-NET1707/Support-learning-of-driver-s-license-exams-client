@@ -7,6 +7,7 @@ import jwtDecode from 'jwt-decode';
 import { getRegisteredSlots, getSlotTimeById, putStudentProfile } from '../api/auth-services';
 import { Table, Pagination, Button, Modal, Form, Input } from 'antd';
 import Column from 'antd/es/table/Column';
+import { CheckCircleOutlined, CloseCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 
 const User = () => {
     const [slotsdata, setSlotsdata] = useState([]);
@@ -48,6 +49,7 @@ const User = () => {
     useEffect(() => {
         
         fetchData();
+        console.log(slotsdata)
     }, []);
 
     const itemsPerPage = 3;
@@ -171,6 +173,15 @@ const User = () => {
                                     }}
                                     width="25%"
                                 />
+                                <Column title="Điểm danh" key="attendance"
+                                    render={(slotTimeData)=>{
+                                        if(slotTimeData.attendance === null){
+                                            return <div className='Q-Yellow'><QuestionCircleOutlined /></div>
+                                        }else if (slotTimeData.attendance === true) {
+                                            return <div className='Ch-Green'><CheckCircleOutlined /></div>
+                                        }else if(slotTimeData.attendance === false) return <div className='c-Red'><CloseCircleOutlined /></div>
+                                    }}
+                                width="25%" />
                             </Table>
                         </div>
                     ))}
