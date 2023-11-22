@@ -30,22 +30,19 @@ const SlotTime = () => {
     fetchSlotTimeData();
   }, []);
 
-  // const isTimeValid = (time) => {
-  //   const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-  //   return regex.test(time);
-  // };
+  const isTimeValid = (time) => {
+    const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    return regex.test(time);
+  };
 
   const handleAddSlotTime = async () => {
-    // if (!isTimeValid(newStartTime) <= !isTimeValid(newEndTime)) {
-    //   alert('Xin hãy nhập đúng mẫu HH:mm');
-    //   return;
-    // }
+    const formattedStartTime = newStartTime.format('HH:mm:00');
+    const formattedEndTime = newEndTime.format('HH:mm:00');
     if (newStartTime >= newEndTime) {
       alert('Giờ bắt đầu phải bé hơn Giờ kết thúc');
       return;
     }
-    const formattedStartTime = newStartTime.format('HH:mm:00');
-    const formattedEndTime = newEndTime.format('HH:mm:00');
+
     await postSlotTime(formattedStartTime, formattedEndTime);
     alert("Tạo thành công")
     fetchSlotTimeData();
@@ -60,6 +57,10 @@ const SlotTime = () => {
   };
 
   const handleSaveEdit = async () => {
+    if (!isTimeValid(editSlotTime.startTime) <= !isTimeValid(editSlotTime.endTime)) {
+      alert('Xin hãy nhập đúng mẫu HH:mm');
+      return;
+    }else
     if (!editSlotTime.startTime || !editSlotTime.endTime) {
       alert('Hãy nhập đủ thông tin');
       return;
