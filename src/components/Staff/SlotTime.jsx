@@ -95,12 +95,12 @@ const SlotTime = () => {
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
-      title: 'Start Time', dataIndex: 'startTime', key: 'startTime',
+      title: 'Giờ bắt đầu', dataIndex: 'startTime', key: 'startTime',
       render: (startTime, slotTime) => (
         <span>
           {isEditing && editSlotTime.id === slotTime.id ? (
             <Input
-              label="Start Time"
+              label="Giờ bắt đầu"
               value={editSlotTime.startTime}
               onChange={(e)=>setEditSlotTime({ ...editSlotTime, startTime: e.target.value})}
             />
@@ -110,12 +110,12 @@ const SlotTime = () => {
         </span>
       ),
     },
-    { title: 'End Time', dataIndex: 'endTime', key: 'endTime',
+    { title: 'Giờ kết thúc', dataIndex: 'endTime', key: 'endTime',
     render: (endTime, slotTime) => (
       <span>
         {isEditing && editSlotTime.id === slotTime.id ? (
           <Input
-            label="End Time"
+            label="Giờ kết thúc"
             value={editSlotTime.endTime}
             onChange={(e)=>setEditSlotTime({ ...editSlotTime, endTime: e.target.value })}
           />
@@ -126,20 +126,20 @@ const SlotTime = () => {
     ),
  },
     {
-      title: 'Actions',
+      title: 'Tác vụ',
       dataIndex: 'actions',
       key: 'actions',
       render: (text, slotTime) => (
         <span>
           {isEditing && editSlotTime.id === slotTime.id ? (
             <>
-              <Button icon={<SaveOutlined />} onClick={handleSaveEdit}>Save</Button>
-              <Button icon={<CloseCircleOutlined />} onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button icon={<SaveOutlined />} onClick={handleSaveEdit}>Lưu</Button>
+              <Button icon={<CloseCircleOutlined />} onClick={() => setIsEditing(false)}>Hủy</Button>
             </>
           ) : (
             <>
-              <Button icon={<EditOutlined />} onClick={() => handleEdit(slotTime)}>Edit</Button>
-              <Button icon={<DeleteOutlined />} onClick={() => handleDelete(slotTime.id)}>Delete</Button>
+              <Button icon={<EditOutlined />} onClick={() => handleEdit(slotTime)}>Chỉnh sửa</Button>
+              <Button icon={<DeleteOutlined />} onClick={() => handleDelete(slotTime.id)}>Xóa</Button>
             </>
           )}
         </span>
@@ -151,7 +151,7 @@ const SlotTime = () => {
 
     <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Button type="primary" onClick={() => setIsModalVisible(true)}>Add Slot Time</Button>
+      <Button type="primary" onClick={() => setIsModalVisible(true)}>Thêm khung giờ</Button>
 
       <Table
         dataSource={slotTimes}
@@ -160,7 +160,7 @@ const SlotTime = () => {
       />
 
       <Modal
-        title="Add Slot Time"
+        title="Thêm khung giờ"
         visible={isModalVisible}
         onOk={handleAddSlotTime}
         onCancel={() => setIsModalVisible(false)}
@@ -175,7 +175,7 @@ const SlotTime = () => {
 
             <Form.Item>
               <TimeField
-                label="Start Time"
+                label="Giờ bắt đầu"
                 value={newStartTime}
                 onChange={handleStartTimeChange}
                 format='HH:mm'
@@ -183,7 +183,7 @@ const SlotTime = () => {
             </Form.Item>
             <Form.Item>
               <TimeField
-                label="End Time"
+                label="Giờ kết húc"
                 value={newEndTime}
                 onChange={handleEndTimeChange}
                 format='HH:mm'

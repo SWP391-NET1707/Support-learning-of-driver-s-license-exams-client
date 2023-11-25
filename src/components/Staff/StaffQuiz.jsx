@@ -746,6 +746,7 @@ const StaffQuiz = () => {
                 <Col span={12}>
                   <Form.Item label="Đáp án #1">
                     <Input
+                    placeholder='Nếu câu hỏi không có đáp án, vui lòng điền null'
                       type="text"
                       name="answer1"
                       value={newQuestion.answer1}
@@ -758,6 +759,7 @@ const StaffQuiz = () => {
                 <Col span={12}>
                   <Form.Item label="Đáp án #2">
                     <Input
+                    placeholder='Nếu câu hỏi không có đáp án, vui lòng điền null'
                       type="text"
                       name="answer2"
                       value={newQuestion.answer2}
@@ -771,7 +773,7 @@ const StaffQuiz = () => {
                   <Col span={12}>
                     <Form.Item label="Đáp án #3">
                       <Input
-                        placeholder='Nếu câu hỏi không có đáp án #3, vui lòng điền null'
+                        placeholder='Nếu câu hỏi không có đáp án, vui lòng điền null'
                         type="text"
                         name="answer3"
                         value={newQuestion.answer3}
@@ -786,7 +788,7 @@ const StaffQuiz = () => {
                   <Col span={12}>
                     <Form.Item label="Đáp án #4">
                       <Input
-                        placeholder='Nếu câu hỏi không có đáp án #4, vui lòng điền null'
+                        placeholder='Nếu câu hỏi không có đáp án, vui lòng điền null'
                         type="text"
                         name="answer4"
                         value={newQuestion.answer4}
