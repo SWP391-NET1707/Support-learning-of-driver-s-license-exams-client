@@ -1,7 +1,8 @@
   import React, { useState, useEffect } from 'react';
   import { Link } from 'react-router-dom';
   import { getQuizz, getLicense, getPointByQuizId, getLicenseById } from '../api/auth-services';
-
+  import '../style/quiz.css'
+  
   function Quiz() {
     const user = JSON.parse(sessionStorage.getItem('user'));
     const accessToken = user ? user.accessToken : null;
@@ -80,10 +81,11 @@
    
   
     return (
-      <div className="ant-box" style={{ margin: '12px' }}>
-        <div className="ant-row" style={{ margin: '-12px -12px 12px' }}>
+      <div className='box-container'>
+      <div className="ant-box" >
+        <div className="ant-row" >
           {quizData.map((quiz) => (
-            <div className="ant-col ant-col-xs-24 ant-col-sm-12" style={{ padding: '12px' }} key={quiz.id}>
+            <div className="ant-col ant-col-xs-24 ant-col-sm-12"  key={quiz.id}>
               <div className="ant-card ant-card-bordered ant-card-hoverable" style={{ background: 'white' }}>
                 <div className="ant-card-body">
                   <div>
@@ -98,6 +100,7 @@
             </div>
           ))}
         </div>
+      </div>
       </div>
     );
   }

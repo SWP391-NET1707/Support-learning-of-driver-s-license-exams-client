@@ -3,16 +3,17 @@
 /* Your component-specific styles */
 .ant-box {
   margin: 12px;
-  display: flex;
-  flex-wrap: wrap;
+  margin-left: 24px;
+  /* display: flex;
+  flex-wrap: wrap; */
   gap: 12px;
   background-color: rgba(255, 255, 255, 0.2);
 }
 
 .ant-col {
   flex: 1;
-  min-width: calc(50% - 12px);
-  max-width: calc(50% - 12px);
+  /* min-width: calc(50% - 12px);
+  max-width: calc(50% - 12px); */
   transition: box-shadow 0.3s;
   margin: 6px;
   border-radius: 4px; /* Optional: Add border-radius for a softer look */
@@ -48,4 +49,11 @@
     min-width: calc(100% - 12px);
     max-width: calc(100% - 12px);
   }
+}
+
+.box-container{
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgba(224, 224, 224, 0.2);
 }
