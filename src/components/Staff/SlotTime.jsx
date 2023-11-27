@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSlotTime, postSlotTime, deleteSlotTimeById, putSlotTime } from '../../api/auth-services';
-import { Button, Form, Input, Modal, Table } from 'antd';
+import { Button, Form, Input, Modal, Table, TimePicker } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { LocalizationProvider, TimeField } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -36,18 +36,25 @@ const SlotTime = () => {
   };
 
   const handleAddSlotTime = async () => {
-    const formattedStartTime = newStartTime.format('HH:mm:00');
-    const formattedEndTime = newEndTime.format('HH:mm:00');
-    if (newStartTime >= newEndTime) {
-      alert('Giờ bắt đầu phải bé hơn Giờ kết thúc');
+    if (!newStartTime || !newEndTime) {
+      alert('Please select both start time and end time');
       return;
     }
-
-    await postSlotTime(formattedStartTime, formattedEndTime);
-    alert("Tạo thành công")
+    const newStart = newStartTime.format('HH:mm:00').toString();
+    const newEnd = newEndTime.format('HH:mm:00').toString();
+  
+   
+    await postSlotTime(newStart, newEnd);
     fetchSlotTimeData();
-    setNewStartTime(dayjs());
-    setNewEndTime(dayjs());
+    setNewStartTime(null);
+    setNewEndTime(null);
+    setIsModalVisible(false); // Close the modal after adding the slot time
+
+    // await postSlotTime(formattedStartTime, formattedEndTime);
+    // alert("Tạo thành công")
+    // fetchSlotTimeData();
+    // setNewStartTime(dayjs());
+    // setNewEndTime(dayjs());
   };
 
   const handleEdit = (slotTime) => {
@@ -81,16 +88,15 @@ const SlotTime = () => {
     fetchSlotTimeData()
   };
 
-  const handleStartTimeChange = (value) => {
-    // Update state with the Day.js object
-    setNewStartTime(value);
+  const onStartTimeChange = (time) => {
+    setNewStartTime(time);
+   
   };
 
-  const handleEndTimeChange = (value) => {
-    // Update state with the Day.js object
-    setNewEndTime(value);
+  const onEndTimeChange = (time) => {
+    setNewEndTime(time);
+  
   };
-
 
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
@@ -166,30 +172,20 @@ const SlotTime = () => {
         onCancel={() => setIsModalVisible(false)}
       >
         <Form>
-          {/* <Form.Item label="Start Time">
-            <Input type="text" value={newStartTime} onChange={(e) => setNewStartTime(e.target.value)} />
+          <Form.Item label="Start Time">
+            <TimePicker
+              value={newStartTime}
+              onChange={onStartTimeChange}
+              format="HH:mm"
+            />
           </Form.Item>
           <Form.Item label="End Time">
-            <Input type="text" value={newEndTime} onChange={(e) => setNewEndTime(e.target.value)} />
-          </Form.Item> */}
-
-            <Form.Item>
-              <TimeField
-                label="Giờ bắt đầu"
-                value={newStartTime}
-                onChange={handleStartTimeChange}
-                format='HH:mm'
-              />
-            </Form.Item>
-            <Form.Item>
-              <TimeField
-                label="Giờ kết húc"
-                value={newEndTime}
-                onChange={handleEndTimeChange}
-                format='HH:mm'
-              />
-            </Form.Item>
-
+            <TimePicker
+              value={newEndTime}
+              onChange={onEndTimeChange}
+              format="HH:mm"
+            />
+          </Form.Item>
         </Form>
       </Modal>
       </LocalizationProvider>
