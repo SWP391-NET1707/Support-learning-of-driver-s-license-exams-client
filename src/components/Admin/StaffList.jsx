@@ -132,7 +132,7 @@ const StaffList = () => {
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     {
-      title: 'Name',
+      title: 'Tên',
       dataIndex: 'name',
       key: 'name',
       render: (name, staffMember) => (
@@ -150,7 +150,7 @@ const StaffList = () => {
     },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     {
-      title: 'Password',
+      title: 'Mật khẩu',
       dataIndex: 'password',
       key: 'password',
       render: (password, staffMember) => (
@@ -195,19 +195,19 @@ const StaffList = () => {
       ),
     },
     {
-      title: 'Actions',
+      
       dataIndex: 'actions',
       key: 'actions',
       render: (text, staffMember) => (
         <span>
           {isEditing && editStaff.id === staffMember.id ? (
             <>
-              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Save</Button>
-              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button icon={<SaveOutlined />} className="save-button" onClick={handleSaveEdit}>Lưu</Button>
+              <Button icon={<CloseCircleOutlined />} className="close-button" onClick={() => setIsEditing(false)}>Hủy</Button>
             </>
           ) : (
             <>
-              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(staffMember)}>Edit</Button>
+              <Button icon={<EditOutlined />} className="edit-button" onClick={() => handleEdit(staffMember)}>Chỉnh sửa</Button>
               {/* Delete button removed */}
             </>
           )}
@@ -219,18 +219,18 @@ const StaffList = () => {
   return (
     <div>
       <Button type="primary" onClick={showModal} className="button-right">
-        Add Staff
+       Thêm Nhân Viên
       </Button>
       <Table columns={columns} dataSource={currentStaff} />
 
       <Modal
-        title="Add Staff Member"
+        title="Thêm Nhân Viên"
         visible={isModalVisible}
         onOk={handleAddStaff}
         onCancel={handleCancel}
       >
         <Form>
-          <Form.Item label="Name">
+          <Form.Item label="Tên">
             <Input
               type="text"
               name="name"
@@ -246,7 +246,7 @@ const StaffList = () => {
               onChange={handleInputChange}
             />
           </Form.Item>
-          <Form.Item label="Password">
+          <Form.Item label="Mật Khẩu">
             <Input
               type="password"
               name="password"

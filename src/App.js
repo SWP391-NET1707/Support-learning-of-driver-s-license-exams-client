@@ -97,7 +97,7 @@ function AppM() {
                             {/* <Route path="MentorList" element={<MentorList/>}/> */}
                             <Route index element={<StaffList />} />
                             <Route path="StaffList" element={<StaffList />} />
-                            <Route path="CourseList" element={<CourseList />} />
+                            {/* <Route path="CourseList" element={<CourseList />} /> */}
                             
                         </Route>
                     </>

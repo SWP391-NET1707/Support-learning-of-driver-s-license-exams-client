@@ -26,9 +26,7 @@ const Admin = () => {
             <li>
               <Link to="StaffList">Danh sách Staff</Link>
             </li> 
-            <li>
-              <Link to="CourseList">Danh sách Courses</Link>
-            </li>
+           
        
             <li>
               <button onClick={handleLogout} className="btn btn-danger">
