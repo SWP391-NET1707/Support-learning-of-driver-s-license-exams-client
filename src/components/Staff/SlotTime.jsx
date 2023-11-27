@@ -31,7 +31,7 @@ const SlotTime = () => {
   }, []);
 
   const isTimeValid = (time) => {
-    const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    const regex = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
     return regex.test(time);
   };
 
@@ -64,7 +64,9 @@ const SlotTime = () => {
   };
 
   const handleSaveEdit = async () => {
-    if (!isTimeValid(editSlotTime.startTime) <= !isTimeValid(editSlotTime.endTime)) {
+    console.log(editSlotTime.startTime, editSlotTime.endTime);
+    if (!isTimeValid(editSlotTime.startTime) || !isTimeValid(editSlotTime.endTime)) {
+      
       alert('Xin hãy nhập đúng mẫu HH:mm');
       return;
     }else
@@ -74,7 +76,6 @@ const SlotTime = () => {
     }
     
     await putSlotTime(editSlotTime.startTime, editSlotTime.endTime, editSlotTime.id);
-    alert("Chỉnh sửa thành công")
     setIsEditing(false);
     setEditSlotTime({ id: 0, startTime: '', endTime: '' });
     fetchSlotTimeData();

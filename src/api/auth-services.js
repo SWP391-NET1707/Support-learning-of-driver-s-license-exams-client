@@ -309,12 +309,14 @@ export async function getSlotTimeById(id) {
 
 export async function putSlotTime(startTime, endTime,id) {
   try {
+    console.log(startTime, endTime, id);
     const response = await axios.put(`${API_URL}/SlotTime/update/${id}`,{
       startTime,
       endTime
     });
 
     // console.log(response.data);
+    alert("Cập nhật thành công");
     return response.data;
   } catch (error) {
     alert(error.response.data)
