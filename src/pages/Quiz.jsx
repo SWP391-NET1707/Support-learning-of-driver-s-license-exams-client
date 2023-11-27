@@ -82,10 +82,10 @@
   
     return (
       <div className='box-container'>
-      <div className="ant-box" >
+      <div className="ant-box-quiz" >
         <div className="ant-row" >
           {quizData.map((quiz) => (
-            <div className="ant-col ant-col-xs-24 ant-col-sm-12"  key={quiz.id}>
+            <div className="ant-col-quiz ant-col-xs-24 ant-col-sm-12"  key={quiz.id}>
               <div className="ant-card ant-card-bordered ant-card-hoverable" style={{ background: 'white' }}>
                 <div className="ant-card-body">
                   <div>
