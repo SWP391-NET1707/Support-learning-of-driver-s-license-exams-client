@@ -58,10 +58,17 @@ const StaffCourse = () => {
   }, []);
 
   const handleAddCourse = async () => {
-    // Send a POST request to add the course (implement the postCourse function)
+    if(newCourseData.duration <= 0){
+      alert("Thời lượng khóa học không hợp lệ");
+      return;
+    }
+    if(newCourseData.price <= 0){
+      alert("Giá khóa học không hợp lệ");
+      return;
+    }
+   
     await postCourse(newCourseData.name, newCourseData.price, newCourseData.duration, newCourseData.description, newCourseData.licenseId, accessToken);
 
-    // Clear the form and hide the modal
     setNewCourseData({
       name: '',
       price: 0,
@@ -72,12 +79,11 @@ const StaffCourse = () => {
 
     setIsModalVisible(false);
 
-    // Fetch the updated course data
     fetchCourseData();
   };
   const handleLicenseIdChange = (e) => {
     const value = e.target.value;
-    setEditedLicenseId(value); // Update the edited License ID
+    setEditedLicenseId(value); 
 
   };
 
@@ -87,10 +93,17 @@ const StaffCourse = () => {
   };
 
   const handleSaveEdit = async () => {
-    // Send a PUT request to update the course
+    if(editCourse.duration <= 0){
+      alert("Thời lượng khóa học không hợp lệ");
+      return;
+    }
+    if(editCourse.price <= 0){
+      alert("Giá khóa học không hợp lệ");
+      return;
+    }
+   
     await putCourseById(editCourse.id, editCourse.name, editCourse.price, editCourse.duration, editCourse.description, editCourse.licenseId, accessToken);
 
-    // Clear the edit state
     setIsEditing(false);
     setEditCourse({ id: 0, name: '', price: 0, duration: 0, description: '', licenseId: [] });
 
@@ -98,10 +111,9 @@ const StaffCourse = () => {
   };
 
   const handleDelete = async (id) => {
-    // Filter out the course with the specified ID
+    
     const updatedCourses = courses.filter((course) => course.id !== id);
 
-    // Send a DELETE request to remove the course (implement the deleteCourseById function)
     await DeleteCourseById(id, accessToken);
 
     setCourses(updatedCourses);
@@ -276,6 +288,7 @@ const StaffCourse = () => {
             <Col span={12}>
               <Form.Item label="Tổng giá">
                 <Input
+                min={0}
                   type="number"
                   name="price"
                   value={newCourseData.price}
@@ -286,6 +299,7 @@ const StaffCourse = () => {
             <Col span={12}>
               <Form.Item label="Thời lượng">
                 <Input
+                min={0}
                   type="number"
                   name="duration"
                   value={newCourseData.duration}

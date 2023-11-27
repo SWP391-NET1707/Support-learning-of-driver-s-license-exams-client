@@ -109,11 +109,9 @@ const Mentor = () => {
   // } else {
   //   console.error("type of value error");
   // }
-    // Send a POST request to add the mentor (implement the postMentor function)
-    // await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, mentorLicenseIDArray, accessToken);
-
+   
     await postMentor(newMentorData.name, newMentorData.email, newMentorData.password, newMentorData.mentorLicenseId, accessToken);
-    // Clear the form and hide the modal
+   
     setNewMentorData({
       name: '',
       email: '',
@@ -124,11 +122,9 @@ const Mentor = () => {
 
     setIsModalVisible(false);
 
-    // Fetch the updated mentor data
     fetchMentorData();
   };
 
-  // Function to handle editing a mentor
   const handleEdit = (mentor) => {
     setIsEditing(true);
     setEditMentor(mentor);
@@ -139,16 +135,14 @@ const Mentor = () => {
 
   const handleSaveEdit = async () => {
     try {
-      // Validate the input
+      
       if (!editName || !editMentor.email || !editMentor.password || !editMentor.mentorLicenseID) {
         alert('Vui lòng điền đầy đủ thông tin');
         return;
       }
-      // console.log(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID)
-      // Send a PUT request to update the mentor
+      
       await putMentorById(editMentor.id, editName, editMentor.password, editActive, editMentor.mentorLicenseID, accessToken);
 
-      // Clear the edit state
       setIsEditing(false);
       await fetchMentorData();
       setEditMentor({ id: 0, name: '', email: '', password: '', mentorLicenseID: [] });

@@ -33,20 +33,17 @@ const License = () => {
   }, []);
 
   const handleAddLicense = async () => {
-    // Validate the input
+  
     if (!newLicenseName) {
       alert('Please fill in the name field');
       return;
     }
 
-    // Send a POST request to add the license
     await postLicense(newLicenseName, accessToken);
     fetchLicenseData();
-    // Clear the form
+    
     setNewLicense({ name: '' });
 
-    // Fetch the updated license data
-    
   };
 
   const handleEdit = (license) => {
@@ -55,31 +52,31 @@ const License = () => {
   };
 
   const handleSaveEdit = async () => {
-    // Validate the input
+   
     if (!editLicense.name) {
       alert('Please fill in the name field');
       return;
     }
 
-    // Send a PUT request to update the license
     await putLicenseById(editLicense.id, editLicense.name, accessToken);
 
-    // Clear the edit state
     setIsEditing(false);
     setEditLicense({ id: 0, name: '' });
 
-    // Fetch the updated license data
     fetchLicenseData();
   };
 
   const handleDelete = async (id) => {
-    // Filter out the license with the specified ID
-    const updatedLicenses = licenses.filter((license) => license.id !== id);
-
-    // Send a DELETE request to remove the license
+    const updatedLicenses = licenses.filter((license) => license.id !== id);  
     await DeleteLicenseById(id, accessToken);
-
-    setLicenses(updatedLicenses);
+    const response = await DeleteLicenseById(id, accessToken);
+    
+    if (response && response.status === 200) {
+      setLicenses(updatedLicenses);
+    } else {
+      alert("Xảy ra lỗi khi xóa bằng lái");
+      return;
+    }
   };
 
   const indexOfLastLicense = currentPage * LicensesPerPage;

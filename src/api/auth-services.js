@@ -191,11 +191,19 @@ export async function DeleteLicenseById(id, accessToken) {
         'Authorization': `Bearer ${accessToken}`
       }
     });
-
-    // console.log(response.data);
-    alert("Xóa Thành C")
-    return response.data;
-
+    console.log(response.status);
+    if(response.status === 200){
+      alert("Xóa Thành Công");
+      return response.data;
+    }
+    if(response.status === 404){
+      alert("Bằng lái không tồn tại");
+      return;
+    }
+    if(response.status === 500){
+      alert("Có khóa học cho bằng lái này");
+      return;
+    }
   } catch (error) {
     console.error('Error:', error);
     return null;
@@ -374,9 +382,9 @@ export async function postCourse(name, price, duration, description, licenseId) 
     });
 
     if (response.status === 200) {
-      alert('Course successfully posted');
+      alert('Tạo khóa học thành công');
     } else {
-      alert('Course posting failed');
+      alert('Tạo khóa học thất bại');
     }
   } catch (err) {
     console.error('Error during course posting:', err);
@@ -394,9 +402,9 @@ export async function putCourseById(id,name, price, duration, description, licen
     });
 
     if (response.status === 200) {
-      alert('Course successfully updated');
+      alert('Cập nhật khóa học thành công');
     } else {
-      alert('Course updating failed');
+      alert('Cập nhật khóa học thất bại');
     }
   } catch (err) {
     console.error('Error during course update:', err);
@@ -416,9 +424,9 @@ export async function DeleteCourseById(id, accessToken) {
     // console.log('Response:', response);
 
     if (response.status === 200) {
-      alert('Course successfully deleted');
+      alert('Xoá khóa học thành công');
     } else {
-      alert('Course deletion failed');
+      alert('Xóa khóa học thất bại');
     }
   } catch (err) {
     console.error('Error during course update:', err);
@@ -783,7 +791,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
           },
         }
       );
-      alert("Sửa đổi thành công");
+      alert("Sửa đổi quiz thành công");
     } catch (error) {
       if (error.response) {
         console.error('Error Response Data:', error.response.data);
@@ -802,7 +810,7 @@ export async function postTakeAttendant(id, isAttended, accessToken) {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      alert("Xóa thanh cong")
+      alert("Xóa quiz thành công")
     } catch (error) {
       console.error('Error:', error);
     }
