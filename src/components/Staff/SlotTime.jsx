@@ -77,7 +77,7 @@ const SlotTime = () => {
     const updatedSlotTimes = slotTimes.filter((slotTime) => slotTime.id !== id);
 
     await deleteSlotTimeById(id);
-    alert('Xóa thành công')
+    
     fetchSlotTimeData()
   };
 

@@ -332,6 +332,7 @@ export async function deleteSlotTimeById(id) {
     const response = await axios.delete(`${API_URL}/SlotTime/${id}`);
 
     // console.log(response.data);
+    alert("Xóa thành Công")
     return response.data
   } catch (error) {
     alert(error.response.data)
