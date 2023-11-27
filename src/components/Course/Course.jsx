@@ -18,10 +18,12 @@ const Course = () => {
   const [licenseid, setLicenseID] = useState('');
   const [userRegisteredCourses, setUserRegisteredCourses] = useState([]);
   const [courseData, setCourseData] = useState([]);
-  const [isCourseDataFetched, setIsCourseDataFetched] = useState(false); // Add a state to track if course data has been fetched
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
+  const [isCourseDataFetched, setIsCourseDataFetched] = useState(false); // Add a state to track if course data has been fetched
+
+  
+
 
   const user = JSON.parse(sessionStorage.getItem('user'));
   const accessToken = user ? user.accessToken : null;
@@ -47,14 +49,16 @@ const Course = () => {
   // Calculate the total number of pages
   const totalPages = Math.ceil(courseData.length / itemsPerPage);
 
-  // Handle clicking the right arrow
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, courseData.length);
+  const coursesToShow = courseData.slice(startIndex, endIndex);
+
   const nextPage = () => {
-    setCurrentPage((prevPage) => (prevPage === totalPages ? 1 : prevPage + 1));
+    setCurrentPage((prevPage) => (prevPage === totalPages ? totalPages : prevPage + 1));
   };
 
-  // Handle clicking the left arrow
   const prevPage = () => {
-    setCurrentPage((prevPage) => (prevPage === 1 ? totalPages : prevPage - 1));
+    setCurrentPage((prevPage) => (prevPage === 1 ? 1 : prevPage - 1));
   };
 
   useEffect(() => {
@@ -119,7 +123,7 @@ const Course = () => {
           <h1 className="display-6 mb-4">Dịch vụ của chúng tôi</h1>
         </div>
         <div className="row g-4 justify-content-center">
-          {courseData.map((course) => (
+          {coursesToShow.map((course) => (
             <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" key={course.id}>
               <div className="courses-item d-flex flex-column bg-white overflow-hidden h-100">
                 <div className="text-center p-4 pt-0">
