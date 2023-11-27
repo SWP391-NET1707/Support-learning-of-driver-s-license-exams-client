@@ -175,6 +175,7 @@ const SlotTime = () => {
 
             <Form.Item>
               <TimeField
+              required="required"
                 label="Giờ bắt đầu"
                 value={newStartTime}
                 onChange={handleStartTimeChange}
@@ -183,7 +184,8 @@ const SlotTime = () => {
             </Form.Item>
             <Form.Item>
               <TimeField
-                label="Giờ kết húc"
+              required="required"
+                label="Giờ kết thúc"
                 value={newEndTime}
                 onChange={handleEndTimeChange}
                 format='HH:mm'
